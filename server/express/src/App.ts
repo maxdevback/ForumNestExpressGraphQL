@@ -3,8 +3,16 @@ import { config } from "dotenv";
 config();
 import { connect } from "mongoose";
 import routes from "../routes";
+import cookieSession from "cookie-session";
+import "../types";
 const App = express();
 App.use(express.json());
+App.use(
+  cookieSession({
+    name: "session",
+    keys: ["secret"],
+  })
+);
 App.use(routes);
 
 const port = process.env.PORT ?? 5000;
