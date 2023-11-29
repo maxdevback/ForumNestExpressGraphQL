@@ -11,7 +11,7 @@ class UsersServiceClassV1_1 {
     );
     return { id: newUser.id, username: newUser.username };
   }
-  async login(username: string, email: string, password: string) {
+  async login(username: string, password: string) {
     const user = await UsersRepositoryV1_1.getUserByUsername(username);
     if (!(await compare(password, user.password)))
       throw { httpCode: 400, message: "Wrong password" };

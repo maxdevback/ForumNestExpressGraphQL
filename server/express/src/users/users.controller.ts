@@ -33,7 +33,6 @@ class UsersControllerClassV1_1 {
     try {
       const info = await UsersServiceV1_1.login(
         req.body.username,
-        req.body.email,
         req.body.password
       );
       req.session.user = info;
@@ -49,7 +48,6 @@ class UsersControllerClassV1_1 {
         req.body.email,
         req.body.password
       );
-      //@ts-ignore
       req.session.user = info;
       res.send(info);
     } catch (err: any) {
@@ -57,11 +55,9 @@ class UsersControllerClassV1_1 {
     }
   }
   async getMyInfo(req: Request, res: Response) {
-    //@ts-ignore
     res.send(req.session.user);
   }
   async logout(req: Request, res: Response) {
-    //@ts-ignore
     req.session.user = null;
     res.send("susses");
   }
