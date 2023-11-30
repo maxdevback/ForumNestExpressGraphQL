@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 import "./users.service";
-import { UsersServiceV1_1 } from "./users.service";
+import { UsersService } from "./users.service";
 
-class UsersControllerClassV1_1 {
+class UsersControllerClass {
   validateRegisterBody(req: Request, res: Response, next: NextFunction) {
     try {
       const validateRes = Joi.object({
@@ -31,7 +31,7 @@ class UsersControllerClassV1_1 {
   }
   async login(req: Request, res: Response) {
     try {
-      const info = await UsersServiceV1_1.login(
+      const info = await UsersService.login(
         req.body.username,
         req.body.password
       );
@@ -43,7 +43,7 @@ class UsersControllerClassV1_1 {
   }
   async register(req: Request, res: Response) {
     try {
-      const info = await UsersServiceV1_1.register(
+      const info = await UsersService.register(
         req.body.username,
         req.body.email,
         req.body.password
@@ -63,9 +63,4 @@ class UsersControllerClassV1_1 {
   }
 }
 
-class UsersControllerClassV1_2 {
-  hello(req: Request, res: Response) {}
-}
-
-export const UsersControllerV1_1 = new UsersControllerClassV1_1();
-export const UsersControllerV1_2 = new UsersControllerClassV1_2();
+export const UsersController = new UsersControllerClass();

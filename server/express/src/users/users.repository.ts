@@ -1,7 +1,6 @@
-import { Request, Response } from "express";
 import { UserModel } from "./users.model";
 
-class UsersRepositoryClassV1_1 {
+class UsersRepositoryClass {
   async register(username: string, email: string, password: string) {
     const userWithThatUsername = await UserModel.findOne({ username });
     const userWithThatEmail = await UserModel.findOne({ email });
@@ -33,11 +32,4 @@ class UsersRepositoryClassV1_1 {
   }
 }
 
-class UsersRepositoryClassV1_2 {
-  hello(req: Request, res: Response) {
-    res.send("hello from v1.2");
-  }
-}
-
-export const UsersRepositoryV1_1 = new UsersRepositoryClassV1_1();
-export const UsersRepositoryV1_2 = new UsersRepositoryClassV1_2();
+export const UsersRepository = new UsersRepositoryClass();

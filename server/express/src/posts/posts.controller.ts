@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
-import { PostsServiceV1_1 } from "./posts.service";
+import { PostsService } from "./posts.service";
 
-class PostsControllerClassV1_1 {
+class PostsControllerClass {
   async validateCreationBody(req: Request, res: Response, next: NextFunction) {
     try {
       const validateRes = Joi.object({
@@ -23,7 +23,7 @@ class PostsControllerClassV1_1 {
     try {
       if (!req.session.user) throw { httpCode: 401, message: "Auth first" };
       res.send(
-        await PostsServiceV1_1.create(
+        await PostsService.create(
           req.body.title,
           req.body.body,
           req.session.user.id
@@ -35,10 +35,11 @@ class PostsControllerClassV1_1 {
   }
   async getPostsByPage(req: Request, res: Response) {
     try {
+      console.log(req.baseUrl.split("/")[2]);
       const validateRes = Joi.number().min(1).validate(+req.params.page);
       if (validateRes.error)
         throw { httpCode: 400, message: "The page is not correct" };
-      res.send(await PostsServiceV1_1.getByPage(+req.params.page));
+      res.send(await PostsService.getByPage(+req.params.page));
     } catch (err: any) {
       console.log(err);
       res.status(err.httpCode ?? 500).send(err.message);
@@ -50,7 +51,7 @@ class PostsControllerClassV1_1 {
       if (validateRes.error)
         throw { httpCode: 400, message: "The page is not correct" };
       res.send(
-        await PostsServiceV1_1.getByAuthorAndPage(
+        await PostsService.getByAuthorAndPage(
           req.params.authorId,
           +req.params.page
         )
@@ -66,7 +67,7 @@ class PostsControllerClassV1_1 {
       if (validateRes.error)
         throw { httpCode: 400, message: "The page is not correct" };
       res.send(
-        await PostsServiceV1_1.getByAuthorAndPage(
+        await PostsService.getByAuthorAndPage(
           req.session.user.id,
           +req.params.page
         )
@@ -76,7 +77,4 @@ class PostsControllerClassV1_1 {
     }
   }
 }
-class PostsControllerClassV1_2 {}
-
-export const PostsControllerV1_1 = new PostsControllerClassV1_1();
-export const PostsControllerV1_2 = new PostsControllerClassV1_2();
+export const PostsController = new PostsControllerClass();

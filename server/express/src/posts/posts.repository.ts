@@ -1,6 +1,6 @@
 import { PostModel } from "./posts.model";
 
-class PostsRepositoryV1_1Class {
+class PostsRepositoryClass {
   async create(title: string, body: string, authorId: string) {
     const newPost = new PostModel({ title, body, authorId });
     return await newPost.save();
@@ -17,4 +17,4 @@ class PostsRepositoryV1_1Class {
   }
 }
 
-export const PostsRepositoryV1_1 = new PostsRepositoryV1_1Class();
+export const PostsRepository = new PostsRepositoryClass();
