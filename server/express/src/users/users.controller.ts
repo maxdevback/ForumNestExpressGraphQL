@@ -1,36 +1,12 @@
-import { NextFunction, Request, Response } from "express";
-import Joi from "joi";
+import { Request, Response } from "express";
+import { Validate } from "../utils/validate";
 import "./users.service";
 import { UsersService } from "./users.service";
 
 class UsersControllerClass {
-  validateRegisterBody(req: Request, res: Response, next: NextFunction) {
-    try {
-      const validateRes = Joi.object({
-        username: Joi.string().min(4).max(20).required(),
-        password: Joi.string().min(6).required(),
-        email: Joi.string().email().required(),
-      }).validate(req.body);
-      if (validateRes.error) throw validateRes.error.details[0].message;
-      next();
-    } catch (err) {
-      res.status(400).send(err);
-    }
-  }
-  validateLoginBody(req: Request, res: Response, next: NextFunction) {
-    try {
-      const validateRes = Joi.object({
-        username: Joi.string().min(4).max(20).required(),
-        password: Joi.string().min(6).required(),
-      }).validate(req.body);
-      if (validateRes.error) throw validateRes.error.details[0].message;
-      next();
-    } catch (err) {
-      res.status(400).send(err);
-    }
-  }
   async login(req: Request, res: Response) {
     try {
+      Validate.validateLoginBody(req.body);
       const info = await UsersService.login(
         req.body.username,
         req.body.password
@@ -43,6 +19,7 @@ class UsersControllerClass {
   }
   async register(req: Request, res: Response) {
     try {
+      Validate.validateRegisterBody(req.body);
       const info = await UsersService.register(
         req.body.username,
         req.body.email,
@@ -51,6 +28,7 @@ class UsersControllerClass {
       req.session.user = info;
       res.send(info);
     } catch (err: any) {
+      console.log(err);
       res.status(err.httpCode ?? 500).send(err.message);
     }
   }

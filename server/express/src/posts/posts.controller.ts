@@ -1,33 +1,12 @@
-import { NextFunction, Request, Response } from "express";
-import Joi from "joi";
+import { Request, Response } from "express";
+import { Validate } from "../utils/validate";
 import { PostsService } from "./posts.service";
 
 class PostsControllerClass {
-  validateCreationBody(body: object) {
-    const validateRes = Joi.object({
-      title: Joi.string().min(20).max(100).required(),
-      body: Joi.string().min(200).max(10000).required(),
-    }).validate(body);
-    if (validateRes.error) throw validateRes.error.details[0].message;
-  }
-  validateUpdateBody(body: object) {
-    return Joi.object({
-      title: Joi.string().min(20).max(100),
-      body: Joi.string().min(200).max(10000),
-    }).validate(body).value;
-  }
-  validatePage(page: number) {
-    const validateRes = Joi.number().min(1).validate(page);
-    if (validateRes.error)
-      throw { httpCode: 400, message: "The page is not correct" };
-  }
-  validateAuth(req: Request) {
-    if (!req.session.user) throw { httpCode: 401, message: "Auth first" };
-  }
   async create(req: Request, res: Response) {
     try {
-      this.validateAuth(req);
-      this.validateCreationBody(req.body);
+      Validate.validateAuth(req);
+      Validate.validatePostCreationBody(req.body);
       res.send(
         await PostsService.create(
           req.body.title,
@@ -42,7 +21,7 @@ class PostsControllerClass {
   }
   async getPostsByPage(req: Request, res: Response) {
     try {
-      this.validatePage(+req.params.page);
+      Validate.validatePage(+req.params.page);
       //console.log(req.baseUrl.split("/")[2]);
       res.send(await PostsService.getByPage(+req.params.page));
     } catch (err: any) {
@@ -59,7 +38,7 @@ class PostsControllerClass {
   }
   async getPostsByAuthorAndPage(req: Request, res: Response) {
     try {
-      this.validatePage(+req.params.page);
+      Validate.validatePage(+req.params.page);
       res.send(
         await PostsService.getByAuthorAndPage(
           req.params.authorId,
@@ -72,8 +51,8 @@ class PostsControllerClass {
   }
   async getMyPostsByPage(req: Request, res: Response) {
     try {
-      this.validateAuth(req);
-      this.validatePage(+req.params.page);
+      Validate.validateAuth(req);
+      Validate.validatePage(+req.params.page);
       res.send(
         await PostsService.getByAuthorAndPage(
           req.session.user!._id,
@@ -86,8 +65,8 @@ class PostsControllerClass {
   }
   async updatePostByPostId(req: Request, res: Response) {
     try {
-      this.validateAuth(req);
-      const providedFields = this.validateUpdateBody(req.body);
+      Validate.validateAuth(req);
+      const providedFields = Validate.validatePostUpdateBody(req.body);
       res.send(
         await PostsService.updateByPostIdAndAuthorId(
           req.params.postId,

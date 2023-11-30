@@ -9,6 +9,13 @@ class PostsRepositoryClass {
     const newPost = new PostModel({ title, body, authorId });
     return await newPost.save();
   }
+  async changeCommentsStatus(newStatus: boolean, postId: string) {
+    const post = await PostModel.findById(postId);
+    if (!post) throw this.notFoundThrow;
+    post.hasComments = newStatus;
+    await post.save();
+    return post;
+  }
   async getByPage(page: number) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
