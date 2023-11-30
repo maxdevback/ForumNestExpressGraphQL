@@ -9,13 +9,13 @@ class UsersServiceClass {
       email,
       hashedPassword
     );
-    return { id: newUser.id, username: newUser.username };
+    return { _id: newUser.id, username: newUser.username };
   }
   async login(username: string, password: string) {
     const user = await UsersRepository.getUserByUsername(username);
     if (!(await compare(password, user.password)))
       throw { httpCode: 400, message: "Wrong password" };
-    return { id: user.id, username: user.username };
+    return { _id: user.id, username: user.username };
   }
 }
 

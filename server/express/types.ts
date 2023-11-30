@@ -1,7 +1,7 @@
 declare namespace Express {
   interface Request {
     session: {
-      user: { id: string; username: string } | null;
+      user: { _id: string; username: string } | null;
     };
   }
 }

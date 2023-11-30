@@ -8,6 +8,7 @@ router.post(
   UsersController.register
 );
 router.post("/login", UsersController.validateLoginBody, UsersController.login);
+router.delete("/logout", UsersController.logout);
 router.get("/my", UsersController.getMyInfo);
 const usersRouter = Router();
 
