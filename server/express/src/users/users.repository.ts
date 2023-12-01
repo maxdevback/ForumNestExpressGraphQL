@@ -30,6 +30,9 @@ class UsersRepositoryClass {
       };
     return user;
   }
+  async deleteAccount(id: string) {
+    return await UserModel.findByIdAndDelete(id);
+  }
 }
 
 export const UsersRepository = new UsersRepositoryClass();

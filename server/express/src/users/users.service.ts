@@ -17,6 +17,9 @@ class UsersServiceClass {
       throw { httpCode: 400, message: "Wrong password" };
     return { _id: user.id, username: user.username };
   }
+  async deleteAccount(id: string) {
+    return await UsersRepository.deleteAccount(id);
+  }
 }
 
 export const UsersService = new UsersServiceClass();

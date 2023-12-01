@@ -2,6 +2,7 @@ import { Validate } from "../server/validate";
 import { PostsRepository } from "../posts/posts.repository";
 import { CommentsRepository } from "../comments/comments.repository";
 import { LikesRepository } from "./likes.repository";
+import { NotificationsService } from "../notifications/notifications.service";
 class LikesServiceClass {
   selfLike = {
     httpCode: 400,
@@ -29,8 +30,16 @@ class LikesServiceClass {
     const newLike = await LikesRepository.create(entityId, authorId);
     if (type === "post") {
       await PostsRepository.increaseRoughNumberOfLikes(entityId);
+      await NotificationsService.sendNotification(
+        "Someone liked your post",
+        entity.authorId
+      );
     } else {
       await CommentsRepository.increaseRoughNumberOfLikes(entityId);
+      await NotificationsService.sendNotification(
+        "Someone liked your comment",
+        entity.authorId
+      );
     }
     return newLike;
   }

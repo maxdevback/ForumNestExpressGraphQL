@@ -2,6 +2,7 @@ import { PostsRepository } from "../posts/posts.repository";
 import { UsersRepository } from "../users/users.repository";
 import { Validate } from "../server/validate";
 import { CommentsRepository } from "./comments.repository";
+import { NotificationsService } from "../notifications/notifications.service";
 
 class CommentsServiceClass {
   async create(
@@ -21,8 +22,19 @@ class CommentsServiceClass {
       body,
       parentCommentId
     );
+
     if (!post.hasComments)
       await PostsRepository.changeCommentsStatus(true, postId);
+    if (parentCommentId) {
+      Validate.validateObjectId(parentCommentId);
+      const parentComment = await CommentsRepository.getByCommentId(
+        parentCommentId
+      );
+      await NotificationsService.sendNotification(
+        "Someone replied to your comment",
+        parentComment.authorId
+      );
+    }
     return comment;
   }
   async getCommentsByPostIdAndPage(postId: string, page: number) {

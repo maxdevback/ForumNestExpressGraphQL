@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { UsersValidate } from "./users.validators";
 import "./users.service";
 import { UsersService } from "./users.service";
+import { Validate } from "../server/validate";
 
 class UsersControllerClass {
   async login(req: Request, res: Response) {
@@ -37,7 +38,18 @@ class UsersControllerClass {
   }
   async logout(req: Request, res: Response) {
     req.session.user = null;
-    res.send("susses");
+    res.send("success");
+  }
+  async deleteAccount(req: Request, res: Response) {
+    try {
+      Validate.validateAuth(req);
+      const id = req.session.user!._id;
+      req.session.user = null;
+      res.send(await UsersService.deleteAccount(id));
+    } catch (err: any) {
+      req.session.user = null;
+      res.status(err.httpCode ?? 500).send(err.message);
+    }
   }
 }
 
