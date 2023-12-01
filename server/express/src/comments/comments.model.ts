@@ -7,6 +7,7 @@ export interface IComment extends Document {
   body: string;
   postId: string;
   parentCommentId: string | null;
+  roughNumberOfLikes: number;
   authorId: string;
 }
 
@@ -16,11 +17,11 @@ export const commentSchema = new Schema<IComment>({
   postId: { type: String, required: true, ref: "post" },
   parentCommentId: {
     type: String,
-    required: true,
     ref: "comment",
     default: null,
   },
+  roughNumberOfLikes: { type: Number, required: true, default: 0 },
   authorId: { type: String, required: true, ref: "user" },
 });
 
-export const CommentsModel = model<IComment>("comment", commentSchema);
+export const CommentModel = model<IComment>("comment", commentSchema);

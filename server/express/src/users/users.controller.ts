@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { Validate } from "../utils/validate";
+import { UsersValidate } from "./users.validators";
 import "./users.service";
 import { UsersService } from "./users.service";
 
 class UsersControllerClass {
   async login(req: Request, res: Response) {
     try {
-      Validate.validateLoginBody(req.body);
+      UsersValidate.validateLoginBody(req.body);
       const info = await UsersService.login(
         req.body.username,
         req.body.password
@@ -19,7 +19,7 @@ class UsersControllerClass {
   }
   async register(req: Request, res: Response) {
     try {
-      Validate.validateRegisterBody(req.body);
+      UsersValidate.validateRegisterBody(req.body);
       const info = await UsersService.register(
         req.body.username,
         req.body.email,

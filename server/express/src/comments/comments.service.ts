@@ -1,6 +1,6 @@
 import { PostsRepository } from "../posts/posts.repository";
 import { UsersRepository } from "../users/users.repository";
-import { Validate } from "../utils/validate";
+import { Validate } from "../server/validate";
 import { CommentsRepository } from "./comments.repository";
 
 class CommentsServiceClass {
@@ -10,8 +10,8 @@ class CommentsServiceClass {
     body: string,
     parentCommentId?: string
   ) {
-    Validate.checkId(authorId);
-    Validate.checkId(postId);
+    Validate.validateObjectId(authorId);
+    Validate.validateObjectId(postId);
     const author = await UsersRepository.getUserById(authorId);
     const post = await PostsRepository.getByPostId(postId);
     const comment = await CommentsRepository.create(
@@ -26,7 +26,7 @@ class CommentsServiceClass {
     return comment;
   }
   async getCommentsByPostIdAndPage(postId: string, page: number) {
-    Validate.checkId(postId);
+    Validate.validateObjectId(postId);
     return await CommentsRepository.getCommentsByPostIdAndPage(postId, page);
   }
   async getReplaysByCommentIdAndPostIdAndPage(
@@ -34,8 +34,8 @@ class CommentsServiceClass {
     postId: string,
     page: number
   ) {
-    Validate.checkId(commentId);
-    Validate.checkId(postId);
+    Validate.validateObjectId(commentId);
+    Validate.validateObjectId(postId);
     return await CommentsRepository.getReplaysByCommentIdAndPostIdAndPage(
       postId,
       commentId,

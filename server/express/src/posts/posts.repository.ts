@@ -43,6 +43,11 @@ class PostsRepositoryClass {
     if (updateInfo.matchedCount < 1) throw this.notFoundThrow;
     return updateInfo;
   }
+  async increaseRoughNumberOfLikes(postId: string) {
+    const post = await this.getByPostId(postId);
+    post.roughNumberOfLikes++;
+    return await post.save();
+  }
 }
 
 export const PostsRepository = new PostsRepositoryClass();

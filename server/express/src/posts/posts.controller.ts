@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
-import { Validate } from "../utils/validate";
+import { Validate } from "../server/validate";
 import { PostsService } from "./posts.service";
+import { PostsValidate } from "./posts.validators";
 
 class PostsControllerClass {
   async create(req: Request, res: Response) {
     try {
       Validate.validateAuth(req);
-      Validate.validatePostCreationBody(req.body);
+      PostsValidate.validateCreationBody(req.body);
       res.send(
         await PostsService.create(
           req.body.title,
@@ -66,7 +67,7 @@ class PostsControllerClass {
   async updatePostByPostId(req: Request, res: Response) {
     try {
       Validate.validateAuth(req);
-      const providedFields = Validate.validatePostUpdateBody(req.body);
+      const providedFields = PostsValidate.validateUpdateBody(req.body);
       res.send(
         await PostsService.updateByPostIdAndAuthorId(
           req.params.postId,

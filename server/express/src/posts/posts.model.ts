@@ -6,9 +6,7 @@ export interface IPost extends Document {
   title: string;
   body: string;
   hasComments: boolean;
-  //TODO:
-  // likes: string[];
-  // comments: { username: string; body: string }[];
+  roughNumberOfLikes: number;
   authorId: string;
 }
 
@@ -16,6 +14,7 @@ export const postSchema = new Schema<IPost>({
   title: { type: String, required: true },
   body: { type: String, required: true },
   hasComments: { type: Boolean, required: true, default: false },
+  roughNumberOfLikes: { type: Number, required: true, default: 0 },
   authorId: { type: String, required: true, ref: "user" },
 });
 

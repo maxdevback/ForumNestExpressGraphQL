@@ -7,7 +7,7 @@ class UsersRepositoryClass {
     if (userWithThatUsername || userWithThatEmail)
       throw {
         httpCode: 409,
-        message: "A user with that username already exists.",
+        message: "A user with that username or email already exists.",
       };
     const newUser = new UserModel({ username, email, password });
     return await newUser.save();
