@@ -8,9 +8,11 @@ class UsersControllerClass {
   async login(req: Request, res: Response) {
     try {
       UsersValidate.validateLoginBody(req.body);
+      const v = req.baseUrl.split("/")[2] as "v1.1" | "v1.2";
       const info = await UsersService.login(
         req.body.username,
-        req.body.password
+        req.body.password,
+        v
       );
       req.session.user = info;
       res.send(info);

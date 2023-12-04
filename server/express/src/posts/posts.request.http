@@ -1,4 +1,4 @@
-POST http://localhost:5000/posts/v1.1
+POST http://localhost:5000/posts/v1.2
 Content-Type: application/json
 
 {
@@ -6,17 +6,17 @@ Content-Type: application/json
   "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 }
 ###
-GET http://localhost:5000/posts/v1.1/1
+GET http://localhost:5000/posts/v1.2/1
 ###
-GET http://localhost:5000/posts/v1.1/id/656d93d23d99187d2dc15a2f
+GET http://localhost:5000/posts/v1.2/id/656d93d23d99187d2dc15a2f
 ###
-GET http://localhost:5000/posts/v1.1/author/656d93d23d99187d2dc15a2f
+GET http://localhost:5000/posts/v1.2/author/656defeb86c8226f404667f1
 ###
-GET http://localhost:5000/posts/v1.1/656d8f5a3d99187d2dc15a2d/1
+GET http://localhost:5000/posts/v1.2/656d8f5a3d99187d2dc15a2d/1
 ###
-GET http://localhost:5000/posts/v1.1/my/1
+GET http://localhost:5000/posts/v1.2/my/1
 ###
-PATCH http://localhost:5000/posts/v1.1/656d966054c0444970684e4b
+PATCH http://localhost:5000/posts/v1.2/656defeb86c8226f404667f1
 Content-Type: application/json
 
 {

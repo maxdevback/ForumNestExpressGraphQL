@@ -12,7 +12,8 @@ class CommentsControllerClass {
         await CommentsService.create(
           req.session.user!._id,
           req.params.postId,
-          req.body.body
+          req.body.body,
+          "v1.1"
         )
       );
     } catch (err: any) {
@@ -29,6 +30,7 @@ class CommentsControllerClass {
           req.session.user!._id,
           req.params.postId,
           req.body.body,
+          "v1.1",
           req.params.parentCommentId
         )
       );

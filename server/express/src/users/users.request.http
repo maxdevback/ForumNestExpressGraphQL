@@ -1,4 +1,4 @@
-POST http://localhost:5000/users/v1.1/login 
+POST http://localhost:5000/users/v1.2/login 
 Content-Type: application/json
 
 {
@@ -6,7 +6,7 @@ Content-Type: application/json
   "password": "password"
 }
 ###
-POST http://localhost:5000/users/v1.1/register
+POST http://localhost:5000/users/v1.2/register
 Content-Type: application/json 
 
 {

@@ -20,6 +20,6 @@ router.patch("/:postId", (req, res) =>
 
 const postsRouter = Router();
 postsRouter.use("/v1.1", router);
-//postsRouter.use("/v1.2", router);
+postsRouter.use("/v1.2", router);
 
 export default postsRouter;

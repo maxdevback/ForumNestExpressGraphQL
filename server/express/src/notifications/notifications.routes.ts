@@ -8,6 +8,6 @@ router.get("/:page", (req, res) =>
 
 const notificationsRouter = Router();
 notificationsRouter.use("/v1.1", router);
-//postsRouter.use("/v1.2", router);
+notificationsRouter.use("/v1.2", router);
 
 export default notificationsRouter;

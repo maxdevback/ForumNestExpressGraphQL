@@ -1,1 +1,1 @@
-GET http://localhost:5000/notifications/v1.1/1
+GET http://localhost:5000/notifications/v1.2/1

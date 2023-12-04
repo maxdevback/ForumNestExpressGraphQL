@@ -16,5 +16,6 @@ router.get("/:postId/:commentId/:page", (req, res) =>
 const commentsRouter = Router();
 
 commentsRouter.use("/v1.1", router);
+commentsRouter.use("/v1.2", router);
 
 export default commentsRouter;
