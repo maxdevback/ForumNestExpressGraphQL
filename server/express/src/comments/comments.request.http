@@ -1,0 +1,12 @@
+GET http://localhost:5000/comments/v1.1/65689d3f3da003d7219da6a8/1
+###
+GET http://localhost:5000/comments/v1.1/65689d3f3da003d7219da6a8/656d9f9c9706863ff9bb0de3/1
+###
+POST http://localhost:5000/comments/v1.1/65689d3f3da003d7219da6a8/656d9f9c9706863ff9bb0de3
+Content-Type: application/json
+
+{
+  "body": "this is body for post comment"
+}
+###
+POST http://localhost:5000/comments/v1.1/65689d3f3da003d7219da6a8

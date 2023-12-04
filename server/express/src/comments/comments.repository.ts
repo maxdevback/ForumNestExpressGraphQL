@@ -14,9 +14,11 @@ class CommentsRepositoryClass {
   ) {
     const comment = new CommentModel({ authorId, postId, username, body });
     if (parentCommentId) {
+      console.log("parentComment in repo");
       const parentComment = await CommentModel.findById(parentCommentId);
       if (!parentComment) throw this.notFoundComment;
-      comment.body = `$@{parentComment.username} ${comment.body}`;
+      comment.parentCommentId = parentCommentId;
+      comment.body = `${parentComment.username} ${comment.body}`;
     }
     return await comment.save();
   }

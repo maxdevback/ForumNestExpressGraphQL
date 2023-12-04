@@ -20,6 +20,7 @@ class PostsServiceClass {
   }
   async getAuthorByPostId(postId: string) {
     Validate.validateObjectId(postId);
+    console.log(postId);
     const post = await PostsRepository.getByPostId(postId);
     const user = await UsersRepository.getUserById(post.authorId);
     return { _id: user._id, username: user.username };
@@ -29,6 +30,7 @@ class PostsServiceClass {
     authorId: string,
     newData: object
   ) {
+    console.log(postId);
     Validate.validateObjectId(postId);
     Validate.validateObjectId(authorId);
     return await PostsRepository.updateByPostIdAndAuthorId(

@@ -23,6 +23,7 @@ class CommentsControllerClass {
     try {
       CommentsValidator.validateCreateBody(req.body);
       Validate.validateAuth(req);
+      console.log(req.params);
       res.send(
         await CommentsService.create(
           req.session.user!._id,
@@ -49,6 +50,7 @@ class CommentsControllerClass {
     }
   }
   async getReplaysByCommentIdAndPostIdAndPage(req: Request, res: Response) {
+    console.log(req.params);
     try {
       Validate.validatePage(+req.params.page);
       res.send(

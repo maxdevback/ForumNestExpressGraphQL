@@ -40,6 +40,7 @@ class PostsRepositoryClass {
       { _id: postId, authorId },
       newData
     );
+    console.log(updateInfo);
     if (updateInfo.matchedCount < 1) throw this.notFoundThrow;
     return updateInfo;
   }

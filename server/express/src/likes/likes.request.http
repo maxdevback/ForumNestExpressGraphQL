@@ -1,0 +1,6 @@
+GET http://localhost:5000/likes/v1.1/isLiked/65689d3f3da003d7219da6a8
+###
+POST http://localhost:5000/likes/v1.1/post/65689d3f3da003d7219da6a8
+
+###
+POST http://localhost:5000/likes/v1.1/comment/

@@ -1,0 +1,22 @@
+POST http://localhost:5000/users/v1.1/login 
+Content-Type: application/json
+
+{
+  "username": "usernameFromVsCode",
+  "password": "password"
+}
+###
+POST http://localhost:5000/users/v1.1/register
+Content-Type: application/json 
+
+{
+  "email": "emailfromvscode@email.com",
+  "username": "usernameFromVsCode",
+  "password": "password"
+}
+###
+GET http://localhost:5000/users/v1.1/my
+###
+DELETE  http://localhost:5000/users/v1.1/logout
+###
+DELETE http://localhost:5000/users/v1.1/delete
