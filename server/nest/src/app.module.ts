@@ -6,6 +6,11 @@ import { LikesModule } from './likes/likes.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { User } from './users/entities/user.entity';
+import { Post } from './posts/entities/post.entity';
+import { Notification } from './notifications/entities/notification.entity';
+import { Like } from './likes/entities/like.entity';
+import { Comment } from './comments/entities/comment.entity';
 
 @Module({
   imports: [
@@ -24,6 +29,7 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
+      entities: [User, Post, Notification, Like, Comment],
       synchronize: !!process.env.IS_PROD,
     }),
   ],
