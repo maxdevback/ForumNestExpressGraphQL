@@ -30,7 +30,7 @@ import { Comment } from './comments/entities/comment.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [User, Post, Notification, Like, Comment],
-      synchronize: !!process.env.IS_PROD,
+      synchronize: true,
     }),
   ],
 })
