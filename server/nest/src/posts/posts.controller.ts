@@ -1,34 +1,59 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  UseGuards,
+  Session,
+} from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { AuthGuard } from 'src/shared/guards/user.auth.guard';
 
-@Controller('posts')
+@Controller('/posts/v1.1')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.create(createPostDto);
+  create(@Body() createPostDto: CreatePostDto, @Session() session) {
+    return this.postsService.create(createPostDto, session.user.id);
   }
 
-  @Get()
-  findAll() {
-    return this.postsService.findAll();
+  @Get('/id/:postId')
+  getByPostId(@Param('postId') postId) {
+    return this.postsService.getByPostId(postId);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postsService.findOne(+id);
+  @UseGuards(AuthGuard)
+  @Get('/my/:page')
+  getMyByPage(@Param('page') page, id: number) {
+    return this.postsService.getMyByPage(page, id);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postsService.update(+id, updatePostDto);
+  @Get('/author/:postId')
+  getAuthorByPostId(@Param('postId') postId: number) {
+    return this.postsService.getAuthorByPostId(postId);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postsService.remove(+id);
+  @Get('/:authorId/:page')
+  getPostsByAuthorAndPage(
+    @Param('authorId') id: number,
+    @Param('page') page: number,
+  ) {
+    return this.postsService.getMyByPage(page, id);
+  }
+  @Get('/:page')
+  getByPage(@Param('page') page) {
+    return this.postsService.getByPage(page);
+  }
+  @UseGuards(AuthGuard)
+  @Patch('/:postId')
+  update(
+    @Param('postId') postId: number,
+    @Body() updatePostDto: UpdatePostDto,
+    @Session() session,
+  ) {
+    return this.postsService.update(postId, updatePostDto, session.user.id);
   }
 }
