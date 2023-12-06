@@ -30,7 +30,7 @@ export class UsersService {
     return { username: newUser.username, id: newUser.id };
   }
 
-  async login(data: LoginUserDto, v: 'v1.1' | 'v1.2' = 'v1.1') {
+  async login(data: LoginUserDto) {
     const userWithThatUsername = await this.UserRepo.findOne({
       where: { username: data.username },
     });
@@ -49,23 +49,4 @@ export class UsersService {
   async delete(id: number) {
     return await this.UserRepo.delete({ id });
   }
-  // findAll(v: 'v1.1' | 'v1.2' = 'v1.1') {
-  //   return `This action returns all users`;
-  // }
-
-  // findOne(id: number, v: 'v1.1' | 'v1.2' = 'v1.1') {
-  //   return `This action returns a #${id} user`;
-  // }
-
-  // update(
-  //   id: number,
-  //   updateUserDto: UpdateUserDto,
-  //   v: 'v1.1' | 'v1.2' = 'v1.1',
-  // ) {
-  //   return `This action updates a #${id} user`;
-  // }
-
-  // remove(id: number, v: 'v1.1' | 'v1.2' = 'v1.1') {
-  //   return `This action removes a #${id} user`;
-  // }
 }

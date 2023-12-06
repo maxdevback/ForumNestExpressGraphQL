@@ -1,5 +1,6 @@
 import { Comment } from 'src/comments/entities/comment.entity';
 import { Post } from 'src/posts/entities/post.entity';
+import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'like' })
@@ -10,9 +11,15 @@ export class Like {
   @Column()
   entityType: 'post' | 'comment';
 
+  @Column({ default: 0 })
+  roughNumberOfLikes: number;
+
   @ManyToOne(() => Comment, (comment) => comment.id)
   comment: Comment;
 
   @ManyToOne(() => Post, (post) => post.id)
   post: Post;
+
+  @ManyToOne(() => User, (user) => user.id)
+  author: User;
 }

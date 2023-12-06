@@ -1,26 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { CreateNotificationDto } from './dto/create-notification.dto';
-import { UpdateNotificationDto } from './dto/update-notification.dto';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Notification } from './entities/notification.entity';
+import { Repository } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
 @Injectable()
 export class NotificationsService {
-  create(createNotificationDto: CreateNotificationDto) {
-    return 'This action adds a new notification';
-  }
-
-  findAll() {
-    return `This action returns all notifications`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} notification`;
-  }
-
-  update(id: number, updateNotificationDto: UpdateNotificationDto) {
-    return `This action updates a #${id} notification`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} notification`;
+  constructor(
+    @InjectRepository(Notification)
+    private readonly NotificationRepo: Repository<Notification>,
+    @InjectRepository(User) private readonly UserRepo: Repository<User>,
+  ) {}
+  async getMyPage(page: number, receiverId: number) {
+    const pageSize = 25;
+    const skip = (page - 1) * pageSize;
+    const receiver = await this.UserRepo.findOne({ where: { id: receiverId } });
+    return await this.NotificationRepo.find({
+      where: { receiverId: receiver },
+      skip,
+      take: pageSize,
+    });
   }
 }

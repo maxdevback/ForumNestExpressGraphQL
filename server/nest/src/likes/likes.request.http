@@ -1,0 +1,9 @@
+GET http://localhost:4000/likes/v1.1/isLiked/post/5
+
+###
+
+POST http://localhost:4000/likes/v1.1/post/1
+
+###
+POST http://localhost:4000/likes/v1.1/comment/1
+

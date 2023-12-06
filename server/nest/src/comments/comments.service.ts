@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Comment } from './entities/comment.entity';
-import { IsNull, Not, Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Post } from 'src/posts/entities/post.entity';
 import { User } from 'src/users/entities/user.entity';
+import { Notification } from 'src/notifications/entities/notification.entity';
 
 @Injectable()
 export class CommentsService {
@@ -13,6 +14,8 @@ export class CommentsService {
     private readonly CommentRepo: Repository<Comment>,
     @InjectRepository(Post) private readonly PostRepo: Repository<Post>,
     @InjectRepository(User) private readonly UserRepo: Repository<User>,
+    @InjectRepository(Notification)
+    private readonly NotificationRepo: Repository<Notification>,
   ) {}
   async create(
     createCommentDto: CreateCommentDto,
@@ -24,10 +27,19 @@ export class CommentsService {
     const parentComment = createCommentDto.commentParentId
       ? await this.PostRepo.findOne({
           where: { id: createCommentDto.commentParentId },
+          relations: ['author'],
         })
       : null;
     const author = await this.UserRepo.findOne({ where: { id: authorId } });
-    console.log(parentComment);
+    if (createCommentDto.commentParentId) {
+      const newNotification = this.NotificationRepo.create({
+        body: 'Someone replied to your comment',
+        receiverId: parentComment.author,
+      });
+      await this.NotificationRepo.save(newNotification);
+      createCommentDto.body =
+        `$@{parentComment.author.username}` + createCommentDto.body;
+    }
     const newComment = this.CommentRepo.create({
       body: createCommentDto.body,
       username: author.username,
