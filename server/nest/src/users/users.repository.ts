@@ -36,4 +36,13 @@ export class UsersRepository {
     await this.UserRepo.delete({ id });
     return new HttpException('Deleted', HttpStatus.OK);
   }
+  async findById(id: number) {
+    const user = await this.UserRepo.findOne({ where: { id } });
+    if (!user)
+      throw new HttpException(
+        'No user with this username was found',
+        HttpStatus.NOT_FOUND,
+      );
+    return user;
+  }
 }

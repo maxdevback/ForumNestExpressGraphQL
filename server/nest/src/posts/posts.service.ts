@@ -1,63 +1,34 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { Repository } from 'typeorm';
-import { Post } from './entities/post.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/entities/user.entity';
+import { PostsRepository } from './posts.repository';
+import { UsersRepository } from 'src/users/users.repository';
 
 @Injectable()
 export class PostsService {
   constructor(
-    @InjectRepository(Post) private readonly PostRepo: Repository<Post>,
-    @InjectRepository(User) private readonly UserRepo: Repository<User>,
+    private readonly postsRepository: PostsRepository,
+    private readonly usersRepository: UsersRepository,
   ) {}
   async create(createPostDto: CreatePostDto, authorId: number) {
-    const newPost = this.PostRepo.create(createPostDto);
-    newPost.author = await this.UserRepo.findOneByOrFail({ id: authorId });
-    await this.PostRepo.save(newPost);
-    delete newPost.author.email;
-    delete newPost.author.password;
-    return newPost;
+    const user = await this.usersRepository.findById(authorId);
+    return await this.postsRepository.create(createPostDto, user);
   }
   async getByPostId(postId: number) {
-    const post = await this.PostRepo.findOneBy({ id: postId });
-    if (!post)
-      throw new HttpException('The post was not found', HttpStatus.NOT_FOUND);
-    return post;
+    return await this.postsRepository.getById(postId);
   }
   async getByPage(page: number) {
-    const pageSize = 25;
-    const skip = (page - 1) * pageSize;
-    return await this.PostRepo.find({ skip, take: pageSize });
+    return await this.postsRepository.getByPage(page);
   }
   async getMyByPage(page: number, authorId: number) {
-    const pageSize = 25;
-    const skip = (page - 1) * pageSize;
-    return await this.PostRepo.find({
-      where: { author: { id: authorId } },
-      skip,
-      take: pageSize,
-    });
+    return await this.postsRepository.getMyByPage(page, authorId);
   }
 
   async update(postId: number, data: UpdatePostDto, authorId: number) {
-    const post = await this.PostRepo.findOne({
-      where: { author: { id: authorId }, id: postId },
-    });
-    if (!post)
-      throw new HttpException('The post was not found', HttpStatus.NOT_FOUND);
-    console.log(post);
-    Object.assign(post, data);
-    return await this.PostRepo.save(post);
+    return await this.postsRepository.updateById(postId, authorId, data);
   }
   async getAuthorByPostId(postId: number) {
-    const post = await this.PostRepo.findOne({
-      where: { id: postId },
-      relations: ['author'],
-    });
-    if (!post)
-      throw new HttpException('The post was not found', HttpStatus.NOT_FOUND);
-    return { id: post.author.id, username: post.author.username };
+    const author = await this.postsRepository.getAuthorById(postId);
+    return { id: author.id, username: author.username };
   }
 }
