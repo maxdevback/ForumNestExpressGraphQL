@@ -1,52 +1,44 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 import { hash, compare } from 'bcrypt';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User) private readonly UserRepo: Repository<User>,
-  ) {}
-
+  constructor(private readonly usersRepository: UsersRepository) {}
   async register(data: RegisterUserDto) {
-    const userWithThatProps = await this.UserRepo.findOne({
-      where: [{ username: data.username }, { email: data.email }],
-    });
-    if (userWithThatProps)
+    const user = await this.usersRepository.findByUsernameOrEmail(
+      data.username,
+      data.password,
+      false,
+    );
+    if (user)
       throw new HttpException(
         'User with that email or username already exist',
         HttpStatus.CONFLICT,
       );
     const hashedPassword = await hash(data.password, 15);
-    const newUserEntity = this.UserRepo.create({
+    const newUser = await this.usersRepository.create({
       ...data,
       password: hashedPassword,
     });
-    const newUser = await this.UserRepo.save(newUserEntity);
     return { username: newUser.username, id: newUser.id };
   }
 
   async login(data: LoginUserDto) {
-    const userWithThatUsername = await this.UserRepo.findOne({
-      where: { username: data.username },
-    });
-    if (!userWithThatUsername)
+    const user = await this.usersRepository.findByUsernameOrEmail(
+      data.username,
+      '',
+    );
+    if (!(await compare(data.password, user.password)))
       throw new HttpException(
         'Incorrect username and password combination',
         HttpStatus.NOT_FOUND,
       );
-    if (!(await compare(data.password, userWithThatUsername.password)))
-      throw new HttpException(
-        'Incorrect username and password combination',
-        HttpStatus.NOT_FOUND,
-      );
-    return { username: data.username, id: userWithThatUsername.id };
+    return { username: data.username, id: user.id };
   }
   async delete(id: number) {
-    return await this.UserRepo.delete({ id });
+    return await this.usersRepository.deleteById(id);
   }
 }
