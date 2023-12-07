@@ -18,13 +18,16 @@ export class PostsRepository {
     delete newPost.author;
     return newPost;
   }
-  async getById(id: number) {
-    return await this.PostRepo.findOne({ where: { id } });
+  async getById(id: number, relations: string[] = []) {
+    const post = await this.PostRepo.findOne({ where: { id }, relations });
+    if (!post)
+      throw new HttpException('The post was not found', HttpStatus.NOT_FOUND);
+    return post;
   }
-  async getByPage(page: number) {
+  async getByPage(page: number, relations: string[] = []) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
-    return await this.PostRepo.find({ skip, take: pageSize });
+    return await this.PostRepo.find({ skip, take: pageSize, relations });
   }
   async getMyByPage(page: number, authorId: number) {
     const pageSize = 25;
@@ -52,5 +55,9 @@ export class PostsRepository {
     if (!post)
       throw new HttpException('The post was not found', HttpStatus.NOT_FOUND);
     return post.author;
+  }
+  async increaseRoughNumberOfLikes(post: Post) {
+    post.roughNumberOfLikes++;
+    return await this.PostRepo.save(post);
   }
 }

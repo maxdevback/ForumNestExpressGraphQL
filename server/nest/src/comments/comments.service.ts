@@ -1,77 +1,93 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Comment } from './entities/comment.entity';
-import { IsNull, Repository } from 'typeorm';
-import { Post } from 'src/posts/entities/post.entity';
-import { User } from 'src/users/entities/user.entity';
-import { Notification } from 'src/notifications/entities/notification.entity';
+import { NotificationsRepository } from 'src/notifications/notifications.repository';
+import { PostsRepository } from 'src/posts/posts.repository';
+import { UsersRepository } from 'src/users/users.repository';
+import { CommentsRepository } from './comments.repository';
 
 @Injectable()
 export class CommentsService {
   constructor(
-    @InjectRepository(Comment)
-    private readonly CommentRepo: Repository<Comment>,
-    @InjectRepository(Post) private readonly PostRepo: Repository<Post>,
-    @InjectRepository(User) private readonly UserRepo: Repository<User>,
-    @InjectRepository(Notification)
-    private readonly NotificationRepo: Repository<Notification>,
+    private readonly commentRepository: CommentsRepository,
+    private readonly postRepository: PostsRepository,
+    private readonly userRepository: UsersRepository,
+    private readonly notificationRepository: NotificationsRepository,
   ) {}
+
   async create(
     createCommentDto: CreateCommentDto,
     postId: number,
     authorId: number,
+    version: string = 'v1.1',
   ) {
-    const post = await this.PostRepo.findOne({ where: { id: postId } });
-    console.log(createCommentDto);
-    const parentComment = createCommentDto.commentParentId
-      ? await this.PostRepo.findOne({
-          where: { id: createCommentDto.commentParentId },
-          relations: ['author'],
-        })
-      : null;
-    const author = await this.UserRepo.findOne({ where: { id: authorId } });
-    if (createCommentDto.commentParentId) {
-      const newNotification = this.NotificationRepo.create({
-        body: 'Someone replied to your comment',
-        receiverId: parentComment.author,
-      });
-      await this.NotificationRepo.save(newNotification);
-      createCommentDto.body =
-        `$@{parentComment.author.username}` + createCommentDto.body;
+    if (version === 'v1.1') {
+      const post = await this.postRepository.getById(postId);
+      const parentComment = createCommentDto.commentParentId
+        ? await this.commentRepository.getById(
+            createCommentDto.commentParentId,
+            ['author'],
+          )
+        : null;
+      const author = await this.userRepository.findById(authorId);
+      if (createCommentDto.commentParentId) {
+        await this.notificationRepository.create(
+          'Someone replied to your comment',
+          parentComment.author,
+        );
+        createCommentDto.body =
+          `$@{parentComment.author.username}` + createCommentDto.body;
+      }
+      const newComment = await this.commentRepository.create(
+        createCommentDto.body,
+        author.username,
+        post,
+        author,
+        parentComment,
+      );
+      return { id: newComment.id };
+    } else if (version === 'v1.2') {
+    } else {
+      throw new HttpException(
+        'Invalid version specified',
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    const newComment = this.CommentRepo.create({
-      body: createCommentDto.body,
-      username: author.username,
-      post,
-      author,
-      parentCommentId: parentComment,
-    });
-    const savedComment = await this.CommentRepo.save(newComment);
-    return { id: savedComment.id };
   }
 
-  async getByPostIdAndPage(postId: number, page: number) {
-    const pageSize = 25;
-    const skip = (page - 1) * pageSize;
-    return await this.CommentRepo.find({
-      where: { post: { id: postId }, parentCommentId: IsNull() },
-      skip,
-      take: pageSize,
-    });
+  async getByPostIdAndPage(
+    postId: number,
+    page: number,
+    version: string = 'v1.1',
+  ) {
+    if (version === 'v1.1') {
+      return await this.commentRepository.getByPostIdAndPage(postId, page);
+    } else if (version === 'v1.2') {
+    } else {
+      throw new HttpException(
+        'Invalid version specified',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   async getReplaysByPostIdAndCommentIdAndPage(
     postId: number,
     commentId: number,
     page: number,
+    version: string = 'v1.1',
   ) {
-    const pageSize = 25;
-    const skip = (page - 1) * pageSize;
-    return await this.CommentRepo.find({
-      where: { post: { id: postId }, parentCommentId: { id: commentId } },
-      skip,
-      take: pageSize,
-    });
+    if (version === 'v1.1') {
+      return await this.commentRepository.getReplaysByPostIdAndCommentIdAndPage(
+        postId,
+        await this.commentRepository.getById(commentId),
+        page,
+      );
+    } else if (version === 'v1.2') {
+    } else {
+      throw new HttpException(
+        'Invalid version specified',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }

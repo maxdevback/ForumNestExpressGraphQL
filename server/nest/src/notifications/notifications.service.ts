@@ -1,23 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Notification } from './entities/notification.entity';
-import { Repository } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { NotificationsRepository } from './notifications.repository';
+import { UsersRepository } from 'src/users/users.repository';
+
 @Injectable()
 export class NotificationsService {
   constructor(
-    @InjectRepository(Notification)
-    private readonly NotificationRepo: Repository<Notification>,
-    @InjectRepository(User) private readonly UserRepo: Repository<User>,
+    private readonly notificationsRepository: NotificationsRepository,
+    private readonly userRepository: UsersRepository,
   ) {}
-  async getMyPage(page: number, receiverId: number) {
-    const pageSize = 25;
-    const skip = (page - 1) * pageSize;
-    const receiver = await this.UserRepo.findOne({ where: { id: receiverId } });
-    return await this.NotificationRepo.find({
-      where: { receiverId: receiver },
-      skip,
-      take: pageSize,
-    });
+
+  async getMyPage(page: number, receiverId: number, version: string = 'v1.1') {
+    if (version === 'v1.1') {
+      const receiver = await this.userRepository.findById(receiverId);
+      return await this.notificationsRepository.getMyByPage(page, receiver);
+    } else if (version === 'v1.2') {
+    } else {
+      throw new HttpException(
+        'Invalid version specified',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
