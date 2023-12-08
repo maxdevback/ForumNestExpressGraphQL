@@ -125,7 +125,8 @@ export class PostsRepositoryV1_2 {
     if (!user.length) {
       throw new HttpException('The post was not found', HttpStatus.NOT_FOUND);
     }
-
+    delete user[0].email;
+    delete user[0].password;
     return user[0];
   }
 
