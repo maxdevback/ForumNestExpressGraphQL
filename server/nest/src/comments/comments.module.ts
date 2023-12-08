@@ -8,7 +8,7 @@ import { Comment } from './entities/comment.entity';
 import { Notification } from 'src/notifications/entities/notification.entity';
 import { CommentsRepository } from './comments.repository';
 import { CommentsRepositoryV1_2 } from './comments.repository.v1.2';
-import { CommentsControllerV1_2 } from './comments.controller.v1.1';
+import { CommentsControllerV1_2 } from './comments.controller.v1.2';
 import { PostsRepository } from 'src/posts/posts.repository';
 import { PostsRepositoryV1_2 } from 'src/posts/posts.repository.v1.2';
 import { UsersRepository } from 'src/users/users.repository';
