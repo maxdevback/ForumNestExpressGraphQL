@@ -2,7 +2,7 @@ import express from "express";
 import { config } from "dotenv";
 config();
 import { connect } from "mongoose";
-import routes from "../routes";
+import routes from "./routes";
 import cookieSession from "cookie-session";
 import "../types";
 const App = express();
