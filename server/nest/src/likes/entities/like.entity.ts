@@ -11,9 +11,6 @@ export class Like {
   @Column()
   entityType: 'post' | 'comment';
 
-  @Column({ default: 0 })
-  roughNumberOfLikes: number;
-
   @ManyToOne(() => Comment, (comment) => comment.id)
   comment: Comment;
 

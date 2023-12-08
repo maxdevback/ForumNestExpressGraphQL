@@ -3,22 +3,21 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
-import { User } from 'src/users/entities/user.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 
 @Injectable()
-export class PostsRepository {
+export class PostsRepositoryV1_2 {
   constructor(
     @InjectRepository(Post) private readonly postRepository: Repository<Post>,
   ) {}
 
-  async create(data: CreatePostDto, author: User) {
+  async create(data: CreatePostDto, authorId: number) {
     const query = `
       INSERT INTO post(title, body, authorId)
       VALUES ($1, $2, $3)
       RETURNING *
     `;
-    const parameters = [data.title, data.body, author.id];
+    const parameters = [data.title, data.body, authorId];
     const post = await this.postRepository.query(query, parameters);
 
     return post[0];
@@ -90,16 +89,19 @@ export class PostsRepository {
       result = await this.postRepository.query(queryWithTitleAndBody, [
         newData.body,
         newData.title,
+        postId,
         newData.author,
       ]);
     } else if (newData.title) {
       result = await this.postRepository.query(queryWithTitle, [
         newData.title,
+        postId,
         authorId,
       ]);
     } else {
       result = await this.postRepository.query(queryWithBody, [
         newData.body,
+        postId,
         authorId,
       ]);
     }
@@ -124,17 +126,17 @@ export class PostsRepository {
       throw new HttpException('The post was not found', HttpStatus.NOT_FOUND);
     }
 
-    return this.postRepository.create(user[0]);
+    return user[0];
   }
 
-  async increaseRoughNumberOfLikes(post: Post) {
+  async increaseRoughNumberOfLikes(postId: number) {
     const query = `
       UPDATE post
       SET roughNumberOfLikes = roughNumberOfLikes + 1
       WHERE id = $1
       RETURNING *
     `;
-    const parameters = [post.id];
+    const parameters = [postId];
     const result = await this.postRepository.query(query, parameters);
 
     return result[0];

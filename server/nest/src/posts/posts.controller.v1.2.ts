@@ -31,8 +31,8 @@ export class PostsControllerV1_2 {
 
   @UseGuards(AuthGuard)
   @Get('/my/:page')
-  getMyByPage(@Param('page') page, id: number) {
-    return this.postsService.getMyByPage(page, id);
+  getMyByPage(@Param('page') page, @Session() session) {
+    return this.postsService.getMyByPage(page, session.user.id);
   }
 
   @Get('/author/:postId')

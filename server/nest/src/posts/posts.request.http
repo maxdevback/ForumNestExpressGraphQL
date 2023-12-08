@@ -1,4 +1,4 @@
-POST http://localhost:4000/posts/v1.1
+POST http://localhost:4000/posts/v1.2
 Content-Type: application/json
 
 {
@@ -8,14 +8,14 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:4000/posts/v1.1/id/2
+GET http://localhost:4000/posts/v1.2/id/3
 
 ###
-GET http://localhost:4000/posts/v1.1/1
+GET http://localhost:4000/posts/v1.2/1
 
 ###
 
-GET http://localhost:4000/posts/v1.1/my/1
+GET http://localhost:4000/posts/v1.2/my/1
 
 ###
 

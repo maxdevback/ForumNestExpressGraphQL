@@ -3,15 +3,15 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
-import { CreateCommentDto } from 'src/comments/dto/create-comment.dto';
 import { User } from 'src/users/entities/user.entity';
+import { CreatePostDto } from './dto/create-post.dto';
 
 @Injectable()
 export class PostsRepository {
   constructor(
     @InjectRepository(Post) private readonly PostRepo: Repository<Post>,
   ) {}
-  async create(data: CreateCommentDto, author: User) {
+  async create(data: CreatePostDto, author: User) {
     const newPost = this.PostRepo.create(data);
     newPost.author = author;
     await this.PostRepo.save(newPost);

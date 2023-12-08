@@ -3,35 +3,32 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Like } from './entities/like.entity';
-import { Post } from 'src/posts/entities/post.entity';
-import { User } from 'src/users/entities/user.entity';
-import { Comment } from 'src/comments/entities/comment.entity';
 
 @Injectable()
-export class LikesRepository {
+export class LikesRepositoryV1_2 {
   constructor(
     @InjectRepository(Like) private readonly likeRepository: Repository<Like>,
   ) {}
 
-  async createForPost(post: Post, author: User) {
+  async createForPost(postId: number, authorId: number) {
     const query = `
       INSERT INTO like(entityType, postId, authorId)
       VALUES ('post', $1, $2)
       RETURNING *
     `;
-    const parameters = [post.id, author.id];
+    const parameters = [postId, authorId];
     const result = await this.likeRepository.query(query, parameters);
 
     return result[0];
   }
 
-  async createForComment(comment: Comment, author: User) {
+  async createForComment(commentId: number, authorId: number) {
     const query = `
       INSERT INTO like(entityType, commentId, authorId)
       VALUES ('comment', $1, $2)
       RETURNING *
     `;
-    const parameters = [comment.id, author.id];
+    const parameters = [commentId, authorId];
     const result = await this.likeRepository.query(query, parameters);
 
     return result[0];

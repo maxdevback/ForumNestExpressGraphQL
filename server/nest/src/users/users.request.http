@@ -1,28 +1,28 @@
-POST http://localhost:4000/users/v1.1/register
+POST http://localhost:4000/users/v1.2/register
 Content-Type: application/json
 
 {
   "email": "ThisIsEmail3@email.com",
-  "username": "username3",
+  "username": "username6",
   "password": "password"
 }
 
 ###
 
-POST http://localhost:4000/users/v1.1/login
+POST http://localhost:4000/users/v1.2/login
 Content-Type: application/json
 
 {
-  "username": "username3",
+  "username": "username6",
   "password": "password"
 }
 
 ###
 
-GET http://localhost:4000/users/v1.1/my
+GET http://localhost:4000/users/v1.2/my
 
 ###
-DELETE http://localhost:4000/users/v1.1/logout 
+DELETE http://localhost:4000/users/v1.2/logout 
 ###
-DELETE http://localhost:4000/users/v1.1/delete
+DELETE http://localhost:4000/users/v1.2/delete
 

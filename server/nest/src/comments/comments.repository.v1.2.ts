@@ -7,7 +7,7 @@ import { Post } from 'src/posts/entities/post.entity';
 import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
-export class CommentsRepository {
+export class CommentsRepositoryV1_2 {
   constructor(
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
@@ -69,14 +69,14 @@ export class CommentsRepository {
     return comments;
   }
 
-  async increaseRoughNumberOfLikes(comment: Comment) {
+  async increaseRoughNumberOfLikes(commentId: number) {
     const query = `
       UPDATE comment
       SET roughNumberOfLikes = roughNumberOfLikes + 1
       WHERE id = $1
       RETURNING *
     `;
-    const parameters = [comment.id];
+    const parameters = [commentId];
     const result = await this.commentRepository.query(query, parameters);
 
     return result[0];

@@ -3,16 +3,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Notification } from './entities/notification.entity';
-import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
-export class NotificationsRepository {
+export class NotificationsRepositoryV1_2 {
   constructor(
     @InjectRepository(Notification)
     private readonly notificationRepository: Repository<Notification>,
   ) {}
 
-  async getMyByPage(page: number, receiver: User) {
+  async getMyByPage(page: number, receiverId: number) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
 
@@ -21,7 +20,7 @@ export class NotificationsRepository {
       WHERE receiverId = $1
       OFFSET $2 LIMIT $3
     `;
-    const parameters = [receiver.id, skip, pageSize];
+    const parameters = [receiverId, skip, pageSize];
     const notifications = await this.notificationRepository.query(
       query,
       parameters,
@@ -30,13 +29,13 @@ export class NotificationsRepository {
     return notifications;
   }
 
-  async create(body: string, receiver: User) {
+  async create(body: string, receiverId: number) {
     const query = `
       INSERT INTO notification(body, receiverId)
       VALUES ($1, $2)
       RETURNING *
     `;
-    const parameters = [body, receiver.id];
+    const parameters = [body, receiverId];
     const result = await this.notificationRepository.query(query, parameters);
 
     return result[0];
