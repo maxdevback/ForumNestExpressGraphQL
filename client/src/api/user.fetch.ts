@@ -4,21 +4,38 @@ import { FetchWrapClass } from "./fetch.wrap";
 class UserFetchClass extends FetchWrapClass {
   async register(username: string, email: string, password: string) {
     const response = await this._fetch(
-      `${config.backendApi}users/${config.versionPrefix}`,
+      `${config.backendApi}users/${config.versionPrefix}/register`,
       "POST",
       { username, email, password }
     );
-    if (response.status !== 200) return alert(response.body);
-    return response.body;
+    return response;
   }
   async login(username: string, password: string) {
     const response = await this._fetch(
-      `${config.backendApi}/users/${config.versionPrefix}`,
+      `${config.backendApi}users/${config.versionPrefix}/login`,
       "POST",
       { username, password }
     );
-    if (response.status !== 200) return alert(response.body);
-    return response.body;
+    return response;
+  }
+  async getMyData() {
+    const response = await this._fetch(
+      `${config.backendApi}users/${config.versionPrefix}/my`
+    );
+    return response;
+  }
+  async logout() {
+    const response = await this._fetch(
+      `${config.backendApi}users/${config.versionPrefix}/logout`,
+      "DELETE"
+    );
+    return response;
+  }
+  async getByPostId(id: number) {
+    const response = await this._fetch(
+      `${config.backendApi}posts/${config.versionPrefix}/author/${id}`
+    );
+    return response;
   }
 }
 

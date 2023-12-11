@@ -1,4 +1,4 @@
-import { Validate } from "../server/validate";
+import { Validate } from "../shared/validate";
 import { PostsRepository } from "../posts/posts.repository";
 import { CommentsRepository } from "../comments/comments.repository";
 import { LikesRepository } from "./likes.repository";

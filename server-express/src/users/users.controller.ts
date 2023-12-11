@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { UsersValidate } from "./users.validators";
 import "./users.service";
 import { UsersService } from "./users.service";
-import { Validate } from "../server/validate";
+import { Validate } from "../shared/validate";
 
 class UsersControllerClass {
   async login(req: Request, res: Response) {

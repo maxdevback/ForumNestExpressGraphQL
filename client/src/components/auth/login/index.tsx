@@ -36,7 +36,7 @@ export const LoginPage = () => {
         </Form.Group>
 
         <Button variant="primary" type="submit">
-          Register
+          Login
         </Button>
       </Form>
     </section>

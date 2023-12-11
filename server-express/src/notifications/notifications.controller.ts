@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Validate } from "../server/validate";
+import { Validate } from "../shared/validate";
 import { NotificationsService } from "./notifications.service";
 
 class NotificationsControllerClass {

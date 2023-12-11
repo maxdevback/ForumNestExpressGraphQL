@@ -1,6 +1,6 @@
 import { PostsRepository } from "./posts.repository";
 import { UsersRepository } from "../users/users.repository";
-import { Validate } from "../server/validate";
+import { Validate } from "../shared/validate";
 import { PostsRepository_v1_2 } from "./posts.repository.v1.2";
 import { UsersRepository_v1_2 } from "../users/users.repository.v1.2";
 

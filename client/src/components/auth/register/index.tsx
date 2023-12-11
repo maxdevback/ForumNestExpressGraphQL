@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, FormEvent } from "react";
+import React, { useEffect, useRef, FormEvent, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "./style.sass";
 import { UserFetch } from "../../../api/user.fetch";
+import AuthContext from "../../../contexts/auth.context";
 
 export const RegisterPage = () => {
   const formRef = useRef<null | HTMLFormElement>(null);
+  const authContext = useContext(AuthContext);
   useEffect(() => {
     console.log("form:", formRef);
   }, [formRef]);
@@ -24,7 +26,11 @@ export const RegisterPage = () => {
       data.email,
       data.password
     );
-    //TODO:
+    if (response.status.toString()[0] !== "2") {
+      alert(JSON.stringify(response.body.message));
+    } else {
+      authContext?.set(response.body);
+    }
   }
   return (
     <section className="RegisterPage">
@@ -43,7 +49,7 @@ export const RegisterPage = () => {
             We'll never share your email with anyone else.
           </Form.Text>
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Group className="mb-3" controlId="formBasicUsername">
           <Form.Label>Username</Form.Label>
           <Form.Control
             required

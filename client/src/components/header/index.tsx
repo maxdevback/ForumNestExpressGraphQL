@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
+import AuthContext from "../../contexts/auth.context";
+import { UserFetch } from "../../api/user.fetch";
 
 export const Header = () => {
+  const authContext = useContext(AuthContext);
+  const logout = async () => {
+    console.log(await UserFetch.logout());
+    authContext?.set(null);
+  };
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+        <Navbar.Brand href="#home">
+          <Link to={"/"}>Forum</Link>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -28,12 +37,22 @@ export const Header = () => {
             </NavDropdown>
           </Nav>
           <Nav className="me-right">
-            <Nav.Link>
-              <Link to={"/auth/login"}>Login</Link>
-            </Nav.Link>
-            <Nav.Link>
-              <Link to={"/auth/register"}>Register</Link>
-            </Nav.Link>
+            {authContext?.data ? (
+              <Nav.Link>
+                <Link to={"/"} onClick={logout}>
+                  Logout
+                </Link>
+              </Nav.Link>
+            ) : (
+              <>
+                <Nav.Link>
+                  <Link to={"/auth/login"}>Login</Link>
+                </Nav.Link>
+                <Nav.Link>
+                  <Link to={"/auth/register"}>Register</Link>
+                </Nav.Link>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

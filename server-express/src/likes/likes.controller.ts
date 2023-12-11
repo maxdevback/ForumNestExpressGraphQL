@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Validate } from "../server/validate";
+import { Validate } from "../shared/validate";
 import { LikesService } from "./likes.service";
 class LikesControllerClass {
   async likePost(req: Request, res: Response) {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Validate } from "../server/validate";
+import { Validate } from "../shared/validate";
 import { CommentsService } from "./comments.service";
 import { CommentsValidator } from "./comments.validator";
 
