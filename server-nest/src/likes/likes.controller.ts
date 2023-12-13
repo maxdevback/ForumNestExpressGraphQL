@@ -23,8 +23,9 @@ export class LikesController {
   isLikedEntity(
     @Param('entityId') entityId: number,
     @Param('type') type: 'post' | 'comment',
+    @Session() session,
   ) {
-    return this.likesService.isLikedEntity(entityId, type);
+    return this.likesService.isLikedEntity(entityId, type, session.user.id);
   }
   @UseGuards(AuthGuard)
   @Post('/comment/:commentId')

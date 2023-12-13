@@ -29,6 +29,7 @@ export class CommentsService {
     version: string = 'v1.1',
   ) {
     if (version === 'v1.1') {
+      console.log(createCommentDto, postId, authorId);
       const post = await this.postRepository.getById(postId);
       const parentComment = createCommentDto.commentParentId
         ? await this.commentRepository.getById(
@@ -36,6 +37,7 @@ export class CommentsService {
             ['author'],
           )
         : null;
+      console.log(parentComment);
       const author = await this.userRepository.findById(authorId);
       if (createCommentDto.commentParentId) {
         await this.notificationRepository.create(
@@ -43,7 +45,7 @@ export class CommentsService {
           parentComment.author,
         );
         createCommentDto.body =
-          `$@{parentComment.author.username}` + createCommentDto.body;
+          `${parentComment.author.username} ` + createCommentDto.body;
       }
       const newComment = await this.commentRepository.create(
         createCommentDto.body,
@@ -67,7 +69,7 @@ export class CommentsService {
           parentComment.author,
         );
         createCommentDto.body =
-          `$@{parentComment.author.username}` + createCommentDto.body;
+          `${parentComment.author.username} ` + createCommentDto.body;
       }
       const newComment = await this.commentRepositoryV1_2.create(
         createCommentDto.body,

@@ -21,8 +21,8 @@ export class CommentsRepositoryV1_2 {
     parentCommentId: Comment | null,
   ) {
     const query = `
-      INSERT INTO comment(body, username, postId, authorId, parentCommentId)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO comment(body, username, postId, authorId, commentParentId, hasReplays)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `;
     const parameters = [
@@ -31,6 +31,7 @@ export class CommentsRepositoryV1_2 {
       post.id,
       author.id,
       parentCommentId?.id || null,
+      !!parentCommentId,
     ];
     const result = await this.commentRepository.query(query, parameters);
 
@@ -60,7 +61,7 @@ export class CommentsRepositoryV1_2 {
     const skip = (page - 1) * pageSize;
     const query = `
       SELECT * FROM comment
-      WHERE postId = $1 AND parentCommentId IS NULL
+      WHERE postId = $1 AND commentParentId IS NULL
       OFFSET $2 LIMIT $3
     `;
     const parameters = [postId, skip, pageSize];
@@ -91,7 +92,7 @@ export class CommentsRepositoryV1_2 {
     const skip = (page - 1) * pageSize;
     const query = `
       SELECT * FROM comment
-      WHERE postId = $1 AND parentCommentId = $2
+      WHERE postId = $1 AND commentParentId = $2
       OFFSET $3 LIMIT $4
     `;
     const parameters = [postId, commentId.id, skip, pageSize];

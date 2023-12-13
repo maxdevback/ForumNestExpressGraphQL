@@ -24,6 +24,7 @@ export class CommentsController {
     @Param('postId') postId: number,
     @Session() session,
   ) {
+    console.log('session', session);
     return this.commentsService.create(
       createCommentDto,
       postId,

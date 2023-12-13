@@ -4,6 +4,7 @@ import { RegisterPage } from "./auth/register";
 import { Posts } from "./posts";
 import { PostPage } from "./posts/post.page";
 import { PostCreate } from "./posts/post.create";
+import { Notifications } from "./notifications";
 
 export const Navigation = () => {
   return (
@@ -14,6 +15,7 @@ export const Navigation = () => {
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/post/:id" element={<PostPage />} />
         <Route path="/post/create" element={<PostCreate />} />
+        <Route path="/notifications" element={<Notifications />} />
       </Routes>
     </>
   );

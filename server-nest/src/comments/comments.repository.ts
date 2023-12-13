@@ -17,15 +17,20 @@ export class CommentsRepository {
     username: string,
     post: Post,
     author: User,
-    parentCommentId: Comment | null,
+    commentParentId: Comment | null,
   ) {
     const comment = this.CommentRepo.create({
       body,
       username,
       post,
       author,
-      parentCommentId,
+      commentParentId,
     });
+    console.log('comment', comment);
+    if (commentParentId) {
+      commentParentId.hasReplays = true;
+      await this.CommentRepo.save(commentParentId);
+    }
     return await this.CommentRepo.save(comment);
   }
   async getById(id: number, relations: string[] = []) {
@@ -44,7 +49,7 @@ export class CommentsRepository {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
     return await this.CommentRepo.find({
-      where: { post: { id: postId }, parentCommentId: IsNull() },
+      where: { post: { id: postId }, commentParentId: IsNull() },
       skip,
       take: pageSize,
     });
@@ -61,7 +66,7 @@ export class CommentsRepository {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
     return await this.CommentRepo.find({
-      where: { post: { id: postId }, parentCommentId: commentId },
+      where: { post: { id: postId }, commentParentId: commentId },
       skip,
       take: pageSize,
     });

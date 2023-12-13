@@ -28,12 +28,19 @@ export class LikesService {
       const post = await this.postRepository.getById(postId, ['author']);
       if (post.author.id === authorId)
         throw new HttpException("You can't like yourself", HttpStatus.CONFLICT);
-
+      const author = await this.userRepository.findById(authorId);
+      const isLikedEntity = await this.likeRepository.isLikedEntityById(
+        'post',
+        postId,
+        author,
+      );
+      console.log(isLikedEntity);
+      if (isLikedEntity)
+        throw new HttpException('You already liked it', HttpStatus.CONFLICT);
       await this.notificationRepository.create(
         'Someone liked your post',
         post.author,
       );
-      const author = await this.userRepository.findById(authorId);
       await this.likeRepository.createForPost(post, author);
       await this.postRepository.increaseRoughNumberOfLikes(post);
       delete post.author;
@@ -70,7 +77,7 @@ export class LikesService {
         'Someone liked your comment',
         comment.author,
       );
-
+      delete comment.author;
       const author = await this.userRepository.findById(authorId);
       await this.likeRepository.createForComment(comment, author);
       return await this.commentRepository.increaseRoughNumberOfLikes(comment);
@@ -97,10 +104,16 @@ export class LikesService {
   async isLikedEntity(
     entityId: number,
     type: 'post' | 'comment',
+    authorId: number,
     version: string = 'v1.1',
   ) {
     if (version === 'v1.1') {
-      return !!(await this.likeRepository.isLikedEntityById(type, entityId));
+      const author = await this.userRepository.findById(authorId);
+      return !!(await this.likeRepository.isLikedEntityById(
+        type,
+        entityId,
+        author,
+      ));
     } else if (version === 'v1.2') {
       return !!(await this.likeRepositoryV1_2.isLikedEntityById(
         type,

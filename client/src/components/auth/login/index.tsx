@@ -1,10 +1,26 @@
-import React, { useRef, FormEvent } from "react";
+import React, { useRef, FormEvent, useContext } from "react";
 import { Button, Form } from "react-bootstrap";
 import "./style.sass";
+import { UserFetch } from "../../../api/user.fetch";
+import AuthContext from "../../../contexts/auth.context";
 
 export const LoginPage = () => {
   const formRef = useRef<null | HTMLFormElement>(null);
-  const login = (e: FormEvent<HTMLFormElement>) => {};
+  const authContext = useContext(AuthContext);
+  const login = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(formRef.current!);
+    const data = {
+      username: formData.get("username") as string,
+      password: formData.get("password") as string,
+    };
+    const response = await UserFetch.login(data.username, data.password);
+    if (response.status.toString()[0] !== "2") {
+      alert(JSON.stringify(response.body.message));
+    } else {
+      authContext?.set(response.body);
+    }
+  };
   return (
     <section className="LoginPage">
       <Form ref={formRef} onSubmit={(e) => login(e)} className="form">

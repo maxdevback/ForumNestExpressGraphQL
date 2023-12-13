@@ -28,13 +28,14 @@ export class LikesRepository {
     });
     return await this.LikeRepo.save(like);
   }
-  async isLikedEntityById(type: 'comment' | 'post', id: number) {
-    return !!(await this.LikeRepo.find({
+  async isLikedEntityById(type: 'comment' | 'post', id: number, author: User) {
+    return await this.LikeRepo.findOne({
       where: {
         entityType: type,
         comment: type === 'comment' ? { id } : null,
+        author: author,
         post: type === 'post' ? { id } : null,
       },
-    }));
+    });
   }
 }
