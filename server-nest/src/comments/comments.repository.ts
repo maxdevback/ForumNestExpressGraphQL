@@ -26,7 +26,6 @@ export class CommentsRepository {
       author,
       commentParentId,
     });
-    console.log('comment', comment);
     if (commentParentId) {
       commentParentId.hasReplays = true;
       await this.CommentRepo.save(commentParentId);

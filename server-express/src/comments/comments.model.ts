@@ -8,6 +8,7 @@ export interface IComment extends Document {
   postId: string;
   parentCommentId: string | null;
   roughNumberOfLikes: number;
+  hasReplays: boolean;
   authorId: string;
 }
 
@@ -20,6 +21,7 @@ export const commentSchema = new Schema<IComment>({
     ref: "comment",
     default: null,
   },
+  hasReplays: { type: Boolean, required: true, default: false },
   roughNumberOfLikes: { type: Number, required: true, default: 0 },
   authorId: { type: String, required: true, ref: "user" },
 });

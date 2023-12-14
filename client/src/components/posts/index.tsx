@@ -18,7 +18,6 @@ export const Posts = () => {
   const closeAuthorIdInput = (type: "all" | "my") => {
     if (isAuthorInputShowed) setIsAuthorInputShowed(false);
     setSearchType(type);
-    console.log(type);
   };
   const fetchPosts = async () => {
     switch (searchType) {

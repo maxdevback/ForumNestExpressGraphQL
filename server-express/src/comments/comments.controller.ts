@@ -13,7 +13,8 @@ class CommentsControllerClass {
           req.session.user!._id,
           req.params.postId,
           req.body.body,
-          "v1.1"
+          "v1.1",
+          req.body.commentParentId
         )
       );
     } catch (err: any) {
@@ -24,7 +25,6 @@ class CommentsControllerClass {
     try {
       CommentsValidator.validateCreateBody(req.body);
       Validate.validateAuth(req);
-      console.log(req.params);
       res.send(
         await CommentsService.create(
           req.session.user!._id,
@@ -44,7 +44,8 @@ class CommentsControllerClass {
       res.send(
         await CommentsService.getCommentsByPostIdAndPage(
           req.params.postId,
-          +req.params.page
+          +req.params.page,
+          null
         )
       );
     } catch (err: any) {
@@ -52,7 +53,6 @@ class CommentsControllerClass {
     }
   }
   async getReplaysByCommentIdAndPostIdAndPage(req: Request, res: Response) {
-    console.log(req.params);
     try {
       Validate.validatePage(+req.params.page);
       res.send(

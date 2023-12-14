@@ -4,13 +4,20 @@ config();
 import { connect } from "mongoose";
 import routes from "./routes";
 import cookieSession from "cookie-session";
+import cors from "cors";
 import "../types";
 const App = express();
 App.use(express.json());
 App.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+App.use(
   cookieSession({
     name: "session",
-    keys: ["secret"],
+    keys: [process.env.SESSION_SECRET!],
   })
 );
 App.use(routes);

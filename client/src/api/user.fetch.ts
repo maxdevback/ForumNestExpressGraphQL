@@ -31,9 +31,15 @@ class UserFetchClass extends FetchWrapClass {
     );
     return response;
   }
-  async getByPostId(id: number) {
+  async getByPostId(id: number | string) {
     const response = await this._fetch(
       `${config.backendApi}posts/${config.versionPrefix}/author/${id}`
+    );
+    return response;
+  }
+  async deleteAccount() {
+    const response = await this._fetch(
+      `${config.backendApi}users/${config.versionPrefix}`
     );
     return response;
   }

@@ -31,7 +31,6 @@ class UsersControllerClass {
       req.session.user = info;
       res.send(info);
     } catch (err: any) {
-      console.log(err);
       res.status(err.httpCode ?? 500).send(err.message);
     }
   }

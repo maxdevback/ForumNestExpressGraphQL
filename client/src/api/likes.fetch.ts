@@ -2,7 +2,7 @@ import { config } from "../config";
 import { FetchWrapClass } from "./fetch.wrap";
 
 class LikesFetchClass extends FetchWrapClass {
-  async likePost(postId: number) {
+  async likePost(postId: number | string) {
     const response = await this._fetch(
       `${config.backendApi}likes/${config.versionPrefix}/post/${postId}`,
       "POST"
@@ -16,13 +16,13 @@ class LikesFetchClass extends FetchWrapClass {
     );
     return response;
   }
-  async isLikedPost(postId: number) {
+  async isLikedPost(postId: number | string) {
     const response = await this._fetch(
       `${config.backendApi}likes/${config.versionPrefix}/isLiked/post/${postId}`
     );
     return response;
   }
-  async isLikedComment(commentId: number) {
+  async isLikedComment(commentId: number | string) {
     const response = await this._fetch(
       `${config.backendApi}likes/${config.versionPrefix}/isLiked/comment/${commentId}`
     );

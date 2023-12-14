@@ -31,7 +31,6 @@ export class UsersController {
   }
   @Get('/my')
   getMyData(@Session() session) {
-    console.log(session.user);
     return session.user;
   }
   @Delete('/logout')

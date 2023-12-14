@@ -14,7 +14,6 @@ class CommentsRepositoryClass {
   ) {
     const comment = new CommentModel({ authorId, postId, username, body });
     if (parentCommentId) {
-      console.log("parentComment in repo");
       const parentComment = await CommentModel.findById(parentCommentId);
       if (!parentComment) throw this.notFoundComment;
       comment.parentCommentId = parentCommentId;
@@ -22,10 +21,14 @@ class CommentsRepositoryClass {
     }
     return await comment.save();
   }
-  async getCommentsByPostIdAndPage(postId: string, page: number) {
+  async getCommentsByPostIdAndPage(
+    postId: string,
+    page: number,
+    parentCommentId: null | string = null
+  ) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
-    return await CommentModel.find({ parentCommentId: null, postId })
+    return await CommentModel.find({ parentCommentId, postId })
       .skip(skip)
       .limit(pageSize);
   }
@@ -48,6 +51,12 @@ class CommentsRepositoryClass {
   async increaseRoughNumberOfLikes(commentId: string) {
     const comment = await this.getByCommentId(commentId);
     comment.roughNumberOfLikes++;
+    return await comment.save();
+  }
+  async changeHasReplaysStatus(commentId: string) {
+    const comment = await this.getByCommentId(commentId);
+    if (comment.hasReplays) return await comment.save();
+    comment.hasReplays = true;
     return await comment.save();
   }
 }

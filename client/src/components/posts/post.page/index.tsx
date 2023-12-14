@@ -23,18 +23,17 @@ export const PostPage = () => {
       setPage(page - 1);
     }
   };
-  const getPost = async (postId: number) => {
+  const getPost = async (postId: number | string) => {
     const post = await PostFetch.getById(postId);
     setPost(post.body);
   };
-  const getAuthor = async (postId: number) => {
+  const getAuthor = async (postId: number | string) => {
     const author = await UserFetch.getByPostId(postId);
     setAuthor(author.body);
   };
   const getComments = async (page: number) => {
     if (!id) return;
-    const comment = await CommentsFetch.getCommentsByPostIdAndPage(+id, page);
-    console.log(comment);
+    const comment = await CommentsFetch.getCommentsByPostIdAndPage(id, page);
     setComments(
       comment.body.map((comment: any) => {
         return { comment: comment, replays: [] };
@@ -42,28 +41,36 @@ export const PostPage = () => {
     );
   };
   const likePost = async () => {
-    const response = await LikesFetch.likePost(+id!);
-    console.log(response);
+    const response = await LikesFetch.likePost(id!);
+    if (response.status - 200 > 99) {
+      alert(JSON.stringify(response.body));
+    } else {
+      setIsLiked(true);
+    }
   };
   const addComment = async () => {
     if (!addCommentBodyRef.current || !id) return;
     const body = addCommentBodyRef.current.value;
-    const resposne = await CommentsFetch.addComment(+id, body);
-    console.log(resposne);
+    const response = await CommentsFetch.addComment(id, body);
+    console.log(response);
+    if (response.status - 200 > 99) {
+      alert(JSON.stringify(response.body));
+    } else {
+      await getComments(page);
+    }
     addCommentBodyRef.current.value = "";
   };
 
   useEffect(() => {
     if (!id) return;
     (async () => {
-      await getAuthor(+id);
+      await getAuthor(id);
     })();
     (async () => {
-      await getPost(+id);
+      await getPost(id);
     })();
     (async () => {
-      const res = await LikesFetch.isLikedPost(+id);
-      console.log(res.body);
+      const res = await LikesFetch.isLikedPost(id);
       res.body ? setIsLiked(true) : setIsLiked(false);
     })();
   }, [id]);
@@ -98,12 +105,12 @@ export const PostPage = () => {
               if (!id) return <div></div>;
               return (
                 <Comment
-                  commentId={comment.id}
+                  commentId={comment.id ?? comment._id}
                   body={comment.body}
                   username={comment.username}
                   roughNumberOfLikes={comment.roughNumberOfLikes}
                   hasReplays={comment.hasReplays}
-                  postId={+id}
+                  postId={id}
                 />
               );
             })}

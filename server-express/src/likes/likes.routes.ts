@@ -2,7 +2,7 @@ import { Router } from "express";
 import { LikesController } from "./likes.controller";
 
 const router = Router();
-router.get("/isLiked/:entityId", (req, res) =>
+router.get("/isLiked/:type/:entityId", (req, res) =>
   LikesController.isLikedEntity(req, res)
 );
 router.post("/post/:postId", (req, res) => LikesController.likePost(req, res));

@@ -16,17 +16,14 @@ class PostsControllerClass {
         )
       );
     } catch (err: any) {
-      console.log(err);
       res.status(err.httpCode ?? 500).send(err.message);
     }
   }
   async getPostsByPage(req: Request, res: Response) {
     try {
       Validate.validatePage(+req.params.page);
-      //console.log(req.baseUrl.split("/")[2]);
       res.send(await PostsService.getByPage(+req.params.page));
     } catch (err: any) {
-      console.log(err);
       res.status(err.httpCode ?? 500).send(err.message);
     }
   }

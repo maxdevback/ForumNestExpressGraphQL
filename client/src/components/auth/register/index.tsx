@@ -8,9 +8,6 @@ import AuthContext from "../../../contexts/auth.context";
 export const RegisterPage = () => {
   const formRef = useRef<null | HTMLFormElement>(null);
   const authContext = useContext(AuthContext);
-  useEffect(() => {
-    console.log("form:", formRef);
-  }, [formRef]);
   async function register(e: FormEvent<HTMLFormElement>) {
     if (!formRef.current)
       return alert("Ops, something went wrong, please reload the page");

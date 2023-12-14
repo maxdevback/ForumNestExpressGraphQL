@@ -9,7 +9,11 @@ export const PostCreate = () => {
     const formData = new FormData(formRef.current!);
     const data: any = Object.fromEntries(formData);
     const newPost = await PostFetch.create(data.title, data.body);
-    console.log(newPost);
+    if (newPost.status - 200 > 99) {
+      alert(JSON.stringify(newPost.body));
+    } else {
+      alert("Success");
+    }
   };
   return (
     <section className="RegisterPage">
@@ -20,7 +24,6 @@ export const PostCreate = () => {
             required
             type="text"
             name="title"
-            //TODO: Change length
             minLength={40}
             maxLength={200}
             placeholder="Enter title"
@@ -34,7 +37,6 @@ export const PostCreate = () => {
             required
             type="text"
             name="body"
-            //TODO: Change length
             minLength={200}
             maxLength={10000}
             placeholder="Enter body"

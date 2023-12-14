@@ -38,7 +38,6 @@ class UsersRepositoryClass {
     const user = await UserModel.aggregate([
       { $match: { username: username } },
     ]);
-    console.log(user);
     if (!user || user.length === 0) {
       throw {
         httpCode: 404,

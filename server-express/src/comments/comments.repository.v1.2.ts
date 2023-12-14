@@ -32,12 +32,16 @@ class CommentsRepositoryClass {
     ]);
   }
 
-  async getCommentsByPostIdAndPage(postId: string, page: number) {
+  async getCommentsByPostIdAndPage(
+    postId: string,
+    page: number,
+    parentCommentId: string | null = null
+  ) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
 
     return await CommentModel.aggregate([
-      { $match: { parentCommentId: null, postId: postId } },
+      { $match: { parentCommentId, postId: postId } },
       { $skip: skip },
       { $limit: pageSize },
     ]);

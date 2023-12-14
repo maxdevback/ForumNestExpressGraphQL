@@ -34,7 +34,6 @@ export class LikesService {
         postId,
         author,
       );
-      console.log(isLikedEntity);
       if (isLikedEntity)
         throw new HttpException('You already liked it', HttpStatus.CONFLICT);
       await this.notificationRepository.create(

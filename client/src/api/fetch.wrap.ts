@@ -4,7 +4,6 @@ export class FetchWrapClass {
     method: "GET" | "POST" | "DELETE" = "GET",
     body?: any
   ) {
-    console.log(url);
     const response = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
@@ -13,13 +12,12 @@ export class FetchWrapClass {
       credentials: "include",
       body: JSON.stringify(body),
     });
-    console.log(response);
+    let responseCopy = response.clone();
     let returnBody;
     try {
       returnBody = await response.json();
     } catch (err) {
-      console.log("problem here");
-      returnBody = null;
+      returnBody = await responseCopy.text();
     }
     return {
       status: response.status,

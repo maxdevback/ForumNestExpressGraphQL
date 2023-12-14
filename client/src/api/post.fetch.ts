@@ -8,7 +8,7 @@ class PostFetchClass extends FetchWrapClass {
     );
     return response;
   }
-  async getById(id: number) {
+  async getById(id: number | string) {
     const response = await this._fetch(
       `${config.backendApi}posts/${config.versionPrefix}/id/${id}`
     );

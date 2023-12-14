@@ -29,7 +29,6 @@ export class CommentsService {
     version: string = 'v1.1',
   ) {
     if (version === 'v1.1') {
-      console.log(createCommentDto, postId, authorId);
       const post = await this.postRepository.getById(postId);
       const parentComment = createCommentDto.commentParentId
         ? await this.commentRepository.getById(
@@ -37,7 +36,6 @@ export class CommentsService {
             ['author'],
           )
         : null;
-      console.log(parentComment);
       const author = await this.userRepository.findById(authorId);
       if (createCommentDto.commentParentId) {
         await this.notificationRepository.create(

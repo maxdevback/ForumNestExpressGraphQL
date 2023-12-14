@@ -12,7 +12,7 @@ const Comment = ({
   hasReplays,
 }: {
   username: string;
-  postId: number;
+  postId: string;
   commentId: number;
   roughNumberOfLikes: number;
   body: string;
@@ -28,7 +28,12 @@ const Comment = ({
       replayInputRef.current?.value!,
       commentId
     );
-    console.log(response);
+    if (response.status - 200 > 99) {
+      alert(JSON.stringify(response.body));
+    } else {
+      getReplays();
+    }
+    setIsReplayFieldActive(false);
   };
   const getReplays = async () => {
     const response = await CommentsFetch.getReplaysByCommentId(
@@ -36,12 +41,19 @@ const Comment = ({
       commentId,
       1
     );
-    console.log(response);
-    setReplays(response.body);
+    if (response.status - 200 > 99) {
+      alert(JSON.stringify(response.body));
+    } else {
+      setReplays(response.body);
+    }
   };
   const likeComment = async () => {
     const response = await LikesFetch.likeComment(commentId);
-    console.log(response);
+    if (response.status - 200 > 99) {
+      alert(JSON.stringify(response.body ?? response));
+    } else {
+      setIsLiked(true);
+    }
   };
   useEffect(() => {
     (async () => {
@@ -99,7 +111,7 @@ const Comment = ({
                     <Comment
                       body={replay.body}
                       postId={postId}
-                      commentId={replay.id}
+                      commentId={replay.id ?? replay._id}
                       roughNumberOfLikes={replay.roughNumberOfLikes}
                       username={replay.username}
                       hasReplays={replay.hasReplays}

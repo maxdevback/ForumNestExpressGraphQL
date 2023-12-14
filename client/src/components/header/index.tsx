@@ -10,7 +10,7 @@ import { UserFetch } from "../../api/user.fetch";
 export const Header = () => {
   const authContext = useContext(AuthContext);
   const logout = async () => {
-    console.log(await UserFetch.logout());
+    await UserFetch.logout();
     authContext?.set(null);
   };
   return (
@@ -37,6 +37,9 @@ export const Header = () => {
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.3">
                   <Link to={"/notifications"}>Notifications</Link>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                  <Link to={"/post/create"}>Create post</Link>
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
               </NavDropdown>
