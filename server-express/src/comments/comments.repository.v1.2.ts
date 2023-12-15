@@ -13,7 +13,7 @@ class CommentsRepositoryClass {
     body: string,
     parentCommentId: string | null = null
   ) {
-    await CommentModel.aggregate([
+    const res = await CommentModel.aggregate([
       {
         $addFields: {
           authorId: authorId,
@@ -30,6 +30,7 @@ class CommentsRepositoryClass {
         },
       },
     ]);
+    return res;
   }
 
   async getCommentsByPostIdAndPage(
@@ -63,14 +64,16 @@ class CommentsRepositoryClass {
   }
 
   async getByCommentId(commentId: string) {
-    return await CommentModel.aggregate([{ $match: { _id: commentId } }]);
+    const res = await CommentModel.aggregate([{ $match: { _id: commentId } }]);
+    return res[0];
   }
 
   async increaseRoughNumberOfLikes(commentId: string) {
-    return await CommentModel.aggregate([
+    const res = await CommentModel.aggregate([
       { $match: { _id: commentId } },
       { $set: { roughNumberOfLikes: { $add: ["$roughNumberOfLikes", 1] } } },
     ]);
+    return res[0];
   }
 }
 
