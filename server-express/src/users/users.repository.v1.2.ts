@@ -4,10 +4,12 @@ class UsersRepositoryClass {
   async register(username: string, email: string, password: string) {
     const userWithThatUsername = await UserModel.aggregate([
       { $match: { username: username } },
+      { $project: { _id: 1 } },
     ]);
 
     const userWithThatEmail = await UserModel.aggregate([
       { $match: { email: email } },
+      { $project: { _id: 1 } },
     ]);
 
     if (
@@ -20,18 +22,22 @@ class UsersRepositoryClass {
       };
     }
 
-    const user = await UserModel.aggregate([
+    await UserModel.aggregate([
       { $addFields: { username: username, email: email, password: password } },
       {
         $merge: {
           into: "users",
-          whenMatched: "merge",
           whenNotMatched: "insert",
         },
       },
+    ]);
+
+    const userAggregateResult = await UserModel.aggregate([
+      { $match: {} },
       { $project: { _id: 1 } },
     ]);
-    return user[0];
+
+    return userAggregateResult[0];
   }
 
   async getUserByUsername(username: string) {
@@ -49,7 +55,10 @@ class UsersRepositoryClass {
   }
 
   async getUserById(id: string) {
-    const user = await UserModel.aggregate([{ $match: { _id: id } }]);
+    const user = await UserModel.aggregate([
+      { $match: { id: id } },
+      { $project: { id: 1 } },
+    ]);
 
     if (!user || user.length === 0) {
       throw {
@@ -63,15 +72,10 @@ class UsersRepositoryClass {
 
   async deleteAccount(id: string) {
     return await UserModel.aggregate([
-      { $match: { _id: id } },
+      { $match: { id: id } },
       {
-        $merge: {
-          into: "deletedUsers",
-          whenMatched: "merge",
-          whenNotMatched: "insert",
-        },
+        $out: "deletedUsers",
       },
-      { $project: {} },
     ]);
   }
 }

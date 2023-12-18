@@ -1,9 +1,13 @@
 import { Router } from "express";
 import { NotificationsController } from "./notifications.controller";
+import { Validate } from "../shared/validate";
 
 const router = Router();
-router.get("/:page", (req, res) =>
-  NotificationsController.getNotificationsByReceiverIdAndPage(req, res)
+router.get(
+  "/:page",
+  Validate.validateAuth,
+  Validate.validatePage,
+  NotificationsController.getNotificationsByReceiverIdAndPage
 );
 
 const notificationsRouter = Router();

@@ -1,13 +1,18 @@
 import { Router } from "express";
 import { LikesController } from "./likes.controller";
+import { Validate } from "../shared/validate";
 
 const router = Router();
-router.get("/isLiked/:type/:entityId", (req, res) =>
-  LikesController.isLikedEntity(req, res)
+router.get(
+  "/isLiked/:type/:entityId",
+  Validate.validateAuth,
+  LikesController.isLikedEntity
 );
-router.post("/post/:postId", (req, res) => LikesController.likePost(req, res));
-router.post("/comment/:commentId", (req, res) =>
-  LikesController.likeComment(req, res)
+router.post("/post/:postId", Validate.validateAuth, LikesController.likePost);
+router.post(
+  "/comment/:commentId",
+  Validate.validateAuth,
+  LikesController.likeComment
 );
 
 const likesRouter = Router();

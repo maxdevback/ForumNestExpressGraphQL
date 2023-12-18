@@ -1,21 +1,33 @@
 import { Router } from "express";
 import { PostsController } from "./posts.controller";
+import { Validate } from "../shared/validate";
+import { PostsMiddlewares } from "./posts.middlewares";
 
 const router = Router();
-router.post("/", (req, res) => PostsController.create(req, res));
-router.get("/id/:postId", (req, res) => PostsController.getByPostId(req, res));
-router.get("/my/:page", (req, res) =>
-  PostsController.getMyPostsByPage(req, res)
+router.get("/id/:postId", PostsController.getByPostId);
+router.get(
+  "/my/:page",
+  Validate.validateAuth,
+  Validate.validatePage,
+  PostsController.getMyPostsByPage
 );
-router.get("/author/:postId", (req, res) =>
-  PostsController.getAuthorByPostId(req, res)
+router.get("/author/:postId", PostsController.getAuthorByPostId);
+router.get(
+  "/:authorId/:page",
+  Validate.validatePage,
+  PostsController.getPostsByAuthorAndPage
 );
-router.get("/:authorId/:page", (req, res) =>
-  PostsController.getPostsByAuthorAndPage(req, res)
+router.get("/:page", Validate.validatePage, PostsController.getPostsByPage);
+router.post(
+  "/",
+  Validate.validateAuth,
+  PostsMiddlewares.createValidationBody,
+  PostsController.create
 );
-router.get("/:page", (req, res) => PostsController.getPostsByPage(req, res));
-router.patch("/:postId", (req, res) =>
-  PostsController.updatePostByPostId(req, res)
+router.patch(
+  "/:postId",
+  Validate.validateAuth,
+  PostsController.updatePostByPostId
 );
 
 const postsRouter = Router();

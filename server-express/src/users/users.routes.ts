@@ -2,10 +2,10 @@ import { Router } from "express";
 import { UsersController } from "./users.controller";
 
 const router = Router();
+router.get("/my", UsersController.getMyInfo);
 router.post("/register", UsersController.register);
 router.post("/login", UsersController.login);
 router.delete("/logout", UsersController.logout);
-router.get("/my", UsersController.getMyInfo);
 router.delete("/delete", UsersController.deleteAccount);
 const usersRouter = Router();
 

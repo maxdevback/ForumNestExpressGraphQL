@@ -6,8 +6,6 @@ import { CommentsValidator } from "./comments.validator";
 class CommentsControllerClass {
   async create(req: Request, res: Response) {
     try {
-      CommentsValidator.validateCreateBody(req.body);
-      Validate.validateAuth(req);
       res.send(
         await CommentsService.create(
           req.session.user!._id,
@@ -23,8 +21,6 @@ class CommentsControllerClass {
   }
   async createReplay(req: Request, res: Response) {
     try {
-      CommentsValidator.validateCreateBody(req.body);
-      Validate.validateAuth(req);
       res.send(
         await CommentsService.create(
           req.session.user!._id,
@@ -40,7 +36,6 @@ class CommentsControllerClass {
   }
   async getCommentsByPostIdAndPage(req: Request, res: Response) {
     try {
-      Validate.validatePage(+req.params.page);
       res.send(
         await CommentsService.getCommentsByPostIdAndPage(
           req.params.postId,
@@ -54,7 +49,6 @@ class CommentsControllerClass {
   }
   async getReplaysByCommentIdAndPostIdAndPage(req: Request, res: Response) {
     try {
-      Validate.validatePage(+req.params.page);
       res.send(
         await CommentsService.getReplaysByCommentIdAndPostIdAndPage(
           req.params.commentId,
