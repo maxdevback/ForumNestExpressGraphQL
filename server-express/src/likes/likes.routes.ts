@@ -1,17 +1,21 @@
 import { Router } from "express";
 import { LikesController } from "./likes.controller";
-import { Validate } from "../shared/validate";
+import { SharedMiddleWare } from "../shared/shared.middlewares";
 
 const router = Router();
 router.get(
   "/isLiked/:type/:entityId",
-  Validate.validateAuth,
+  SharedMiddleWare.validateAuth,
   LikesController.isLikedEntity
 );
-router.post("/post/:postId", Validate.validateAuth, LikesController.likePost);
+router.post(
+  "/post/:postId",
+  SharedMiddleWare.validateAuth,
+  LikesController.likePost
+);
 router.post(
   "/comment/:commentId",
-  Validate.validateAuth,
+  SharedMiddleWare.validateAuth,
   LikesController.likeComment
 );
 

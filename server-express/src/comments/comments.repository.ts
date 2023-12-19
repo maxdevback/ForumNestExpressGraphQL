@@ -1,22 +1,20 @@
 import { CommentModel } from "./comments.model";
+import { CommentsExceptions } from "./comments.exceptions";
+import { ICommentCreate } from "./comments.interfaces";
 
 class CommentsRepositoryClass {
-  notFoundComment = {
-    httpCode: 404,
-    message: "Not found comment",
-  };
-  async create(
-    authorId: string,
-    postId: string,
-    username: string,
-    body: string,
-    parentCommentId?: string
-  ) {
-    const comment = new CommentModel({ authorId, postId, username, body });
-    if (parentCommentId) {
-      const parentComment = await CommentModel.findById(parentCommentId);
-      if (!parentComment) throw this.notFoundComment;
-      comment.parentCommentId = parentCommentId;
+  async create(data: ICommentCreate) {
+    const comment = new CommentModel({
+      authorId: data.authorId,
+      postId: data.postId,
+      username: data.username,
+      body: data.body,
+    });
+    if (data.parentCommentId) {
+      const parentComment = await CommentModel.findById(data.parentCommentId);
+      if (!parentComment)
+        throw CommentsExceptions.notFound("Not Found comment");
+      comment.parentCommentId = data.parentCommentId;
       comment.body = `${parentComment.username} ${comment.body}`;
     }
     return await comment.save();
@@ -45,7 +43,7 @@ class CommentsRepositoryClass {
   }
   async getByCommentId(commentId: string) {
     const comment = await CommentModel.findById(commentId);
-    if (!comment) throw this.notFoundComment;
+    if (!comment) throw CommentsExceptions.notFound("Not Found comment");
     return comment;
   }
   async increaseRoughNumberOfLikes(commentId: string) {

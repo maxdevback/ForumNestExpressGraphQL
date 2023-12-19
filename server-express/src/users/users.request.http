@@ -1,21 +1,21 @@
-POST http://localhost:5000/users/v1.2/login 
+POST http://localhost:5000/users/v1.1/login 
 Content-Type: application/json
 
 {
-  "username": "usernameFromVsCode",
-  "password": "password"
+  "username": "naddrfdom2VsCode",
+  "password": "password2"
 }
 ###
-POST http://localhost:5000/users/v1.2/register
+POST http://localhost:5000/users/v1.1/register
 Content-Type: application/json 
 
 {
-  "email": "emailfromvscode@email.com",
-  "username": "usernameFromVsCode",
-  "password": "password"
+  "email": "adomscgfdgdfhe@eail.com",
+  "username": "afdofdgd2VsCod",
+  "password": "password2"
 }
 ###
-GET http://localhost:5000/users/v1.1/my
+GET http://localhost:5000/users/v1.2/my
 ###
 DELETE  http://localhost:5000/users/v1.1/logout
 ###

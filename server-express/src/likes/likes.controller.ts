@@ -9,7 +9,8 @@ class LikesControllerClass {
         await LikesService.likeEntity(
           req.params.postId,
           "post",
-          req.session.user!._id
+          req.session.user!._id,
+          req.baseUrl.split("/")[2] as "v1.1" | "v1.2"
         )
       );
     } catch (err: any) {
@@ -23,7 +24,8 @@ class LikesControllerClass {
         await LikesService.likeEntity(
           req.params.commentId,
           "comment",
-          req.session.user!._id
+          req.session.user!._id,
+          req.baseUrl.split("/")[2] as "v1.1" | "v1.2"
         )
       );
     } catch (err: any) {
@@ -36,7 +38,8 @@ class LikesControllerClass {
       res.send(
         await LikesService.isLikedEntity(
           req.params.entityId,
-          req.session.user!._id
+          req.session.user!._id,
+          req.baseUrl.split("/")[2] as "v1.1" | "v1.2"
         )
       );
     } catch (err: any) {

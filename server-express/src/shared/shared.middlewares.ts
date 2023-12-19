@@ -4,6 +4,7 @@ import { Validate } from "./validate";
 class SharedMiddleWareClass {
   validateAuth(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log("hello");
       Validate.validateAuth(req);
       next();
     } catch (err) {

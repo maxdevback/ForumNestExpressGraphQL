@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { NotificationsController } from "./notifications.controller";
-import { Validate } from "../shared/validate";
+import { SharedMiddleWare } from "../shared/shared.middlewares";
 
 const router = Router();
 router.get(
   "/:page",
-  Validate.validateAuth,
-  Validate.validatePage,
+  SharedMiddleWare.validateAuth,
+  SharedMiddleWare.validatePage,
   NotificationsController.getNotificationsByReceiverIdAndPage
 );
 

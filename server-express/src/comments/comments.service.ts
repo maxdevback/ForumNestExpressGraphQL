@@ -6,64 +6,59 @@ import { NotificationsService } from "../notifications/notifications.service";
 import { UsersRepository_v1_2 } from "../users/users.repository.v1.2";
 import { PostsRepository_v1_2 } from "../posts/posts.repository.v1.2";
 import { CommentsRepository_v1_2 } from "./comments.repository.v1.2";
+import { ICommentCreate } from "./comments.interfaces";
 
 class CommentsServiceClass {
-  async create(
-    authorId: string,
-    postId: string,
-    body: string,
-    v: "v1.1" | "v1.2" = "v1.1",
-    parentCommentId?: string
-  ) {
-    Validate.validateObjectId(authorId);
-    Validate.validateObjectId(postId);
-    if (parentCommentId) Validate.validateObjectId(parentCommentId);
-    if (v === "v1.1") {
-      const author = await UsersRepository.getUserById(authorId);
-      const post = await PostsRepository.getByPostId(postId);
-      const comment = await CommentsRepository.create(
-        author.id,
-        postId,
-        author.username,
-        body,
-        parentCommentId
-      );
+  async create(data: ICommentCreate, v: "v1.1" | "v1.2" = "v1.1") {
+    Validate.validateObjectId(data.authorId);
+    Validate.validateObjectId(data.postId);
+    if (data.parentCommentId) Validate.validateObjectId(data.parentCommentId);
+    if (v === "v1.2") {
+      const author = await UsersRepository.getUserById(data.authorId);
+      const post = await PostsRepository.getByPostId(data.postId);
+      const comment = await CommentsRepository.create({
+        authorId: author.id,
+        postId: data.postId,
+        username: author.username,
+        body: data.body,
+        parentCommentId: data.parentCommentId,
+      });
       if (!post.hasComments)
-        await PostsRepository.changeCommentsStatus(true, postId);
-      if (parentCommentId) {
-        Validate.validateObjectId(parentCommentId);
+        await PostsRepository.changeCommentsStatus(true, data.postId);
+      if (data.parentCommentId) {
+        Validate.validateObjectId(data.parentCommentId);
         const parentComment = await CommentsRepository.getByCommentId(
-          parentCommentId
+          data.parentCommentId
         );
         await NotificationsService.sendNotification(
           "Someone replied to your comment",
           parentComment.authorId
         );
-        await CommentsRepository.changeHasReplaysStatus(parentCommentId);
+        await CommentsRepository.changeHasReplaysStatus(data.parentCommentId);
       }
       return comment;
     } else {
-      const author = await UsersRepository_v1_2.getUserById(authorId);
-      const post = await PostsRepository_v1_2.getByPostId(postId);
-      const comment = await CommentsRepository_v1_2.create(
-        author.id,
-        postId,
-        author.username,
-        body,
-        parentCommentId
-      );
+      const author = await UsersRepository_v1_2.getUserById(data.authorId);
+      const post = await PostsRepository_v1_2.getByPostId(data.postId);
+      const comment = await CommentsRepository_v1_2.create({
+        authorId: author.id,
+        postId: data.postId,
+        username: author.username,
+        body: data.body,
+        parentCommentId: data.parentCommentId,
+      });
       if (!post.hasComments)
-        await PostsRepository_v1_2.changeCommentsStatus(true, postId);
-      if (parentCommentId) {
-        Validate.validateObjectId(parentCommentId);
+        await PostsRepository_v1_2.changeCommentsStatus(true, data.postId);
+      if (data.parentCommentId) {
+        Validate.validateObjectId(data.parentCommentId);
         const parentComment = await CommentsRepository_v1_2.getByCommentId(
-          parentCommentId
+          data.parentCommentId
         );
         await NotificationsService.sendNotification(
           "Someone replied to your comment",
           parentComment[0].authorId
         );
-        CommentsRepository.changeHasReplaysStatus(parentCommentId);
+        CommentsRepository.changeHasReplaysStatus(data.parentCommentId);
       }
       return comment;
     }

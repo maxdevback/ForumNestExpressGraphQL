@@ -1,29 +1,29 @@
 import { Router } from "express";
 import { CommentsController } from "./comments.controller";
 import { CommentsMiddleWares } from "./comments.middleware";
-import { Validate } from "../shared/validate";
+import { SharedMiddleWare } from "../shared/shared.middlewares";
 
 const router = Router();
 router.get(
   "/:postId/:page",
-  Validate.validatePage,
+  SharedMiddleWare.validatePage,
   CommentsController.getCommentsByPostIdAndPage
 );
 router.get(
   "/:postId/:commentId/:page",
-  Validate.validatePage,
+  SharedMiddleWare.validatePage,
   CommentsController.getReplaysByCommentIdAndPostIdAndPage
 );
 router.post(
   "/:postId",
   CommentsMiddleWares.validateCreationBody,
-  Validate.validateAuth,
+  SharedMiddleWare.validateAuth,
   CommentsController.create
 );
 router.post(
   "/:postId/:parentCommentId",
   CommentsMiddleWares.validateCreationBody,
-  Validate.validateAuth,
+  SharedMiddleWare.validateAuth,
   CommentsController.createReplay
 );
 const commentsRouter = Router();

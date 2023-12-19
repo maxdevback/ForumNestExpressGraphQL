@@ -6,15 +6,8 @@ import { NotificationsService } from "../notifications/notifications.service";
 import { PostsRepository_v1_2 } from "../posts/posts.repository.v1.2";
 import { CommentsRepository_v1_2 } from "../comments/comments.repository.v1.2";
 import { LikesRepository_v1_2 } from "./likes.repository.v1.2";
+import { LikesExceptions } from "./likes.exceptions";
 class LikesServiceClass {
-  selfLike = {
-    httpCode: 400,
-    message: "You can't like yourself",
-  };
-  alreadyLiked = {
-    httpCode: 409,
-    message: "You've already liked it",
-  };
   async likeEntity(
     entityId: string,
     type: "post" | "comment",
@@ -29,9 +22,9 @@ class LikesServiceClass {
       } else {
         entity = await CommentsRepository.getByCommentId(entityId);
       }
-      if (entity.authorId === authorId) throw this.selfLike;
+      if (entity.authorId === authorId) throw LikesExceptions.selfLike();
       if (await LikesRepository.checkIsAlreadyLiked(authorId, entityId))
-        throw this.alreadyLiked;
+        throw LikesExceptions.alreadyLiked();
       const newLike = await LikesRepository.create(entityId, authorId);
       if (type === "post") {
         await PostsRepository.increaseRoughNumberOfLikes(entityId);
@@ -54,9 +47,9 @@ class LikesServiceClass {
       } else {
         entity = await CommentsRepository_v1_2.getByCommentId(entityId);
       }
-      if (entity.authorId === authorId) throw this.selfLike;
+      if (entity.authorId === authorId) throw LikesExceptions.selfLike();
       if (await LikesRepository_v1_2.checkIsAlreadyLiked(authorId, entityId))
-        throw this.alreadyLiked;
+        throw LikesExceptions.alreadyLiked();
       const newLike = await LikesRepository_v1_2.create(entityId, authorId);
       if (type === "post") {
         await PostsRepository_v1_2.increaseRoughNumberOfLikes(entityId);
