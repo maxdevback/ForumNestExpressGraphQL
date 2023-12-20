@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { UsersValidate } from "./users.validators";
+import { AuthValidate } from "./auth.validate";
 
-class UsersMiddlewaresClass {
+class AuthMiddlewaresClass {
   validateRegisterBody(req: Request, res: Response, next: NextFunction) {
     try {
-      UsersValidate.validateRegisterBody(req.body);
+      AuthValidate.validateRegisterBody(req.body);
       next();
     } catch (err) {
       res.send(err);
@@ -12,7 +12,7 @@ class UsersMiddlewaresClass {
   }
   validateLoginBody(req: Request, res: Response, next: NextFunction) {
     try {
-      UsersValidate.validateLoginBody(req.body);
+      AuthValidate.validateLoginBody(req.body);
       next();
     } catch (err) {
       res.send(err);
@@ -20,4 +20,4 @@ class UsersMiddlewaresClass {
   }
 }
 
-export const UsersMiddlewares = new UsersMiddlewaresClass();
+export const AuthMiddlewares = new AuthMiddlewaresClass();

@@ -2,7 +2,7 @@ import { PostsRepository } from "./posts.repository";
 import { UsersRepository } from "../users/users.repository";
 import { Validate } from "../shared/validate";
 import { PostsRepository_v1_2 } from "./posts.repository.v1.2";
-import { UsersRepository_v1_2 } from "../users/users.repository.v1.2";
+import { UsersExceptions } from "../users/users.exceptions";
 
 class PostsServiceClass {
   async create(
@@ -40,11 +40,13 @@ class PostsServiceClass {
     Validate.validateObjectId(postId);
     if (v === "v1.1") {
       const post = await PostsRepository.getByPostId(postId);
-      const user = await UsersRepository.getUserById(post.authorId);
+      const user = await UsersRepository.findUserById(post.authorId);
+      if (!user) throw UsersExceptions.NotFound("Author of the post not found");
       return { _id: user._id, username: user.username };
     } else {
       const post = await PostsRepository_v1_2.getByPostId(postId);
-      const user = await UsersRepository_v1_2.getUserById(post.authorId);
+      const user = await UsersRepository.findUserById(post.authorId);
+      if (!user) throw UsersExceptions.NotFound("Author of the post not found");
       return { _id: user._id, username: user.username };
     }
   }
