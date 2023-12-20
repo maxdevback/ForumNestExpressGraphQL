@@ -1,17 +1,17 @@
-POST http://localhost:5000/users/v1.1/login 
+POST http://localhost:5000/users/v1.2/login 
 Content-Type: application/json
 
 {
-  "username": "naddrfdom2VsCode",
+  "username": "afdofdgd2VsCod",
   "password": "password2"
 }
 ###
-POST http://localhost:5000/users/v1.1/register
+POST http://localhost:5000/users/v1.2/register
 Content-Type: application/json 
 
 {
-  "email": "adomscgfdgdfhe@eail.com",
-  "username": "afdofdgd2VsCod",
+  "email": "adomscsgfdgdfhe@eail.com",
+  "username": "afdofdsgd2VsCod",
   "password": "password2"
 }
 ###

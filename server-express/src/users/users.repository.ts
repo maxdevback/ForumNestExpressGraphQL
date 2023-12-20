@@ -20,13 +20,14 @@ class UsersRepositoryClass {
         { email },
       ],
     });
-    console.log("user", user);
-    if (!user) throw UsersExceptions.NotFound("");
+    if (!user)
+      throw UsersExceptions.NotFound("The user with this info is not found");
     return user;
   }
   async getUserById(id: string) {
     const user = await UserModel.findById(id);
-    if (!user) throw new Error();
+    if (!user)
+      throw UsersExceptions.NotFound("The user with this ID is not found");
     return user;
   }
   async deleteAccount(id: string) {

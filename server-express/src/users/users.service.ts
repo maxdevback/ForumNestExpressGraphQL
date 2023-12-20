@@ -1,4 +1,3 @@
-import { hash, compare } from "bcrypt";
 import { UsersRepository } from "./users.repository";
 import { UsersRepository_v1_2 } from "./users.repository.v1.2";
 import { UsersExceptions } from "./users.exceptions";
@@ -8,7 +7,6 @@ import { UsersHelpers } from "./users.heplers";
 class UsersServiceClass {
   async register(data: IRegister) {
     const hashedPassword = await UsersHelpers.hashPassword(data.password);
-    //TODO:
     if (data.v === "v1.1") {
       try {
         await UsersRepository.getUserByUserByUsernameOrEmail(
@@ -50,6 +48,9 @@ class UsersServiceClass {
         if (await UsersHelpers.comparePassword(password, user.password)) {
           return { _id: user._id, username: user.username };
         } else {
+          console.log(
+            await UsersHelpers.comparePassword(password, user.password)
+          );
           throw UsersExceptions.wrongPassword();
         }
       } catch (err) {
@@ -59,8 +60,9 @@ class UsersServiceClass {
     } else {
       try {
         const user = await UsersRepository_v1_2.getUserByUsername(username);
+        console.log(user);
         if (await UsersHelpers.comparePassword(password, user.password)) {
-          return { _id: user.id, username: user.username };
+          return { _id: user._id, username: user.username };
         } else {
           throw UsersExceptions.wrongPassword();
         }

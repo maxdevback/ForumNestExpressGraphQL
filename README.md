@@ -1,4 +1,4 @@
-### It's a forum written on different technologies.
+# It's a forum written on different technologies.
 
 ## Info
 

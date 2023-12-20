@@ -3,7 +3,6 @@ import { UserModel } from "./users.model";
 
 class UsersRepositoryClass {
   async create(username: string, email: string, password: string) {
-    console.log("In creating");
     // const user = await UserModel.aggregate([
     //   {
     //     $addFields: { username: username, email: email, password: password },
@@ -17,7 +16,6 @@ class UsersRepositoryClass {
     // ]);
     const user = new UserModel({ username, email, password });
     await user.save();
-    console.log("user in create", user);
     return user;
   }
 
@@ -37,7 +35,8 @@ class UsersRepositoryClass {
     const user = await UserModel.aggregate([
       { $match: { $or: [{ username }, { email }] } },
     ]);
-    if (!user[0]) throw new Error();
+    if (!user[0])
+      throw UsersExceptions.NotFound("The user with that info not found");
     return user[0];
   }
   async getUserById(id: string) {

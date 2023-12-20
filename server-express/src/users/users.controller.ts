@@ -16,6 +16,7 @@ class UsersControllerClass {
       req.session.user = info;
       res.send(info);
     } catch (err: any) {
+      console.log(err);
       res.status(err.httpCode ?? 500).send(err.message);
     }
   }
@@ -25,10 +26,10 @@ class UsersControllerClass {
         ...req.body,
         v: req.baseUrl.split("/")[2] as "v1.1" | "v1.2",
       });
-      console.log(info);
       req.session.user = info;
       res.send(info);
     } catch (err: any) {
+      console.log(err);
       res.status(err.httpCode ?? 500).send(err.message);
     }
   }
