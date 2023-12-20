@@ -1,17 +1,14 @@
+import { PostsExceptions } from "./posts.exceptions";
 import { PostModel } from "./posts.model";
 
 class PostsRepositoryClass {
-  notFoundThrow = {
-    httpCode: 404,
-    message: "This post doesn't exist",
-  };
   async create(title: string, body: string, authorId: string) {
     const newPost = new PostModel({ title, body, authorId });
     return await newPost.save();
   }
   async changeCommentsStatus(newStatus: boolean, postId: string) {
     const post = await PostModel.findById(postId);
-    if (!post) throw this.notFoundThrow;
+    if (!post) throw PostsExceptions.notFound;
     post.hasComments = newStatus;
     await post.save();
     return post;
@@ -28,7 +25,7 @@ class PostsRepositoryClass {
   }
   async getByPostId(postId: string) {
     const post = await PostModel.findById(postId);
-    if (!post) throw this.notFoundThrow;
+    if (!post) throw PostsExceptions.notFound;
     return post;
   }
   async updateByPostIdAndAuthorId(
@@ -40,7 +37,7 @@ class PostsRepositoryClass {
       { _id: postId, authorId },
       newData
     );
-    if (updateInfo.matchedCount < 1) throw this.notFoundThrow;
+    if (updateInfo.matchedCount < 1) throw PostsExceptions.notFound;
     return updateInfo;
   }
   async increaseRoughNumberOfLikes(postId: string) {

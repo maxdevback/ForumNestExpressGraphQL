@@ -1,13 +1,10 @@
+import { UsersExceptions } from "../users/users.exceptions";
+import { PostsExceptions } from "./posts.exceptions";
 import { PostModel } from "./posts.model";
 
 class PostsRepositoryClass {
-  notFoundThrow = {
-    httpCode: 404,
-    message: "This post doesn't exist",
-  };
-
   async create(title: string, body: string, authorId: string) {
-    await PostModel.aggregate([
+    PostModel.aggregate([
       {
         $addFields: {
           title: title,
@@ -30,7 +27,8 @@ class PostsRepositoryClass {
       { $set: { hasComments: newStatus } },
     ]);
 
-    if (!updatedPost || updatedPost.length === 0) throw this.notFoundThrow;
+    if (!updatedPost || updatedPost.length === 0)
+      throw UsersExceptions.NotFound;
     return updatedPost[0];
   }
 
@@ -55,7 +53,7 @@ class PostsRepositoryClass {
   async getByPostId(postId: string) {
     const post = await PostModel.aggregate([{ $match: { _id: postId } }]);
 
-    if (!post || post.length === 0) throw this.notFoundThrow;
+    if (!post || post.length === 0) throw PostsExceptions.notFound();
     return post[0];
   }
 
@@ -69,7 +67,8 @@ class PostsRepositoryClass {
       { $set: newData },
     ]);
 
-    if (!updatedPost || updatedPost.length === 0) throw this.notFoundThrow;
+    if (!updatedPost || updatedPost.length === 0)
+      throw PostsExceptions.notFound();
     return updatedPost[0];
   }
 
@@ -79,7 +78,8 @@ class PostsRepositoryClass {
       { $set: { roughNumberOfLikes: { $add: ["$roughNumberOfLikes", 1] } } },
     ]);
 
-    if (!updatedPost || updatedPost.length === 0) throw this.notFoundThrow;
+    if (!updatedPost || updatedPost.length === 0)
+      throw PostsExceptions.notFound();
     return updatedPost[0];
   }
 }

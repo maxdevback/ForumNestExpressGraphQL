@@ -1,4 +1,4 @@
 export const config = {
   backendApi: "http://localhost:5000/",
-  versionPrefix: "v1.2",
+  versionPrefix: "v1.1",
 };

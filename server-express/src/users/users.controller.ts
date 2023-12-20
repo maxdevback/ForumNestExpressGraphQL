@@ -7,30 +7,29 @@ import { Validate } from "../shared/validate";
 class UsersControllerClass {
   async login(req: Request, res: Response) {
     try {
-      UsersValidate.validateLoginBody(req.body);
-      const v = req.baseUrl.split("/")[2] as "v1.1" | "v1.2";
       const info = await UsersService.login(
         req.body.username,
         req.body.password,
-        v
+        req.baseUrl.split("/")[2] as "v1.1" | "v1.2"
       );
+      console.log(info);
       req.session.user = info;
       res.send(info);
     } catch (err: any) {
+      console.log(err);
       res.status(err.httpCode ?? 500).send(err.message);
     }
   }
   async register(req: Request, res: Response) {
     try {
-      UsersValidate.validateRegisterBody(req.body);
-      const info = await UsersService.register(
-        req.body.username,
-        req.body.email,
-        req.body.password
-      );
+      const info = await UsersService.register({
+        ...req.body,
+        v: req.baseUrl.split("/")[2] as "v1.1" | "v1.2",
+      });
       req.session.user = info;
       res.send(info);
     } catch (err: any) {
+      console.log(err);
       res.status(err.httpCode ?? 500).send(err.message);
     }
   }
@@ -43,10 +42,14 @@ class UsersControllerClass {
   }
   async deleteAccount(req: Request, res: Response) {
     try {
-      Validate.validateAuth(req);
       const id = req.session.user!._id;
       req.session.user = null;
-      res.send(await UsersService.deleteAccount(id));
+      res.send(
+        await UsersService.deleteAccount(
+          id,
+          req.baseUrl.split("/")[2] as "v1.1" | "v1.2"
+        )
+      );
     } catch (err: any) {
       req.session.user = null;
       res.status(err.httpCode ?? 500).send(err.message);

@@ -1,33 +1,33 @@
+import { UsersExceptions } from "./users.exceptions";
 import { UserModel } from "./users.model";
 
 class UsersRepositoryClass {
-  async register(username: string, email: string, password: string) {
-    const userWithThatUsername = await UserModel.findOne({ username });
-    const userWithThatEmail = await UserModel.findOne({ email });
-    if (userWithThatUsername || userWithThatEmail)
-      throw {
-        httpCode: 409,
-        message: "A user with that username or email already exists.",
-      };
+  async create(username: string, email: string, password: string) {
     const newUser = new UserModel({ username, email, password });
     return await newUser.save();
   }
   async getUserByUsername(username: string) {
     const user = await UserModel.findOne({ username });
+    if (!user) throw new Error();
+    return user;
+  }
+  async getUserByUserByUsernameOrEmail(username: string, email: string) {
+    const user = await UserModel.findOne({
+      $or: [
+        {
+          username,
+        },
+        { email },
+      ],
+    });
     if (!user)
-      throw {
-        httpCode: 404,
-        message: "The user with that username was not found",
-      };
+      throw UsersExceptions.NotFound("The user with this info is not found");
     return user;
   }
   async getUserById(id: string) {
     const user = await UserModel.findById(id);
     if (!user)
-      throw {
-        httpCode: 404,
-        message: "The user with that id was not found",
-      };
+      throw UsersExceptions.NotFound("The user with this ID is not found");
     return user;
   }
   async deleteAccount(id: string) {

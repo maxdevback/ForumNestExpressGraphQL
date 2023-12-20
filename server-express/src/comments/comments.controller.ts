@@ -10,11 +10,14 @@ class CommentsControllerClass {
       Validate.validateAuth(req);
       res.send(
         await CommentsService.create(
-          req.session.user!._id,
-          req.params.postId,
-          req.body.body,
-          "v1.1",
-          req.body.commentParentId
+          {
+            authorId: req.session.user!._id,
+            username: req.session.user!.username,
+            postId: req.params.postId,
+            body: req.body.body as string,
+            parentCommentId: req.body.commentParentId as string,
+          },
+          "v1.1"
         )
       );
     } catch (err: any) {
@@ -27,11 +30,14 @@ class CommentsControllerClass {
       Validate.validateAuth(req);
       res.send(
         await CommentsService.create(
-          req.session.user!._id,
-          req.params.postId,
-          req.body.body,
-          "v1.1",
-          req.params.parentCommentId
+          {
+            authorId: req.session.user!._id,
+            username: req.session.user!.username,
+            postId: req.params.postId,
+            body: req.body.body as string,
+            parentCommentId: req.body.commentParentId as string,
+          },
+          "v1.1"
         )
       );
     } catch (err: any) {

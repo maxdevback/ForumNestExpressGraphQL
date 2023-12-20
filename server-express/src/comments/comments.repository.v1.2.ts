@@ -1,26 +1,16 @@
+import { ICommentCreate } from "./comments.interfaces";
 import { CommentModel } from "./comments.model";
 
 class CommentsRepositoryClass {
-  notFoundComment = {
-    httpCode: 404,
-    message: "Not found comment",
-  };
-
-  async create(
-    authorId: string,
-    postId: string,
-    username: string,
-    body: string,
-    parentCommentId: string | null = null
-  ) {
+  async create(data: ICommentCreate) {
     const res = await CommentModel.aggregate([
       {
         $addFields: {
-          authorId: authorId,
-          postId: postId,
-          username: username,
-          body: body,
-          parentCommentId: parentCommentId,
+          authorId: data.authorId,
+          postId: data.postId,
+          username: data.username,
+          body: data.body,
+          parentCommentId: data.parentCommentId,
         },
       },
       {

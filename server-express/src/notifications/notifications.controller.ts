@@ -10,7 +10,8 @@ class NotificationsControllerClass {
       res.send(
         await NotificationsService.getNotificationsByReceiverIdAndPage(
           req.session.user!._id,
-          +req.params.page
+          +req.params.page,
+          req.baseUrl.split("/")[2] as "v1.1" | "v1.2"
         )
       );
     } catch (err: any) {
