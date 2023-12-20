@@ -36,7 +36,11 @@ describe("CommentsRepository", () => {
         mockComment.username,
         mockComment.body
       );
-      expect(result).toHaveLength(0);
+      console.log("39 string", result);
+      expect(result[0].authorId).toEqual(mockComment.authorId);
+      expect(result[0].postId).toEqual(mockComment.postId);
+      expect(result[0].username).toEqual(mockComment.username);
+      expect(result[0].body).toEqual(mockComment.body);
     });
 
     it("should create a new comment with a parent comment", async () => {
@@ -60,10 +64,19 @@ describe("CommentsRepository", () => {
         mockComment.body,
         parentComment._id
       );
-      expect(result).toHaveLength(0);
+      expect(result[0].authorId).toEqual(mockComment.authorId);
+      expect(result[0].postId).toEqual(mockComment.postId);
+      expect(result[0].username).toEqual(mockComment.username);
+      expect(result[0].body).toEqual(
+        `${parentComment.username} ${mockComment.body}`
+      );
+      expect(result[0].parentCommentId?.toString()).toEqual(
+        parentComment._id.toString()
+      );
     });
 
     it("should throw an error if parent comment is not found", async () => {
+      expect.assertions(1);
       const mockComment = {
         authorId: "123",
         postId: "456",
@@ -123,9 +136,8 @@ describe("CommentsRepository", () => {
       const result = await CommentsRepository_v1_2.getCommentsByPostIdAndPage(
         mockComment.postId,
         1,
-        parentComment.id
+        parentComment._id
       );
-      console.log(result);
       expect(result).toHaveLength(1);
       expect(result[0].authorId).toEqual(mockComment.authorId);
       expect(result[0].postId).toEqual(mockComment.postId);
@@ -157,7 +169,7 @@ describe("CommentsRepository", () => {
       const result =
         await CommentsRepository_v1_2.getReplaysByCommentIdAndPostIdAndPage(
           mockComment.postId,
-          parentComment.id,
+          parentComment._id,
           1
         );
       expect(result).toHaveLength(1);
@@ -190,10 +202,7 @@ describe("CommentsRepository", () => {
     it("should throw an error if comment is not found", async () => {
       expect.assertions(1);
       try {
-        const result = await CommentsRepository_v1_2.getByCommentId(
-          "nonexistent-comment-id"
-        );
-        expect(result).toHaveLength(0);
+        await CommentsRepository_v1_2.getByCommentId("nonexistent-comment-id");
       } catch (err) {
         expect(true).toBe(true);
       }

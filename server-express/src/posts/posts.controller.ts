@@ -6,6 +6,7 @@ import { PostsValidate } from "./posts.validators";
 class PostsControllerClass {
   async create(req: Request, res: Response) {
     try {
+      Validate.validateAuth(req);
       PostsValidate.validateCreationBody(req.body);
       res.send(
         await PostsService.create(
@@ -20,6 +21,7 @@ class PostsControllerClass {
   }
   async getPostsByPage(req: Request, res: Response) {
     try {
+      Validate.validatePage(+req.params.page);
       res.send(await PostsService.getByPage(+req.params.page));
     } catch (err: any) {
       res.status(err.httpCode ?? 500).send(err.message);
@@ -34,6 +36,7 @@ class PostsControllerClass {
   }
   async getPostsByAuthorAndPage(req: Request, res: Response) {
     try {
+      Validate.validatePage(+req.params.page);
       res.send(
         await PostsService.getByAuthorAndPage(
           req.params.authorId,
@@ -46,6 +49,8 @@ class PostsControllerClass {
   }
   async getMyPostsByPage(req: Request, res: Response) {
     try {
+      Validate.validateAuth(req);
+      Validate.validatePage(+req.params.page);
       res.send(
         await PostsService.getByAuthorAndPage(
           req.session.user!._id,
@@ -58,6 +63,7 @@ class PostsControllerClass {
   }
   async updatePostByPostId(req: Request, res: Response) {
     try {
+      Validate.validateAuth(req);
       const providedFields = PostsValidate.validateUpdateBody(req.body);
       res.send(
         await PostsService.updateByPostIdAndAuthorId(
