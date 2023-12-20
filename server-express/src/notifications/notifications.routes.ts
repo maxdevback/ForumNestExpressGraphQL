@@ -1,13 +1,9 @@
 import { Router } from "express";
 import { NotificationsController } from "./notifications.controller";
-import { SharedMiddleWare } from "../shared/shared.middlewares";
 
 const router = Router();
-router.get(
-  "/:page",
-  SharedMiddleWare.validateAuth,
-  SharedMiddleWare.validatePage,
-  NotificationsController.getNotificationsByReceiverIdAndPage
+router.get("/:page", (req, res) =>
+  NotificationsController.getNotificationsByReceiverIdAndPage(req, res)
 );
 
 const notificationsRouter = Router();
