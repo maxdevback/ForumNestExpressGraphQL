@@ -13,15 +13,43 @@ class PostsRepositoryClass {
     await post.save();
     return post;
   }
-  async getByPage(page: number) {
+  /**
+   * @deprecated since version 2.0.0
+   */
+  async getByPageOld(page: number) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
     return await PostModel.find().skip(skip).limit(pageSize);
   }
-  async getByAuthorAndPage(authorId: string, page: number) {
+  async getByPage(page: number) {
+    const pageSize = 25;
+    const skip = (page - 1) * pageSize;
+
+    return await PostModel.aggregate([{ $skip: skip }, { $limit: pageSize }]);
+  }
+  /**
+   * @deprecated since version 2.0.0
+   */
+  async getByAuthorAndPageOld(authorId: string, page: number) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
     return await PostModel.find({ authorId }).skip(skip).limit(pageSize);
+  }
+  async getByAuthorAndPage(authorId: string, page: number) {
+    const pageSize = 25;
+    const skip = (page - 1) * pageSize;
+
+    return await PostModel.aggregate([
+      { $match: { authorId: authorId } },
+      { $skip: skip },
+      { $limit: pageSize },
+    ]);
+  }
+  /**
+   * @deprecated since version 2.0.0
+   */
+  async getByPostIdOld(postId: string) {
+    return await PostModel.findOne({ _id: postId });
   }
   async getByPostId(postId: string) {
     const post = await PostModel.findById(postId);

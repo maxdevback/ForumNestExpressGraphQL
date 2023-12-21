@@ -1,14 +1,19 @@
 import { UsersExceptions } from "./users.exceptions";
 import { UserModel } from "./users.model";
-
 class UsersRepositoryClass {
   async create(username: string, email: string, password: string) {
     const newUser = new UserModel({ username, email, password });
     return await newUser.save();
   }
+  /**
+   * @deprecated since version 2.0.0
+   */
   async findUserByUsernameOld(username: string) {
     return await UserModel.findOne({ username });
   }
+  /**
+   * @deprecated since version 2.0.0
+   */
   async findUserByUsernameOrEmailOld(username: string, email: string) {
     const user = await UserModel.findOne({
       $or: [
@@ -20,6 +25,9 @@ class UsersRepositoryClass {
     });
     return user;
   }
+  /**
+   * @deprecated since version 2.0.0
+   */
   async findUserByIdOld(id: string) {
     const user = await UserModel.findById(id);
     return user;
