@@ -3,7 +3,6 @@ import { PostsRepository } from "../posts/posts.repository";
 import { CommentsRepository } from "../comments/comments.repository";
 import { LikesRepository } from "./likes.repository";
 import { NotificationsService } from "../notifications/notifications.service";
-import { PostsRepository_v1_2 } from "../posts/posts.repository.v1.2";
 import { CommentsRepository_v1_2 } from "../comments/comments.repository.v1.2";
 import { LikesRepository_v1_2 } from "./likes.repository.v1.2";
 import { LikesExceptions } from "./likes.exceptions";
@@ -43,7 +42,7 @@ class LikesServiceClass {
     } else {
       let entity;
       if (type === "post") {
-        entity = await PostsRepository_v1_2.getByPostId(entityId);
+        entity = await PostsRepository.getByPostId(entityId);
       } else {
         entity = await CommentsRepository_v1_2.getByCommentId(entityId);
       }
@@ -52,7 +51,7 @@ class LikesServiceClass {
         throw LikesExceptions.alreadyLiked();
       const newLike = await LikesRepository_v1_2.create(entityId, authorId);
       if (type === "post") {
-        await PostsRepository_v1_2.increaseRoughNumberOfLikes(entityId);
+        await PostsRepository.increaseRoughNumberOfLikes(entityId);
         await NotificationsService.sendNotification(
           "Someone liked your post",
           entity.authorId,
