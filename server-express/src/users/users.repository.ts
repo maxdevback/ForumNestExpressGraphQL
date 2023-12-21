@@ -6,12 +6,10 @@ class UsersRepositoryClass {
     const newUser = new UserModel({ username, email, password });
     return await newUser.save();
   }
-  async getUserByUsername(username: string) {
-    const user = await UserModel.findOne({ username });
-    if (!user) throw new Error();
-    return user;
+  async findUserByUsernameOld(username: string) {
+    return await UserModel.findOne({ username });
   }
-  async getUserByUserByUsernameOrEmail(username: string, email: string) {
+  async findUserByUsernameOrEmailOld(username: string, email: string) {
     const user = await UserModel.findOne({
       $or: [
         {
@@ -20,18 +18,31 @@ class UsersRepositoryClass {
         { email },
       ],
     });
-    if (!user)
-      throw UsersExceptions.NotFound("The user with this info is not found");
     return user;
   }
-  async getUserById(id: string) {
+  async findUserByIdOld(id: string) {
     const user = await UserModel.findById(id);
-    if (!user)
-      throw UsersExceptions.NotFound("The user with this ID is not found");
     return user;
   }
   async deleteAccount(id: string) {
     return await UserModel.findByIdAndDelete(id);
+  }
+  async findUserByUsername(username: string) {
+    const user = await UserModel.aggregate([
+      { $match: { username: username } },
+    ]);
+
+    return user[0];
+  }
+  async findByUsernameOrEmail(username: string, email: string) {
+    return await UserModel.aggregate([
+      { $match: { $or: [{ username }, { email }] } },
+    ]);
+  }
+  async findUserById(id: string) {
+    const user = await UserModel.aggregate([{ $match: { id: id } }]);
+
+    return user[0];
   }
 }
 

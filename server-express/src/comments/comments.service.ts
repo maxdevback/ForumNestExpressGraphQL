@@ -3,10 +3,10 @@ import { UsersRepository } from "../users/users.repository";
 import { Validate } from "../shared/validate";
 import { CommentsRepository } from "./comments.repository";
 import { NotificationsService } from "../notifications/notifications.service";
-import { UsersRepository_v1_2 } from "../users/users.repository.v1.2";
 import { PostsRepository_v1_2 } from "../posts/posts.repository.v1.2";
 import { CommentsRepository_v1_2 } from "./comments.repository.v1.2";
 import { ICommentCreate } from "./comments.interfaces";
+import { UsersExceptions } from "../users/users.exceptions";
 
 class CommentsServiceClass {
   async create(data: ICommentCreate, v: "v1.1" | "v1.2" = "v1.1") {
@@ -14,7 +14,9 @@ class CommentsServiceClass {
     Validate.validateObjectId(data.postId);
     if (data.parentCommentId) Validate.validateObjectId(data.parentCommentId);
     if (v === "v1.2") {
-      const author = await UsersRepository.getUserById(data.authorId);
+      const author = await UsersRepository.findUserById(data.authorId);
+      if (!author)
+        throw UsersExceptions.NotFound("Author of the post not found");
       const post = await PostsRepository.getByPostId(data.postId);
       const comment = await CommentsRepository.create({
         authorId: author.id,
@@ -38,7 +40,9 @@ class CommentsServiceClass {
       }
       return comment;
     } else {
-      const author = await UsersRepository_v1_2.getUserById(data.authorId);
+      const author = await UsersRepository.findUserById(data.authorId);
+      if (!author)
+        throw UsersExceptions.NotFound("Author of the post not found");
       const post = await PostsRepository_v1_2.getByPostId(data.postId);
       const comment = await CommentsRepository_v1_2.create({
         authorId: author.id,
