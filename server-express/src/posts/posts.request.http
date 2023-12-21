@@ -1,4 +1,4 @@
-POST http://localhost:5000/posts/v1.2
+POST http://localhost:5000/posts/v1.1
 Content-Type: application/json
 
 {
@@ -8,15 +8,15 @@ Content-Type: application/json
 ###
 GET http://localhost:5000/posts/v1.2/1
 ###
-GET http://localhost:5000/posts/v1.2/id/656d93d23d99187d2dc15a2f
+GET http://localhost:5000/posts/v1.2/id/65843bdb3a43b60554650167
 ###
-GET http://localhost:5000/posts/v1.2/author/656defeb86c8226f404667f1
+GET http://localhost:5000/posts/v1.1/author/656defeb86c8226f404667f1
 ###
-GET http://localhost:5000/posts/v1.2/656d8f5a3d99187d2dc15a2d/1
+GET http://localhost:5000/posts/v1.1/656defeb86c8226f404667f1/1
 ###
-GET http://localhost:5000/posts/v1.2/my/1
+GET http://localhost:5000/posts/v1.1/my/1
 ###
-PATCH http://localhost:5000/posts/v1.2/656defeb86c8226f404667f1
+PATCH http://localhost:5000/posts/v1.1/65689d3f3da003d7219da6a8
 Content-Type: application/json
 
 {

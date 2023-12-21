@@ -3,11 +3,9 @@ import { Validate } from "../shared/validate";
 import { PostsService } from "./posts.service";
 import { PostsValidate } from "./posts.validators";
 
-class PostsControllerClass {
+class PostsControllerOldClass {
   async create(req: Request, res: Response) {
     try {
-      Validate.validateAuth(req);
-      PostsValidate.validateCreationBody(req.body);
       res.send(
         await PostsService.create(
           req.body.title,
@@ -21,24 +19,22 @@ class PostsControllerClass {
   }
   async getPostsByPage(req: Request, res: Response) {
     try {
-      Validate.validatePage(+req.params.page);
-      res.send(await PostsService.getByPage(+req.params.page));
+      res.send(await PostsService.getByPageOld(+req.params.page));
     } catch (err: any) {
       res.status(err.httpCode ?? 500).send(err.message);
     }
   }
   async getByPostId(req: Request, res: Response) {
     try {
-      res.send(await PostsService.getByPostId(req.params.postId));
+      res.send(await PostsService.getByPostIdOld(req.params.postId));
     } catch (err: any) {
       res.status(err.httpCode ?? 500).send(err.message);
     }
   }
   async getPostsByAuthorAndPage(req: Request, res: Response) {
     try {
-      Validate.validatePage(+req.params.page);
       res.send(
-        await PostsService.getByAuthorAndPage(
+        await PostsService.getByAuthorAndPageOld(
           req.params.authorId,
           +req.params.page
         )
@@ -49,10 +45,8 @@ class PostsControllerClass {
   }
   async getMyPostsByPage(req: Request, res: Response) {
     try {
-      Validate.validateAuth(req);
-      Validate.validatePage(+req.params.page);
       res.send(
-        await PostsService.getByAuthorAndPage(
+        await PostsService.getByAuthorAndPageOld(
           req.session.user!._id,
           +req.params.page
         )
@@ -63,13 +57,11 @@ class PostsControllerClass {
   }
   async updatePostByPostId(req: Request, res: Response) {
     try {
-      Validate.validateAuth(req);
-      const providedFields = PostsValidate.validateUpdateBody(req.body);
       res.send(
         await PostsService.updateByPostIdAndAuthorId(
           req.params.postId,
           req.session.user!._id,
-          providedFields
+          res.locals.providedFields
         )
       );
     } catch (err: any) {
@@ -84,4 +76,4 @@ class PostsControllerClass {
     }
   }
 }
-export const PostsController = new PostsControllerClass();
+export const PostsController = new PostsControllerOldClass();
