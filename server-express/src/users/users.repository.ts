@@ -1,4 +1,4 @@
-import { UsersExceptions } from "./users.exceptions";
+import { Types } from "mongoose";
 import { UserModel } from "./users.model";
 
 class UsersRepositoryClass {
@@ -40,7 +40,9 @@ class UsersRepositoryClass {
     ]);
   }
   async findUserById(id: string) {
-    const user = await UserModel.aggregate([{ $match: { id: id } }]);
+    const user = await UserModel.aggregate([
+      { $match: { _id: new Types.ObjectId(id) } },
+    ]);
 
     return user[0];
   }

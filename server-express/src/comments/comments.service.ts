@@ -3,7 +3,6 @@ import { UsersRepository } from "../users/users.repository";
 import { Validate } from "../shared/validate";
 import { CommentsRepository } from "./comments.repository";
 import { NotificationsService } from "../notifications/notifications.service";
-import { PostsRepository_v1_2 } from "../posts/posts.repository.v1.2";
 import { CommentsRepository_v1_2 } from "./comments.repository.v1.2";
 import { ICommentCreate } from "./comments.interfaces";
 import { UsersExceptions } from "../users/users.exceptions";
@@ -26,7 +25,7 @@ class CommentsServiceClass {
         parentCommentId: data.parentCommentId,
       });
       if (!post.hasComments)
-        await PostsRepository.changeCommentsStatus(true, data.postId);
+        await PostsRepository.changeCommentsStatus(true, post);
       if (data.parentCommentId) {
         Validate.validateObjectId(data.parentCommentId);
         const parentComment = await CommentsRepository.getByCommentId(
@@ -43,7 +42,7 @@ class CommentsServiceClass {
       const author = await UsersRepository.findUserById(data.authorId);
       if (!author)
         throw UsersExceptions.NotFound("Author of the post not found");
-      const post = await PostsRepository_v1_2.getByPostId(data.postId);
+      const post = await PostsRepository.getByPostId(data.postId);
       const comment = await CommentsRepository_v1_2.create({
         authorId: author.id,
         postId: data.postId,
@@ -52,7 +51,7 @@ class CommentsServiceClass {
         parentCommentId: data.parentCommentId,
       });
       if (!post.hasComments)
-        await PostsRepository_v1_2.changeCommentsStatus(true, data.postId);
+        await PostsRepository.changeCommentsStatus(true, post);
       if (data.parentCommentId) {
         Validate.validateObjectId(data.parentCommentId);
         const parentComment = await CommentsRepository_v1_2.getByCommentId(

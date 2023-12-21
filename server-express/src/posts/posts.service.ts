@@ -1,74 +1,61 @@
 import { PostsRepository } from "./posts.repository";
 import { UsersRepository } from "../users/users.repository";
 import { Validate } from "../shared/validate";
-import { PostsRepository_v1_2 } from "./posts.repository.v1.2";
 import { UsersExceptions } from "../users/users.exceptions";
+import { PostsExceptions } from "./posts.exceptions";
 
 class PostsServiceClass {
-  async create(
-    title: string,
-    body: string,
-    authorId: string,
-    v: "v1.1" | "v1.2" = "v1.1"
-  ) {
-    return v === "v1.1"
-      ? await PostsRepository.create(title, body, authorId)
-      : await PostsRepository_v1_2.create(title, body, authorId);
+  async create(title: string, body: string, authorId: string) {
+    return await PostsRepository.create(title, body, authorId);
   }
-  async getByPage(page: number, v: "v1.1" | "v1.2" = "v1.1") {
-    return v === "v1.1"
-      ? await PostsRepository.getByPage(page)
-      : await PostsRepository_v1_2.getByPage(page);
+  async getByPageOld(page: number) {
+    return await PostsRepository.getByPageOld(page);
   }
-  async getByAuthorAndPage(
-    authorId: string,
-    page: number,
-    v: "v1.1" | "v1.2" = "v1.1"
-  ) {
+  async getByPage(page: number) {
+    return await PostsRepository.getByPage(page);
+  }
+  async getByAuthorAndPageOld(authorId: string, page: number) {
     Validate.validateObjectId(authorId);
-    return v === "v1.1"
-      ? await PostsRepository.getByAuthorAndPage(authorId, page)
-      : await PostsRepository_v1_2.getByAuthorAndPage(authorId, page);
+    return await PostsRepository.getByAuthorAndPageOld(authorId, page);
   }
-  async getByPostId(postId: string, v: "v1.1" | "v1.2" = "v1.1") {
-    Validate.validateObjectId(postId);
-    return v === "v1.1"
-      ? await PostsRepository.getByPostId(postId)
-      : await PostsRepository_v1_2.getByPostId(postId);
+  async getByAuthorAndPage(authorId: string, page: number) {
+    return await PostsRepository.getByAuthorAndPage(authorId, page);
   }
-  async getAuthorByPostId(postId: string, v: "v1.1" | "v1.2" = "v1.1") {
+  async getByPostIdOld(postId: string) {
     Validate.validateObjectId(postId);
-    if (v === "v1.1") {
-      const post = await PostsRepository.getByPostId(postId);
-      const user = await UsersRepository.findUserById(post.authorId);
-      if (!user) throw UsersExceptions.NotFound("Author of the post not found");
-      return { _id: user._id, username: user.username };
-    } else {
-      const post = await PostsRepository_v1_2.getByPostId(postId);
-      const user = await UsersRepository.findUserById(post.authorId);
-      if (!user) throw UsersExceptions.NotFound("Author of the post not found");
-      return { _id: user._id, username: user.username };
-    }
+    const post = await PostsRepository.getByPostIdOld(postId);
+    if (!post) throw PostsExceptions.notFound();
+    return post;
+  }
+  async getByPostId(postId: string) {
+    Validate.validateObjectId(postId);
+    const post = await PostsRepository.getByPostId(postId);
+    if (!post) throw PostsExceptions.notFound();
+    return post;
+  }
+  async getAuthorByPostIdOld(postId: string) {
+    Validate.validateObjectId(postId);
+    const post = await PostsRepository.getByPostIdOld(postId);
+    if (!post) throw PostsExceptions.notFound();
+    const user = await UsersRepository.findUserByIdOld(postId);
+    if (!user) throw UsersExceptions.NotFound("Author of the post not found");
+    return { _id: user._id, username: user.username };
+  }
+  async getAuthorByPostId(postId: string) {
+    const post = await PostsRepository.getByPostId(postId);
+    if (!post) throw PostsExceptions.notFound();
+    const user = await UsersRepository.findUserById(post.authorId);
+    if (!user) throw UsersExceptions.NotFound("Author of the post not found");
+    return { _id: user._id, username: user.username };
   }
   async updateByPostIdAndAuthorId(
     postId: string,
     authorId: string,
-    newData: object,
-    v: "v1.1" | "v1.2" = "v1.1"
+    newData: object
   ) {
     Validate.validateObjectId(postId);
     Validate.validateObjectId(authorId);
-    return v === "v1.1"
-      ? await PostsRepository.updateByPostIdAndAuthorId(
-          postId,
-          authorId,
-          newData
-        )
-      : await PostsRepository_v1_2.updateByPostIdAndAuthorId(
-          postId,
-          authorId,
-          newData
-        );
+    await PostsRepository.updateByPostIdAndAuthorId(postId, authorId, newData);
   }
 }
 

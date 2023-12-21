@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { ICommentCreate } from "./comments.interfaces";
 import { CommentModel } from "./comments.model";
 
@@ -54,7 +55,9 @@ class CommentsRepositoryClass {
   }
 
   async getByCommentId(commentId: string) {
-    const res = await CommentModel.aggregate([{ $match: { _id: commentId } }]);
+    const res = await CommentModel.aggregate([
+      { $match: { _id: new Types.ObjectId(commentId) } },
+    ]);
     return res[0];
   }
 

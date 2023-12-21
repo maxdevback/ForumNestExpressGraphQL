@@ -1,32 +1,55 @@
+import { Types } from "mongoose";
 import { PostsExceptions } from "./posts.exceptions";
-import { PostModel } from "./posts.model";
+import { IPost, PostModel } from "./posts.model";
 
 class PostsRepositoryClass {
   async create(title: string, body: string, authorId: string) {
     const newPost = new PostModel({ title, body, authorId });
     return await newPost.save();
   }
-  async changeCommentsStatus(newStatus: boolean, postId: string) {
-    const post = await PostModel.findById(postId);
-    if (!post) throw PostsExceptions.notFound;
+  async changeCommentsStatus(newStatus: boolean, post: IPost) {
     post.hasComments = newStatus;
     await post.save();
     return post;
   }
-  async getByPage(page: number) {
+  async getByPageOld(page: number) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
     return await PostModel.find().skip(skip).limit(pageSize);
   }
-  async getByAuthorAndPage(authorId: string, page: number) {
+  async getByPage(page: number) {
+    const pageSize = 25;
+    const skip = (page - 1) * pageSize;
+
+    return await PostModel.aggregate([{ $skip: skip }, { $limit: pageSize }]);
+  }
+  async getByAuthorAndPageOld(authorId: string, page: number) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
     return await PostModel.find({ authorId }).skip(skip).limit(pageSize);
   }
+  async getByAuthorAndPage(authorId: string, page: number) {
+    const pageSize = 25;
+    const skip = (page - 1) * pageSize;
+
+    return await PostModel.aggregate([
+      { $match: { authorId: authorId } },
+      { $skip: skip },
+      { $limit: pageSize },
+    ]);
+  }
+  async getByPostIdOld(postId: string) {
+    return await PostModel.findOne({ _id: postId });
+  }
   async getByPostId(postId: string) {
-    const post = await PostModel.findById(postId);
-    if (!post) throw PostsExceptions.notFound;
-    return post;
+    const post = await PostModel.aggregate([
+      {
+        $match: {
+          _id: new Types.ObjectId(postId),
+        },
+      },
+    ]);
+    return post[0];
   }
   async updateByPostIdAndAuthorId(
     postId: string,
