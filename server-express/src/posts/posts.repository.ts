@@ -15,7 +15,7 @@ class PostsRepositoryClass {
   /**
    * @deprecated since version 2.0.0
    */
-  async getByPageOldOld(page: number) {
+  async getByPageOld(page: number) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
     return await PostModel.find().skip(skip).limit(pageSize);
