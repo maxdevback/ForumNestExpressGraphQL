@@ -8,31 +8,38 @@ class PostsServiceClass {
   async create(title: string, body: string, authorId: string) {
     return await PostsRepository.create(title, body, authorId);
   }
+
   async getByPageOld(page: number) {
     return await PostsRepository.getByPageOld(page);
   }
+
   async getByPage(page: number) {
     return await PostsRepository.getByPage(page);
   }
+
   async getByAuthorAndPageOld(authorId: string, page: number) {
     Validate.validateObjectId(authorId);
     return await PostsRepository.getByAuthorAndPageOld(authorId, page);
   }
+
   async getByAuthorAndPage(authorId: string, page: number) {
     return await PostsRepository.getByAuthorAndPage(authorId, page);
   }
+
   async getByPostIdOld(postId: string) {
     Validate.validateObjectId(postId);
     const post = await PostsRepository.getByPostIdOld(postId);
     if (!post) throw PostsExceptions.notFound();
     return post;
   }
+
   async getByPostId(postId: string) {
     Validate.validateObjectId(postId);
     const post = await PostsRepository.getByPostId(postId);
     if (!post) throw PostsExceptions.notFound();
     return post;
   }
+
   async getAuthorByPostIdOld(postId: string) {
     Validate.validateObjectId(postId);
     const post = await PostsRepository.getByPostIdOld(postId);
@@ -41,6 +48,7 @@ class PostsServiceClass {
     if (!user) throw UsersExceptions.NotFound("Author of the post not found");
     return { _id: user._id, username: user.username };
   }
+
   async getAuthorByPostId(postId: string) {
     const post = await PostsRepository.getByPostId(postId);
     if (!post) throw PostsExceptions.notFound();
@@ -48,6 +56,7 @@ class PostsServiceClass {
     if (!user) throw UsersExceptions.NotFound("Author of the post not found");
     return { _id: user._id, username: user.username };
   }
+
   async updateByPostIdAndAuthorId(
     postId: string,
     authorId: string,

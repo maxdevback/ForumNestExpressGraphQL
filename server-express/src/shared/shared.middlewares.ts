@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, json } from "express";
 import { Validate } from "./validate";
 
 class SharedMiddleWareClass {
@@ -7,7 +7,7 @@ class SharedMiddleWareClass {
       Validate.validateAuth(req);
       next();
     } catch (err) {
-      res.send(err);
+      next(err);
     }
   }
   validatePage(req: Request, res: Response, next: NextFunction) {
@@ -15,7 +15,7 @@ class SharedMiddleWareClass {
       Validate.validatePage(+req.params.page);
       next();
     } catch (err) {
-      res.send(err);
+      next(err);
     }
   }
 }
