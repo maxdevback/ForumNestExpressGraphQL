@@ -1,7 +1,6 @@
 export const authTypeDefs = `
   type User {
     id: ID
-    email: String 
     username: String
   }
   input RegisterData {
@@ -12,6 +11,10 @@ export const authTypeDefs = `
   input LoginData {
     username: String!
     password: String!
+  }
+
+  type Query {
+    myAuth: User 
   }
   type Mutation {
     register (data: RegisterData): ID

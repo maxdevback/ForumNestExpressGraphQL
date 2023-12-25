@@ -1,7 +1,6 @@
 export const usersTypeDefs = `
   type User {
     id: ID
-    email: String 
     username: String
   }
   type Query {
