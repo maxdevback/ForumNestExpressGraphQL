@@ -6,9 +6,11 @@ class UsersRepositoryClass {
     const newUser = new UserModel({ username, email, password });
     return await newUser.save();
   }
+
   async findUserByUsernameOld(username: string) {
     return await UserModel.findOne({ username });
   }
+
   async findUserByUsernameOrEmailOld(username: string, email: string) {
     const user = await UserModel.findOne({
       $or: [
@@ -20,13 +22,16 @@ class UsersRepositoryClass {
     });
     return user;
   }
+
   async findUserByIdOld(id: string) {
     const user = await UserModel.findById(id);
     return user;
   }
+
   async deleteAccount(id: string) {
     return await UserModel.findByIdAndDelete(id);
   }
+
   async findUserByUsername(username: string) {
     const user = await UserModel.aggregate([
       { $match: { username: username } },
@@ -34,11 +39,13 @@ class UsersRepositoryClass {
 
     return user[0];
   }
+
   async findByUsernameOrEmail(username: string, email: string) {
     return await UserModel.aggregate([
       { $match: { $or: [{ username }, { email }] } },
     ]);
   }
+
   async findUserById(id: string) {
     const user = await UserModel.aggregate([
       { $match: { _id: new Types.ObjectId(id) } },
