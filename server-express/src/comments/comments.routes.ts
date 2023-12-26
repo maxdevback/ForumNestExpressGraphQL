@@ -18,4 +18,8 @@ const commentsRouter = Router();
 commentsRouter.use("/v1.1", router);
 commentsRouter.use("/v1.2", router);
 
-export default commentsRouter;
+const CommentsRouter = (router: Router) => {
+  router.use("/comments", commentsRouter);
+};
+
+export default CommentsRouter;

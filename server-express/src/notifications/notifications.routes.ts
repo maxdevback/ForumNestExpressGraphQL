@@ -10,4 +10,8 @@ const notificationsRouter = Router();
 notificationsRouter.use("/v1.1", router);
 notificationsRouter.use("/v1.2", router);
 
-export default notificationsRouter;
+const NotificationsRouter = (router: Router) => {
+  router.use("/notifications", notificationsRouter);
+};
+
+export default NotificationsRouter;
