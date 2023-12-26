@@ -1,18 +1,18 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import "./users.service";
 import { UsersService } from "./users.service";
 
-class UsersControllerClass {
-  async deleteAccount(req: Request, res: Response) {
+class UsersControllerOldClass {
+  async deleteAccount(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.session.user!._id;
       req.session.user = null;
       res.send(await UsersService.deleteAccount(id));
     } catch (err: any) {
       req.session.user = null;
-      res.status(err.httpCode ?? 500).send(err.message);
+      next(err);
     }
   }
 }
 
-export const UsersController = new UsersControllerClass();
+export const UsersControllerOld = new UsersControllerOldClass();
