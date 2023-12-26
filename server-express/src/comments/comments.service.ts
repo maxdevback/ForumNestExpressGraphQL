@@ -5,7 +5,7 @@ import { CommentsRepository } from "./comments.repository";
 import { NotificationsService } from "../notifications/notifications.service";
 import { CommentsRepository_v1_2 } from "./comments.repository.v1.2";
 import { ICommentCreate } from "./comments.interfaces";
-import { UsersExceptions } from "../users/users.exceptions";
+import UsersExceptions from "../users/users.exceptions";
 
 class CommentsServiceClass {
   async create(data: ICommentCreate, v: "v1.1" | "v1.2" = "v1.1") {

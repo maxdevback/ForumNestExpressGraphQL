@@ -1,7 +1,14 @@
-class PostsExceptionsClass {
-  notFound(message: string = "This post doesn't exist") {
-    return { httpCode: 404, message };
+import { ExceptionClass } from "../model/exception";
+
+class PostsExceptions extends ExceptionClass {
+  constructor(message: string, httpCode: number) {
+    super(message, httpCode);
+    this.message = message;
+    this.httpCode = httpCode;
+  }
+  static notFound(message: string = "This post doesn't exist") {
+    return new PostsExceptions(message, 404);
   }
 }
 
-export const PostsExceptions = new PostsExceptionsClass();
+export default PostsExceptions;
