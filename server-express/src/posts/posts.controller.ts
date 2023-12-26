@@ -1,10 +1,8 @@
-import { Request, Response } from "express";
-import { Validate } from "../shared/validate";
+import { NextFunction, Request, Response } from "express";
 import { PostsService } from "./posts.service";
-import { PostsValidate } from "./posts.validators";
 
 class PostsControllerOldClass {
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response, next: NextFunction) {
     try {
       res.send(
         await PostsService.create(
@@ -13,25 +11,32 @@ class PostsControllerOldClass {
           req.session.user!._id
         )
       );
-    } catch (err: any) {
-      res.status(err.httpCode ?? 500).send(err.message);
+    } catch (err) {
+      next(err);
     }
   }
-  async getPostsByPage(req: Request, res: Response) {
+
+  async getPostsByPage(req: Request, res: Response, next: NextFunction) {
     try {
       res.send(await PostsService.getByPageOld(+req.params.page));
     } catch (err: any) {
-      res.status(err.httpCode ?? 500).send(err.message);
+      next(err);
     }
   }
-  async getByPostId(req: Request, res: Response) {
+
+  async getByPostId(req: Request, res: Response, next: NextFunction) {
     try {
       res.send(await PostsService.getByPostIdOld(req.params.postId));
     } catch (err: any) {
-      res.status(err.httpCode ?? 500).send(err.message);
+      next(err);
     }
   }
-  async getPostsByAuthorAndPage(req: Request, res: Response) {
+
+  async getPostsByAuthorAndPage(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       res.send(
         await PostsService.getByAuthorAndPageOld(
@@ -40,10 +45,11 @@ class PostsControllerOldClass {
         )
       );
     } catch (err: any) {
-      res.status(err.httpCode ?? 500).send(err.message);
+      next(err);
     }
   }
-  async getMyPostsByPage(req: Request, res: Response) {
+
+  async getMyPostsByPage(req: Request, res: Response, next: NextFunction) {
     try {
       res.send(
         await PostsService.getByAuthorAndPageOld(
@@ -52,10 +58,11 @@ class PostsControllerOldClass {
         )
       );
     } catch (err: any) {
-      res.status(err.httpCode ?? 500).send(err.message);
+      next(err);
     }
   }
-  async updatePostByPostId(req: Request, res: Response) {
+
+  async updatePostByPostId(req: Request, res: Response, next: NextFunction) {
     try {
       res.send(
         await PostsService.updateByPostIdAndAuthorId(
@@ -65,14 +72,15 @@ class PostsControllerOldClass {
         )
       );
     } catch (err: any) {
-      res.status(err.httpCode ?? 500).send(err.message);
+      next(err);
     }
   }
-  async getAuthorByPostId(req: Request, res: Response) {
+
+  async getAuthorByPostId(req: Request, res: Response, next: NextFunction) {
     try {
       res.send(await PostsService.getAuthorByPostId(req.params.postId));
     } catch (err: any) {
-      res.status(err.httpCode ?? 500).send(err.message);
+      next(err);
     }
   }
 }

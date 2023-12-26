@@ -1,15 +1,16 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { PostsService } from "./posts.service";
 
 class PostsControllerV1_2Class {
-  async getAuthorByPostId(req: Request, res: Response) {
+  async getAuthorByPostId(req: Request, res: Response, next: NextFunction) {
     try {
       res.send(await PostsService.getAuthorByPostId(req.params.postId));
     } catch (err: any) {
-      res.status(err.httpCode ?? 500).send(err.message);
+      next(err);
     }
   }
-  async getMyPostsByPage(req: Request, res: Response) {
+
+  async getMyPostsByPage(req: Request, res: Response, next: NextFunction) {
     try {
       res.send(
         await PostsService.getByAuthorAndPage(
@@ -18,10 +19,15 @@ class PostsControllerV1_2Class {
         )
       );
     } catch (err: any) {
-      res.status(err.httpCode ?? 500).send(err.message);
+      next(err);
     }
   }
-  async getPostsByAuthorAndPage(req: Request, res: Response) {
+
+  async getPostsByAuthorAndPage(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       res.send(
         await PostsService.getByAuthorAndPage(
@@ -30,21 +36,23 @@ class PostsControllerV1_2Class {
         )
       );
     } catch (err: any) {
-      res.status(err.httpCode ?? 500).send(err.message);
+      next(err);
     }
   }
-  async getPostsByPage(req: Request, res: Response) {
+
+  async getPostsByPage(req: Request, res: Response, next: NextFunction) {
     try {
       res.send(await PostsService.getByPage(+req.params.page));
     } catch (err: any) {
-      res.status(err.httpCode ?? 500).send(err.message);
+      next(err);
     }
   }
-  async getByPostId(req: Request, res: Response) {
+
+  async getByPostId(req: Request, res: Response, next: NextFunction) {
     try {
       res.send(await PostsService.getByPostId(req.params.postId));
     } catch (err: any) {
-      res.status(err.httpCode ?? 500).send(err.message);
+      next(err);
     }
   }
 }

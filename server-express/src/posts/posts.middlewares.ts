@@ -10,6 +10,7 @@ class PostsMiddlewaresClass {
       res.send(err);
     }
   }
+
   updateValidationBody(req: Request, res: Response, next: NextFunction) {
     try {
       res.locals.providedFields = PostsValidate.validateUpdateBody(req.body);

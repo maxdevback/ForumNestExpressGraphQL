@@ -13,4 +13,8 @@ const usersRouter = Router();
 usersRouter.use("/v1.1", router);
 usersRouter.use("/v1.2", router);
 
-export default usersRouter;
+const UsersRouter = (router: Router) => {
+  router.use("/users", usersRouter);
+};
+
+export default UsersRouter;
