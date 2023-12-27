@@ -1,7 +1,8 @@
 export const usersTypeDefs = `
   type User {
-    id: ID
+    user_id: ID
     username: String
+    posts: [Post]
   }
   type Query {
     users(page: Int!): [User]

@@ -1,4 +1,4 @@
-import { prisma } from "../users/users.controller";
+import { prisma } from "../yoga.server";
 import { AuthHelpers } from "./auth.helpers";
 import { ICreateUser } from "./auth.interfaces";
 import { Request, Response } from "express";
@@ -6,7 +6,9 @@ import { Request, Response } from "express";
 //TODO: Errors
 class AuthServiceClass {
   async create(data: ICreateUser) {
+    console.log(data);
     const hashedPassword = await AuthHelpers.hashPassword(data.password);
+    console.log(hashedPassword);
     const newUser = await prisma.user.create({
       data: {
         username: data.username,
@@ -23,6 +25,7 @@ class AuthServiceClass {
     const user = await prisma.user.findUnique({
       where: { username: data.username },
     });
+    if (!user) throw "";
     const isPasswordEqual = await AuthHelpers.comparePassword(
       data.password,
       user.password

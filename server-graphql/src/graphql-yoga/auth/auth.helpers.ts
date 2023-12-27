@@ -15,8 +15,9 @@ class AuthHelpersClass {
   }
   createJWT(data: authData) {
     return {
+      //TODO: Change 30 days (tokenA) from 5m
       tokenA: JWT.sign(data, this.jwtSecretA, {
-        expiresIn: "5m",
+        expiresIn: "30 days",
       }),
       tokenR: JWT.sign(data, this.jwtSecretR, {
         expiresIn: "30 days",
