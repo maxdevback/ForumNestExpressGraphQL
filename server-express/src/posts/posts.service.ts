@@ -1,8 +1,8 @@
 import { PostsRepository } from "./posts.repository";
 import { UsersRepository } from "../users/users.repository";
 import { Validate } from "../shared/validate";
-import { UsersExceptions } from "../users/users.exceptions";
-import { PostsExceptions } from "./posts.exceptions";
+import UsersExceptions from "../users/users.exceptions";
+import PostsExceptions from "./posts.exceptions";
 
 class PostsServiceClass {
   async create(title: string, body: string, authorId: string) {

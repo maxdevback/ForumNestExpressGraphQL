@@ -1,18 +1,17 @@
-class AuthExceptionsClass {
-  alreadyExist(
+import { ExceptionClass } from "../model/exception";
+
+class AuthExceptions extends ExceptionClass {
+  constructor(message: string, httpCode: number) {
+    super(message, httpCode);
+  }
+  static alreadyExist(
     message: string = "A user with that username or email already exists."
   ) {
-    return {
-      httpCode: 409,
-      message,
-    };
+    return new AuthExceptions(message, 409);
   }
-  wrongPassword() {
-    return {
-      httpCode: 400,
-      message: "The password is wrong",
-    };
+  static wrongPassword() {
+    return new AuthExceptions("The password is wrong", 400);
   }
 }
 
-export const AuthExceptions = new AuthExceptionsClass();
+export default AuthExceptions;

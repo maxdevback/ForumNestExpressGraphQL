@@ -1,6 +1,6 @@
-import { UsersExceptions } from "../users/users.exceptions";
+import UsersExceptions from "../users/users.exceptions";
 import { UsersRepository } from "../users/users.repository";
-import { AuthExceptions } from "./auth.exceptions";
+import AuthExceptions from "./auth.exceptions";
 import { AuthHelpers } from "./auth.helpers";
 import { ILogin, IRegister } from "./auth.interfaces";
 

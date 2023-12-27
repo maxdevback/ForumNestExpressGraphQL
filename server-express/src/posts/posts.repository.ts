@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { PostsExceptions } from "./posts.exceptions";
+import PostsExceptions from "./posts.exceptions";
 import { IPost, PostModel } from "./posts.model";
 
 class PostsRepositoryClass {
