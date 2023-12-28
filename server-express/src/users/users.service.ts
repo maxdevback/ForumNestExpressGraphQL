@@ -1,8 +1,8 @@
-import { UsersRepository } from "./users.repository";
+import { UsersRepository } from './users.repository';
 
 class UsersServiceClass {
   async deleteAccount(id: string) {
-    await UsersRepository.deleteAccount(id);
+    return await UsersRepository.deleteAccount(id);
   }
 }
 

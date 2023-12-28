@@ -37,7 +37,7 @@ export const PostPage = () => {
     setComments(
       comment.body.map((comment: any) => {
         return { comment: comment, replays: [] };
-      })
+      }),
     );
   };
   const likePost = async () => {

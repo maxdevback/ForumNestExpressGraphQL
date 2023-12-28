@@ -1,6 +1,6 @@
-import { Schema } from "mongoose";
-import { model } from "mongoose";
-import { Document } from "mongoose";
+import { Schema } from 'mongoose';
+import { model } from 'mongoose';
+import { Document } from 'mongoose';
 
 export interface ILike extends Document {
   likedEntityId: string;
@@ -9,7 +9,7 @@ export interface ILike extends Document {
 
 export const likeSchema = new Schema<ILike>({
   likedEntityId: { type: String, required: true },
-  authorId: { type: String, required: true, ref: "user" },
+  authorId: { type: String, required: true, ref: 'user' },
 });
 
-export const LikesModel = model<ILike>("like", likeSchema);
+export const LikesModel = model<ILike>('like', likeSchema);

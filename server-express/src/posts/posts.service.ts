@@ -1,8 +1,7 @@
-import { PostsRepository } from "./posts.repository";
-import { UsersRepository } from "../users/users.repository";
-import { Validate } from "../shared/validate";
-import UsersExceptions from "../users/users.exceptions";
-import PostsExceptions from "./posts.exceptions";
+import { PostsRepository } from './posts.repository';
+import { UsersRepository } from '../users/users.repository';
+import { Validate } from '../shared/validate';
+import { NotFoundException } from '../model/exceptions/not-found.exception';
 
 class PostsServiceClass {
   async create(title: string, body: string, authorId: string) {
@@ -29,38 +28,38 @@ class PostsServiceClass {
   async getByPostIdOld(postId: string) {
     Validate.validateObjectId(postId);
     const post = await PostsRepository.getByPostIdOld(postId);
-    if (!post) throw PostsExceptions.notFound();
+    if (!post) throw new NotFoundException("This post doesn't exist");
     return post;
   }
 
   async getByPostId(postId: string) {
     Validate.validateObjectId(postId);
     const post = await PostsRepository.getByPostId(postId);
-    if (!post) throw PostsExceptions.notFound();
+    if (!post) throw new NotFoundException("This post doesn't exist");
     return post;
   }
 
   async getAuthorByPostIdOld(postId: string) {
     Validate.validateObjectId(postId);
     const post = await PostsRepository.getByPostIdOld(postId);
-    if (!post) throw PostsExceptions.notFound();
+    if (!post) throw new NotFoundException("This post doesn't exist");
     const user = await UsersRepository.findUserByIdOld(postId);
-    if (!user) throw UsersExceptions.NotFound("Author of the post not found");
+    if (!user) throw new NotFoundException('Author of the post not found');
     return { _id: user._id, username: user.username };
   }
 
   async getAuthorByPostId(postId: string) {
     const post = await PostsRepository.getByPostId(postId);
-    if (!post) throw PostsExceptions.notFound();
+    if (!post) throw new NotFoundException("This post doesn't exist");
     const user = await UsersRepository.findUserById(post.authorId);
-    if (!user) throw UsersExceptions.NotFound("Author of the post not found");
+    if (!user) throw new NotFoundException('Author of the post not found');
     return { _id: user._id, username: user.username };
   }
 
   async updateByPostIdAndAuthorId(
     postId: string,
     authorId: string,
-    newData: object
+    newData: object,
   ) {
     Validate.validateObjectId(postId);
     Validate.validateObjectId(authorId);

@@ -1,5 +1,5 @@
-import { Types } from "mongoose";
-import { UserModel } from "./users.model";
+import { Types } from 'mongoose';
+import { UserModel } from './users.model';
 
 class UsersRepositoryClass {
   async create(username: string, email: string, password: string) {

@@ -1,4 +1,4 @@
-import { LikesModel } from "./likes.model";
+import { LikesModel } from './likes.model';
 
 class LikesRepositoryClass {
   async create(entityId: string, authorId: string) {

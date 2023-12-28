@@ -1,6 +1,6 @@
-import { Schema } from "mongoose";
-import { model } from "mongoose";
-import { Document } from "mongoose";
+import { Schema } from 'mongoose';
+import { model } from 'mongoose';
+import { Document } from 'mongoose';
 
 export interface IComment extends Document {
   username: string;
@@ -15,15 +15,15 @@ export interface IComment extends Document {
 export const commentSchema = new Schema<IComment>({
   username: { type: String, required: true },
   body: { type: String, required: true },
-  postId: { type: String, required: true, ref: "post" },
+  postId: { type: String, required: true, ref: 'post' },
   parentCommentId: {
     type: String,
-    ref: "comment",
+    ref: 'comment',
     default: null,
   },
   hasReplays: { type: Boolean, required: true, default: false },
   roughNumberOfLikes: { type: Number, required: true, default: 0 },
-  authorId: { type: String, required: true, ref: "user" },
+  authorId: { type: String, required: true, ref: 'user' },
 });
 
-export const CommentModel = model<IComment>("comment", commentSchema);
+export const CommentModel = model<IComment>('comment', commentSchema);

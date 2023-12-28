@@ -1,11 +1,11 @@
-import { LikesModel } from "./likes.model";
+import { LikesModel } from './likes.model';
 
 class LikesRepositoryClass {
   async create(entityId: string, authorId: string) {
     const aggregationPipeline = [
       {
         $merge: {
-          into: "likes",
+          into: 'likes',
         },
       },
     ];
@@ -16,8 +16,8 @@ class LikesRepositoryClass {
       { $addFields: { likedEntityId: entityId, authorId: authorId } },
       {
         $merge: {
-          into: "likes",
-          whenNotMatched: "insert",
+          into: 'likes',
+          whenNotMatched: 'insert',
         },
       },
     ]);

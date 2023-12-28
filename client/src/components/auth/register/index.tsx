@@ -21,7 +21,7 @@ export const RegisterPage = () => {
     const response = await UserFetch.register(
       data.username,
       data.email,
-      data.password
+      data.password,
     );
     if (response.status.toString()[0] !== "2") {
       alert(JSON.stringify(response.body.message));
