@@ -1,4 +1,5 @@
-import Joi from "joi";
+import Joi from 'joi';
+import { BadRequestException } from '../model/exceptions/bad-request.exception';
 
 class PostsValidatorClass {
   validateCreationBody(body: object) {
@@ -7,7 +8,7 @@ class PostsValidatorClass {
       body: Joi.string().min(200).max(10000).required(),
     }).validate(body);
     if (validateRes.error)
-      throw { httpCode: 400, message: validateRes.error.details[0].message };
+      throw new BadRequestException(validateRes.error.details[0].message);
   }
   validateUpdateBody(body: object) {
     return Joi.object({

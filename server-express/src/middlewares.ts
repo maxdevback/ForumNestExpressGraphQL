@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { GlobalMiddlewares } from "./global.middlewares";
+import { Router } from 'express';
+import { GlobalMiddlewares } from './global.middlewares';
 
 const middlewares = Router();
 

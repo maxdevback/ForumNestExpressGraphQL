@@ -1,4 +1,5 @@
-import Joi from "joi";
+import Joi from 'joi';
+import { BadRequestException } from '../model/exceptions/bad-request.exception';
 
 class AuthValidatorClass {
   validateRegisterBody(body: object) {
@@ -8,7 +9,7 @@ class AuthValidatorClass {
       email: Joi.string().min(10).max(100).email().required(),
     }).validate(body);
     if (validateRes.error)
-      throw { httpCode: 400, message: validateRes.error.details[0].message };
+      throw new BadRequestException(validateRes.error.details[0].message);
   }
   validateLoginBody(body: object) {
     const validateRes = Joi.object({
@@ -16,7 +17,7 @@ class AuthValidatorClass {
       password: Joi.string().min(6).required(),
     }).validate(body);
     if (validateRes.error)
-      throw { httpCode: 400, message: validateRes.error.details[0].message };
+      throw new BadRequestException(validateRes.error.details[0].message);
   }
 }
 

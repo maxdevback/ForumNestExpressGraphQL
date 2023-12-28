@@ -1,6 +1,6 @@
-import { Types } from "mongoose";
-import PostsExceptions from "./posts.exceptions";
-import { IPost, PostModel } from "./posts.model";
+import { Types } from 'mongoose';
+import { PostModel } from './posts.model';
+import { IPost } from './posts.interfaces';
 
 class PostsRepositoryClass {
   async create(title: string, body: string, authorId: string) {
@@ -54,13 +54,12 @@ class PostsRepositoryClass {
   async updateByPostIdAndAuthorId(
     postId: string,
     authorId: string,
-    newData: object
+    newData: object,
   ) {
     const updateInfo = await PostModel.updateOne(
       { _id: postId, authorId },
-      newData
+      newData,
     );
-    if (updateInfo.matchedCount < 1) throw PostsExceptions.notFound;
     return updateInfo;
   }
   async increaseRoughNumberOfLikes(postId: string) {

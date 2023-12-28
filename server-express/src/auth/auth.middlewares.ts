@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { AuthValidate } from "./auth.validate";
+import { Request, Response, NextFunction } from 'express';
+import { AuthValidate } from './auth.validate';
 
 class AuthMiddlewaresClass {
   validateRegisterBody(req: Request, res: Response, next: NextFunction) {

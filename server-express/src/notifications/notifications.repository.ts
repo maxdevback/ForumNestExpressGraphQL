@@ -1,4 +1,4 @@
-import { NotificationModel } from "./notifications.model";
+import { NotificationModel } from './notifications.model';
 
 class NotificationsRepositoryClass {
   async createNotification(body: string, receiverId: string) {

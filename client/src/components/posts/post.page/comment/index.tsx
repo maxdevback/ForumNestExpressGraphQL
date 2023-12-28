@@ -26,7 +26,7 @@ const Comment = ({
     const response = await CommentsFetch.replay(
       postId,
       replayInputRef.current?.value!,
-      commentId
+      commentId,
     );
     if (response.status - 200 > 99) {
       alert(JSON.stringify(response.body));
@@ -39,7 +39,7 @@ const Comment = ({
     const response = await CommentsFetch.getReplaysByCommentId(
       postId,
       commentId,
-      1
+      1,
     );
     if (response.status - 200 > 99) {
       alert(JSON.stringify(response.body));

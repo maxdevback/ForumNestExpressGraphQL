@@ -1,4 +1,4 @@
-import { NotificationModel } from "./notifications.model";
+import { NotificationModel } from './notifications.model';
 
 class NotificationsRepositoryClass {
   async createNotification(body: string, receiverId: string) {
@@ -6,9 +6,9 @@ class NotificationsRepositoryClass {
       { $addFields: { body, receiverId } },
       {
         $merge: {
-          into: "notifications",
-          whenMatched: "merge",
-          whenNotMatched: "insert",
+          into: 'notifications',
+          whenMatched: 'merge',
+          whenNotMatched: 'insert',
         },
       },
     ]);
@@ -25,13 +25,13 @@ class NotificationsRepositoryClass {
             { $skip: skip },
             { $limit: pageSize },
           ],
-          count: [{ $match: { receiverId } }, { $count: "total" }],
+          count: [{ $match: { receiverId } }, { $count: 'total' }],
         },
       },
       {
         $project: {
           notifications: 1,
-          total: { $ifNull: [{ $arrayElemAt: ["$count.total", 0] }, 0] },
+          total: { $ifNull: [{ $arrayElemAt: ['$count.total', 0] }, 0] },
         },
       },
     ]);
