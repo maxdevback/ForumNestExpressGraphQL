@@ -9,6 +9,7 @@ class PostsServiceClass {
     console.log(posts);
     return posts;
   }
+
   async create(data: ICreatePostsInterfaces) {
     console.log(data);
     const res = await prisma.post.create({
@@ -16,6 +17,15 @@ class PostsServiceClass {
     });
     console.log(res);
     return res;
+  }
+
+  async post(id: number) {
+    const post = await prisma.post.findUnique({
+      include: { author: true },
+      where: { id },
+    });
+    console.log(post);
+    return post;
   }
 }
 
