@@ -1,4 +1,4 @@
 export const secretsConfig = {
-  mongodbLink: process.env.MONGODB_LINK!,
-  cookieSessionSecret: process.env.SESSION_SECRET!,
+  MONGODB_LINK: process.env.MONGODB_LINK!,
+  COOKIES_SESSION_SECRET: process.env.SESSION_SECRET!,
 };

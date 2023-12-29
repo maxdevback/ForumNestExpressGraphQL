@@ -40,8 +40,9 @@ class UsersRepositoryClass {
     ]);
   }
   async findUserById(id: string) {
+    const { ObjectId } = Types;
     const user = await UserModel.aggregate([
-      { $match: { _id: new Types.ObjectId(id) } },
+      { $match: { _id: new ObjectId(id) } },
     ]);
 
     return user[0];

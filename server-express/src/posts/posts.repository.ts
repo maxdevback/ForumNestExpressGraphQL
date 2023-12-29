@@ -42,10 +42,11 @@ class PostsRepositoryClass {
     return await PostModel.findOne({ _id: postId });
   }
   async getByPostId(postId: string) {
+    const { ObjectId } = Types;
     const post = await PostModel.aggregate([
       {
         $match: {
-          _id: new Types.ObjectId(postId),
+          _id: new ObjectId(postId),
         },
       },
     ]);

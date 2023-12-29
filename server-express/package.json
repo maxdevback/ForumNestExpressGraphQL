@@ -4,7 +4,7 @@
   "description": "",
   "main": "App.ts",
   "scripts": {
-    "dev": "nodemon src/app.ts",
+    "dev": "nodemon src/app.ts --trace-warnings",
     "build": "tsc",
     "start": "forever build/src/app.js",
     "test": "jest --config test/jest.json --forceExit"

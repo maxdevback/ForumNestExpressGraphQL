@@ -5,18 +5,16 @@ import { sendErrorOrExceptionToClient } from './shared/shared.error-or-execeptio
 import { secretsConfig } from './config/config.sectrets';
 import { appInfoConfig } from './config/config.app.info';
 
-class GlobalMiddlewaresClass {
-  cors = cors({
-    origin: appInfoConfig.clientUrl,
+export const GlobalMiddlewares = {
+  cors: cors({
+    origin: appInfoConfig.CLIENT_URL,
     credentials: true,
-  });
-  cookieSession = cookieSession({
+  }),
+  cookieSession: cookieSession({
     name: 'session',
-    keys: [secretsConfig.cookieSessionSecret],
-  });
+    keys: [secretsConfig.COOKIES_SESSION_SECRET],
+  }),
   errorHandler(err: any, req: Request, res: Response, next: NextFunction) {
     sendErrorOrExceptionToClient(res, err);
-  }
-}
-
-export const GlobalMiddlewares = new GlobalMiddlewaresClass();
+  },
+};
