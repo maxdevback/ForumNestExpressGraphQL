@@ -4,16 +4,13 @@ import { SharedMiddleWare } from '../shared/shared.middlewares';
 
 const router = Router();
 router.delete(
-  '/delete',
+  '/v1.1/delete',
   SharedMiddleWare.validateAuth,
   UsersController.deleteAccount,
 );
-const usersRouter = Router();
-
-usersRouter.use('/v1.1', router);
 
 const UsersRouter = (router: Router) => {
-  router.use('/users', usersRouter);
+  router.use('/users', router);
 };
 
 export default UsersRouter;
