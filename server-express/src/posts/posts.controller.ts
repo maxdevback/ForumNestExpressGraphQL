@@ -13,6 +13,7 @@ class PostsControllerOldClass {
   }
 
   async getPostsByPage(req: Request, res: Response) {
+    throw {};
     res.send(await PostsService.getByPageOld(+req.params.page));
   }
 

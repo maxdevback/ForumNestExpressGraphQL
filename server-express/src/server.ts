@@ -8,7 +8,6 @@ config();
 
 //Without export
 import './types';
-import './async.error.handller';
 
 //Routes and middlewares
 import { GlobalMiddlewares } from './global.middlewares';

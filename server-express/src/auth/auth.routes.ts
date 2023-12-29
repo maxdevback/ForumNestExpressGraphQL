@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { AuthControllerOld } from './auth.controller.old';
 import { AuthController_v1_2 } from './auth.controller.v1.2';
 import { AuthMiddlewares } from './auth.middlewares';
+import { asyncWrap } from '../model/async-wrap/async-wrap.route';
 
 const authRouter = Router();
 
@@ -14,14 +15,16 @@ authRouter.post(
 authRouter.post(
   '/v1.2/login',
   AuthMiddlewares.validateLoginBody,
-  AuthController_v1_2.login,
+  (req, res, next) => asyncWrap(req, res, next, AuthController_v1_2.login),
 );
 authRouter.post(
   '/v1.2/register',
   AuthMiddlewares.validateRegisterBody,
-  AuthControllerOld.register,
+  (req, res, next) => asyncWrap(req, res, next, AuthControllerOld.register),
 );
-authRouter.delete('/v1.1/logout', AuthControllerOld.logout);
+authRouter.delete('/v1.1/logout', (req, res, next) =>
+  asyncWrap(req, res, next, AuthControllerOld.logout),
+);
 
 const AuthRouter = (router: Router) => {
   router.use('/auth', authRouter);
