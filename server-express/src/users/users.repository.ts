@@ -6,7 +6,17 @@ class UsersRepositoryClass {
     const newUser = new UserModel({ username, email, password });
     return await newUser.save();
   }
-
+  
+  /**
+   * @deprecated since version 2.0.0
+   */
+  async findUserByUsernameOld(username: string) {
+    return await UserModel.findOne({ username });
+  }
+  
+  /**
+   * @deprecated since version 2.0.0
+   */
   async findUserByUsernameOld(username: string) {
     return await UserModel.findOne({ username });
   }
@@ -22,7 +32,9 @@ class UsersRepositoryClass {
     });
     return user;
   }
-
+  /**
+   * @deprecated since version 2.0.0
+   */
   async findUserByIdOld(id: string) {
     const user = await UserModel.findById(id);
     return user;

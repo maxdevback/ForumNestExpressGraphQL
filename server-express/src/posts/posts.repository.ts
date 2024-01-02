@@ -12,6 +12,9 @@ class PostsRepositoryClass {
     await post.save();
     return post;
   }
+  /**
+   * @deprecated since version 2.0.0
+   */
   async getByPageOld(page: number) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
@@ -23,6 +26,9 @@ class PostsRepositoryClass {
 
     return await PostModel.aggregate([{ $skip: skip }, { $limit: pageSize }]);
   }
+  /**
+   * @deprecated since version 2.0.0
+   */
   async getByAuthorAndPageOld(authorId: string, page: number) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
@@ -38,6 +44,9 @@ class PostsRepositoryClass {
       { $limit: pageSize },
     ]);
   }
+  /**
+   * @deprecated since version 2.0.0
+   */
   async getByPostIdOld(postId: string) {
     return await PostModel.findOne({ _id: postId });
   }
