@@ -27,7 +27,7 @@ export const Posts = () => {
         if (!authorIdInput.current) return;
         return setPosts(
           (await PostFetch.getByAuthorId(+authorIdInput.current!.value, page))
-            .body
+            .body,
         );
       case "my":
         return setPosts((await PostFetch.getMy(page)).body);

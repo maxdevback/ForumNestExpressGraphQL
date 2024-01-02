@@ -6,7 +6,7 @@ class UserFetchClass extends FetchWrapClass {
     const response = await this._fetch(
       `${config.backendApi}users/${config.versionPrefix}/register`,
       "POST",
-      { username, email, password }
+      { username, email, password },
     );
     return response;
   }
@@ -14,32 +14,32 @@ class UserFetchClass extends FetchWrapClass {
     const response = await this._fetch(
       `${config.backendApi}users/${config.versionPrefix}/login`,
       "POST",
-      { username, password }
+      { username, password },
     );
     return response;
   }
   async getMyData() {
     const response = await this._fetch(
-      `${config.backendApi}users/${config.versionPrefix}/my`
+      `${config.backendApi}users/${config.versionPrefix}/my`,
     );
     return response;
   }
   async logout() {
     const response = await this._fetch(
       `${config.backendApi}users/${config.versionPrefix}/logout`,
-      "DELETE"
+      "DELETE",
     );
     return response;
   }
   async getByPostId(id: number | string) {
     const response = await this._fetch(
-      `${config.backendApi}posts/${config.versionPrefix}/author/${id}`
+      `${config.backendApi}posts/${config.versionPrefix}/author/${id}`,
     );
     return response;
   }
   async deleteAccount() {
     const response = await this._fetch(
-      `${config.backendApi}users/${config.versionPrefix}`
+      `${config.backendApi}users/${config.versionPrefix}`,
     );
     return response;
   }

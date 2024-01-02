@@ -1,6 +1,6 @@
-import { Types } from "mongoose";
-import { ICommentCreate } from "./comments.interfaces";
-import { CommentModel } from "./comments.model";
+import { Types } from 'mongoose';
+import { ICommentCreate } from './comments.interfaces';
+import { CommentModel } from './comments.model';
 
 class CommentsRepositoryClass {
   async create(data: ICommentCreate) {
@@ -16,8 +16,8 @@ class CommentsRepositoryClass {
       },
       {
         $merge: {
-          into: "comments",
-          whenNotMatched: "insert",
+          into: 'comments',
+          whenNotMatched: 'insert',
         },
       },
     ]);
@@ -27,7 +27,7 @@ class CommentsRepositoryClass {
   async getCommentsByPostIdAndPage(
     postId: string,
     page: number,
-    parentCommentId: string | null = null
+    parentCommentId: string | null = null,
   ) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
@@ -42,7 +42,7 @@ class CommentsRepositoryClass {
   async getReplaysByCommentIdAndPostIdAndPage(
     postId: string,
     commentId: string,
-    page: number
+    page: number,
   ) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
@@ -64,7 +64,7 @@ class CommentsRepositoryClass {
   async increaseRoughNumberOfLikes(commentId: string) {
     const res = await CommentModel.aggregate([
       { $match: { _id: commentId } },
-      { $set: { roughNumberOfLikes: { $add: ["$roughNumberOfLikes", 1] } } },
+      { $set: { roughNumberOfLikes: { $add: ['$roughNumberOfLikes', 1] } } },
     ]);
     return res[0];
   }

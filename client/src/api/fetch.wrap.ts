@@ -2,7 +2,7 @@ export class FetchWrapClass {
   async _fetch(
     url: string,
     method: "GET" | "POST" | "DELETE" = "GET",
-    body?: any
+    body?: any,
   ) {
     const response = await fetch(url, {
       headers: {

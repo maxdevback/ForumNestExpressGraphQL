@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import { Validate } from "../shared/validate";
-import { LikesService } from "./likes.service";
+import { Request, Response } from 'express';
+import { Validate } from '../shared/validate';
+import { LikesService } from './likes.service';
 class LikesControllerClass {
   async likePost(req: Request, res: Response) {
     try {
@@ -8,10 +8,10 @@ class LikesControllerClass {
       res.send(
         await LikesService.likeEntity(
           req.params.postId,
-          "post",
+          'post',
           req.session.user!._id,
-          req.baseUrl.split("/")[2] as "v1.1" | "v1.2"
-        )
+          req.baseUrl.split('/')[2] as 'v1.1' | 'v1.2',
+        ),
       );
     } catch (err: any) {
       res.status(err.httpCode ?? 500).send(err.message);
@@ -23,10 +23,10 @@ class LikesControllerClass {
       res.send(
         await LikesService.likeEntity(
           req.params.commentId,
-          "comment",
+          'comment',
           req.session.user!._id,
-          req.baseUrl.split("/")[2] as "v1.1" | "v1.2"
-        )
+          req.baseUrl.split('/')[2] as 'v1.1' | 'v1.2',
+        ),
       );
     } catch (err: any) {
       res.status(err.httpCode ?? 500).send(err.message);
@@ -39,8 +39,8 @@ class LikesControllerClass {
         await LikesService.isLikedEntity(
           req.params.entityId,
           req.session.user!._id,
-          req.baseUrl.split("/")[2] as "v1.1" | "v1.2"
-        )
+          req.baseUrl.split('/')[2] as 'v1.1' | 'v1.2',
+        ),
       );
     } catch (err: any) {
       res.status(err.httpCode ?? 500).send(err.message);

@@ -1,5 +1,4 @@
-import { compare, hash } from "bcrypt";
-import { AuthExceptions } from "./auth.exceptions";
+import { compare, hash } from 'bcrypt';
 
 class AuthHelpersClass {
   async comparePassword(purePassword: string, hashedPassword: string) {

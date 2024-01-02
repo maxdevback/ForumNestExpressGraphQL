@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import { Validate } from "../shared/validate";
-import { CommentsService } from "./comments.service";
-import { CommentsValidator } from "./comments.validator";
+import { Request, Response } from 'express';
+import { Validate } from '../shared/validate';
+import { CommentsService } from './comments.service';
+import { CommentsValidator } from './comments.validator';
 
 class CommentsControllerClass {
   async create(req: Request, res: Response) {
@@ -17,8 +17,8 @@ class CommentsControllerClass {
             body: req.body.body as string,
             parentCommentId: req.body.commentParentId as string,
           },
-          "v1.1"
-        )
+          'v1.1',
+        ),
       );
     } catch (err: any) {
       res.status(err.httpCode ?? 500).send(err.message);
@@ -37,8 +37,8 @@ class CommentsControllerClass {
             body: req.body.body as string,
             parentCommentId: req.body.commentParentId as string,
           },
-          "v1.1"
-        )
+          'v1.1',
+        ),
       );
     } catch (err: any) {
       res.status(err.httpCode ?? 500).send(err.message);
@@ -51,8 +51,8 @@ class CommentsControllerClass {
         await CommentsService.getCommentsByPostIdAndPage(
           req.params.postId,
           +req.params.page,
-          null
-        )
+          null,
+        ),
       );
     } catch (err: any) {
       res.status(err.httpCode ?? 500).send(err.message);
@@ -65,8 +65,8 @@ class CommentsControllerClass {
         await CommentsService.getReplaysByCommentIdAndPostIdAndPage(
           req.params.commentId,
           req.params.postId,
-          +req.params.page
-        )
+          +req.params.page,
+        ),
       );
     } catch (err: any) {
       res.status(err.httpCode ?? 500).send(err.message);

@@ -1,6 +1,6 @@
-import { CommentModel } from "./comments.model";
-import { CommentsExceptions } from "./comments.exceptions";
-import { ICommentCreate } from "./comments.interfaces";
+import { CommentModel } from './comments.model';
+import { CommentsExceptions } from './comments.exceptions';
+import { ICommentCreate } from './comments.interfaces';
 
 class CommentsRepositoryClass {
   async create(data: ICommentCreate) {
@@ -13,7 +13,7 @@ class CommentsRepositoryClass {
     if (data.parentCommentId) {
       const parentComment = await CommentModel.findById(data.parentCommentId);
       if (!parentComment)
-        throw CommentsExceptions.notFound("Not Found comment");
+        throw CommentsExceptions.notFound('Not Found comment');
       comment.parentCommentId = data.parentCommentId;
       comment.body = `${parentComment.username} ${comment.body}`;
     }
@@ -22,7 +22,7 @@ class CommentsRepositoryClass {
   async getCommentsByPostIdAndPage(
     postId: string,
     page: number,
-    parentCommentId: null | string = null
+    parentCommentId: null | string = null,
   ) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
@@ -33,7 +33,7 @@ class CommentsRepositoryClass {
   async getReplaysByCommentIdAndPostIdAndPage(
     postId: string,
     commentId: string,
-    page: number
+    page: number,
   ) {
     const pageSize = 25;
     const skip = (page - 1) * pageSize;
@@ -43,7 +43,7 @@ class CommentsRepositoryClass {
   }
   async getByCommentId(commentId: string) {
     const comment = await CommentModel.findById(commentId);
-    if (!comment) throw CommentsExceptions.notFound("Not Found comment");
+    if (!comment) throw CommentsExceptions.notFound('Not Found comment');
     return comment;
   }
   async increaseRoughNumberOfLikes(commentId: string) {
