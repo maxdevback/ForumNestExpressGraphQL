@@ -9,11 +9,13 @@ import { authTypeDefs } from "./auth/auth.type-defs";
 import { PrismaClient } from "@prisma/client";
 import middlewares from "./middlewares";
 import { postsTypeDefs } from "./posts/posts.type-defs";
-import { PostsResolver } from "./posts/posts.resolver";
+import { postsResolver } from "./posts/posts.resolver";
+import { commentsTypeDefs } from "./comments/comments.type-defs";
+import { commentResolver } from "./comments/comments.resolver";
 
 const schema = makeExecutableSchema({
-  typeDefs: [usersTypeDefs, authTypeDefs, postsTypeDefs],
-  resolvers: [usersResolver, authResolver, PostsResolver],
+  typeDefs: [usersTypeDefs, authTypeDefs, postsTypeDefs, commentsTypeDefs],
+  resolvers: [usersResolver, authResolver, postsResolver, commentResolver],
 });
 const yoga = createYoga({
   schema,

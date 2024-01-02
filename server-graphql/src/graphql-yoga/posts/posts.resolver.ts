@@ -1,8 +1,7 @@
-import { prisma } from "../yoga.server";
 import { IUpdatePostsInterface } from "./posts.interfaces";
 import { PostsService } from "./posts.service";
 
-export const PostsResolver = {
+export const postsResolver = {
   Query: {
     posts: async (_: any, data: { page: number }) => {
       return await PostsService.posts(data.page);
