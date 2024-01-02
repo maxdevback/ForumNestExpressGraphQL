@@ -1,4 +1,5 @@
 import { prisma } from "../yoga.server";
+import { IUpdatePostsInterface } from "./posts.interfaces";
 import { PostsService } from "./posts.service";
 
 export const PostsResolver = {
@@ -23,6 +24,21 @@ export const PostsResolver = {
         ...data.data,
         author: context.req.user.id,
       });
+    },
+    updatePostById: async (
+      _: any,
+      data: { id: number; data: IUpdatePostsInterface },
+      context: { req: any; res: any }
+    ) => {
+      if (!context.req.user) {
+        console.log("Error with auth");
+        throw {};
+      }
+      return await PostsService.updatePostById(
+        +data.id,
+        context.req.user.id,
+        data.data
+      );
     },
   },
 };

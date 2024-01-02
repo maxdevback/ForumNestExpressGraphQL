@@ -7,7 +7,7 @@ class UsersServiceClass {
     const res = await prisma.user.findMany({
       skip,
       take: this.take,
-      select: { posts: true },
+      include: { posts: true },
     });
     return res;
   }

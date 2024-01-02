@@ -1,6 +1,6 @@
 export const postsTypeDefs = `
   type Post {
-    post_id: ID
+    id: ID
     title: String
     body: String
     hasComments: Boolean 
@@ -11,11 +11,16 @@ export const postsTypeDefs = `
     title: String!
     body: String!
   } 
+  input PostUpdate {
+    title: String,
+    body: String,
+  }
 
   type Query {
     posts(page: Int!): [Post]
   }
   type Mutation {
     createPost(data: PostCreate): Post
+    updatePostById(id: ID, data: PostUpdate): Post
   }
 `;
