@@ -12,19 +12,16 @@ authRouter.post(
   AuthMiddlewares.validateLoginBody,
   AuthControllerOld.login,
 );
-authRouter.post(
-  '/v1.2/login',
-  AuthMiddlewares.validateLoginBody,
-  (req, res, next) => asyncWrap(req, res, next, AuthController_v1_2.login),
+
+authRouter.post('/v1.2/login', AuthMiddlewares.validateLoginBody, () =>
+  asyncWrap(AuthController_v1_2.login),
 );
-authRouter.post(
-  '/v1.2/register',
-  AuthMiddlewares.validateRegisterBody,
-  (req, res, next) => asyncWrap(req, res, next, AuthControllerOld.register),
+
+authRouter.post('/v1.2/register', AuthMiddlewares.validateRegisterBody, () =>
+  asyncWrap(AuthControllerOld.register),
 );
-authRouter.delete('/v1.1/logout', (req, res, next) =>
-  asyncWrap(req, res, next, AuthControllerOld.logout),
-);
+
+authRouter.delete('/v1.1/logout', () => asyncWrap(AuthControllerOld.logout));
 
 const AuthRouter = (router: Router) => {
   router.use('/auth', authRouter);

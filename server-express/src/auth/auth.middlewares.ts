@@ -1,21 +1,23 @@
 import { Request, Response, NextFunction } from 'express';
-import { AuthValidate } from './auth.validate';
+import { joiValidateRegisterBody } from './validators/joi.registerBody';
+import { joiValidateLoginBody } from './validators/joi.loginBody';
 
 class AuthMiddlewaresClass {
   validateRegisterBody(req: Request, res: Response, next: NextFunction) {
     try {
-      AuthValidate.validateRegisterBody(req.body);
+      joiValidateRegisterBody(req.body);
       next();
     } catch (err) {
-      res.send(err);
+      next(err);
     }
   }
+
   validateLoginBody(req: Request, res: Response, next: NextFunction) {
     try {
-      AuthValidate.validateLoginBody(req.body);
+      joiValidateLoginBody(req.body);
       next();
     } catch (err) {
-      res.send(err);
+      next(err);
     }
   }
 }

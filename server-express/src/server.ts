@@ -1,39 +1,27 @@
 import { Application } from 'express';
-import express from 'express';
 import { connect } from 'mongoose';
 
-//Dotenv
-import { config } from 'dotenv';
-config();
-
-//Without export
 import './types';
+import './app/server/dotenv';
 
-//Routes and middlewares
-import { GlobalMiddlewares } from './global.middlewares';
-import routes from './routes';
+import { APP_INFO_CONFIG } from './config/app.info';
+import { SECRET_CONFIG } from './config/secrets';
 
-//Configs
-import { appInfoConfig } from './config/config.app.info';
-import { secretsConfig } from './config/config.sectrets';
-
-export const configureApp = async (app: Application) => {
-  app.use(express.json());
-
-  app.use(GlobalMiddlewares.cors);
-  app.use(GlobalMiddlewares.cookieSession);
-
-  app.use(routes);
-
-  app.use(GlobalMiddlewares.errorHandler);
-};
+import { configureApp } from './app/server/configure.app';
+import {
+  configureMiddlewaresBeforeRouter,
+  configureMiddlewaresAfterRouter,
+} from './app/server/configure.middlewares';
 
 export const startApp = async (app: Application) => {
-  if (!secretsConfig.MONGODB_LINK || !appInfoConfig.PORT) {
-    throw 'Something went wrong with env';
-  }
-  app.listen(appInfoConfig.PORT, async () => {
-    await connect(secretsConfig.MONGODB_LINK);
-    console.log(`The App has been started at ${appInfoConfig.PORT} port`);
+  configureMiddlewaresBeforeRouter(app);
+
+  configureApp(app);
+
+  configureMiddlewaresAfterRouter(app);
+
+  app.listen(APP_INFO_CONFIG.PORT, async () => {
+    await connect(SECRET_CONFIG.MONGODB_LINK);
+    console.log(`The App has been started at ${APP_INFO_CONFIG.PORT} port`);
   });
 };

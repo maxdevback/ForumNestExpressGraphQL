@@ -4,9 +4,9 @@
   "description": "",
   "main": "App.ts",
   "scripts": {
-    "dev": "nodemon src/app.ts --trace-warnings",
+    "dev": "nodemon src/index.ts --trace-warnings",
     "build": "tsc",
-    "start": "forever build/src/app.js",
+    "start": "node build/src/index.js",
     "test": "jest --config test/jest.json --forceExit"
   },
   "author": "",
