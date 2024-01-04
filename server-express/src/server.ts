@@ -1,5 +1,5 @@
-import { Application } from 'express';
 import { connect } from 'mongoose';
+import { app } from '.';
 
 import './types';
 import './app/server/dotenv';
@@ -13,15 +13,22 @@ import {
   configureMiddlewaresAfterRouter,
 } from './app/server/configure.middlewares';
 
-export const startApp = async (app: Application) => {
-  configureMiddlewaresBeforeRouter(app);
+const server = {
+  _configure: function () {
+    configureMiddlewaresBeforeRouter(app);
 
-  configureApp(app);
+    configureApp(app);
 
-  configureMiddlewaresAfterRouter(app);
+    configureMiddlewaresAfterRouter(app);
+  },
 
-  app.listen(APP_INFO_CONFIG.PORT, async () => {
-    await connect(SECRET_CONFIG.MONGODB_LINK);
-    console.log(`The App has been started at ${APP_INFO_CONFIG.PORT} port`);
-  });
+  start: function () {
+    this._configure();
+
+    app.listen(APP_INFO_CONFIG.PORT, async () => {
+      await connect(SECRET_CONFIG.MONGODB_LINK);
+      console.log(`The App has been started at ${APP_INFO_CONFIG.PORT} port`);
+    });
+  },
 };
+export { server };

@@ -1,6 +1,6 @@
 import express from 'express';
-import { startApp } from './server';
+import { server } from './server';
 
-const app = express();
+export const app = express();
 
-startApp(app);
+server.start();

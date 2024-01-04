@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response, json } from 'express';
-import { Validate } from './validate';
+import { joiValidateAuth } from './validators/joi.validate.auth';
+import { joiValidatePage } from './validators/joi.validate.page';
 
 class SharedMiddleWareClass {
   validateAuth(req: Request, res: Response, next: NextFunction) {
     try {
-      Validate.validateAuth(req);
+      joiValidateAuth(req);
       next();
     } catch (err) {
       next(err);
@@ -12,7 +13,7 @@ class SharedMiddleWareClass {
   }
   validatePage(req: Request, res: Response, next: NextFunction) {
     try {
-      Validate.validatePage(+req.params.page);
+      joiValidatePage(+req.params.page);
       next();
     } catch (err) {
       next(err);

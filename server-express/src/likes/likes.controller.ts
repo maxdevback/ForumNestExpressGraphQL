@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { Validate } from '../shared/validate';
 import { LikesService } from './likes.service';
+import { joiValidateAuth } from '../shared/validators/joi.validate.auth';
 class LikesControllerClass {
   async likePost(req: Request, res: Response) {
     try {
-      Validate.validateAuth(req);
+      joiValidateAuth(req);
       res.send(
         await LikesService.likeEntity(
           req.params.postId,
@@ -19,7 +19,7 @@ class LikesControllerClass {
   }
   async likeComment(req: Request, res: Response) {
     try {
-      Validate.validateAuth(req);
+      joiValidateAuth(req);
       res.send(
         await LikesService.likeEntity(
           req.params.commentId,
@@ -34,7 +34,7 @@ class LikesControllerClass {
   }
   async isLikedEntity(req: Request, res: Response) {
     try {
-      Validate.validateAuth(req);
+      joiValidateAuth(req);
       res.send(
         await LikesService.isLikedEntity(
           req.params.entityId,

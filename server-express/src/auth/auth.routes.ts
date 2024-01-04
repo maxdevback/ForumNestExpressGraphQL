@@ -6,22 +6,26 @@ import { asyncWrap } from '../model/async-wrap/async-wrap.route';
 
 const authRouter = Router();
 
-authRouter.get('/v1.1/my', AuthControllerOld.getMyInfo);
+authRouter.get('/v1.1/me', AuthControllerOld.getMyInfo);
 authRouter.post(
   '/v1.1/login',
   AuthMiddlewares.validateLoginBody,
-  AuthControllerOld.login,
+  asyncWrap(AuthControllerOld.login),
 );
 
-authRouter.post('/v1.2/login', AuthMiddlewares.validateLoginBody, () =>
+authRouter.post(
+  '/v1.2/login',
+  AuthMiddlewares.validateLoginBody,
   asyncWrap(AuthController_v1_2.login),
 );
 
-authRouter.post('/v1.2/register', AuthMiddlewares.validateRegisterBody, () =>
+authRouter.post(
+  '/v1.2/register',
+  AuthMiddlewares.validateRegisterBody,
   asyncWrap(AuthControllerOld.register),
 );
 
-authRouter.delete('/v1.1/logout', () => asyncWrap(AuthControllerOld.logout));
+authRouter.delete('/v1.1/logout', asyncWrap(AuthControllerOld.logout));
 
 const AuthRouter = (router: Router) => {
   router.use('/auth', authRouter);

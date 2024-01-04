@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
-import { Validate } from '../shared/validate';
 import { CommentsService } from './comments.service';
 import { CommentsValidator } from './comments.validator';
+import { joiValidateAuth } from '../shared/validators/joi.validate.auth';
+import { joiValidatePage } from '../shared/validators/joi.validate.page';
 
 class CommentsControllerClass {
   async create(req: Request, res: Response) {
     try {
       CommentsValidator.validateCreateBody(req.body);
-      Validate.validateAuth(req);
+      joiValidateAuth(req);
       res.send(
         await CommentsService.create(
           {
@@ -27,7 +28,7 @@ class CommentsControllerClass {
   async createReplay(req: Request, res: Response) {
     try {
       CommentsValidator.validateCreateBody(req.body);
-      Validate.validateAuth(req);
+      joiValidateAuth(req);
       res.send(
         await CommentsService.create(
           {
@@ -46,7 +47,7 @@ class CommentsControllerClass {
   }
   async getCommentsByPostIdAndPage(req: Request, res: Response) {
     try {
-      Validate.validatePage(+req.params.page);
+      joiValidatePage(+req.params.page);
       res.send(
         await CommentsService.getCommentsByPostIdAndPage(
           req.params.postId,
@@ -60,7 +61,7 @@ class CommentsControllerClass {
   }
   async getReplaysByCommentIdAndPostIdAndPage(req: Request, res: Response) {
     try {
-      Validate.validatePage(+req.params.page);
+      joiValidatePage(+req.params.page);
       res.send(
         await CommentsService.getReplaysByCommentIdAndPostIdAndPage(
           req.params.commentId,

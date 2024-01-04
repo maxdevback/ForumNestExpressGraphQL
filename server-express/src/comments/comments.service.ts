@@ -1,17 +1,17 @@
 import { PostsRepository } from '../posts/posts.repository';
 import { UsersRepository } from '../users/users.repository';
-import { Validate } from '../shared/validate';
 import { CommentsRepository } from './comments.repository';
 import { NotificationsService } from '../notifications/notifications.service';
 import { CommentsRepository_v1_2 } from './comments.repository.v1.2';
 import { ICommentCreate } from './comments.interfaces';
 import { NotFoundException } from '../model/exceptions/not-found.exception';
+import { joiValidateObjectId } from '../shared/validators/joi.validate.objectid';
 
 class CommentsServiceClass {
   async create(data: ICommentCreate, v: 'v1.1' | 'v1.2' = 'v1.1') {
-    Validate.validateObjectId(data.authorId);
-    Validate.validateObjectId(data.postId);
-    if (data.parentCommentId) Validate.validateObjectId(data.parentCommentId);
+    joiValidateObjectId(data.authorId);
+    joiValidateObjectId(data.postId);
+    if (data.parentCommentId) joiValidateObjectId(data.parentCommentId);
     if (v === 'v1.2') {
       const author = await UsersRepository.findUserById(data.authorId);
       if (!author) throw new NotFoundException('Author of the post not found');
@@ -26,7 +26,7 @@ class CommentsServiceClass {
       if (!post.hasComments)
         await PostsRepository.changeCommentsStatus(true, post);
       if (data.parentCommentId) {
-        Validate.validateObjectId(data.parentCommentId);
+        joiValidateObjectId(data.parentCommentId);
         const parentComment = await CommentsRepository.getByCommentId(
           data.parentCommentId,
         );
@@ -51,7 +51,7 @@ class CommentsServiceClass {
       if (!post.hasComments)
         await PostsRepository.changeCommentsStatus(true, post);
       if (data.parentCommentId) {
-        Validate.validateObjectId(data.parentCommentId);
+        joiValidateObjectId(data.parentCommentId);
         const parentComment = await CommentsRepository_v1_2.getByCommentId(
           data.parentCommentId,
         );
@@ -70,7 +70,7 @@ class CommentsServiceClass {
     parentCommentId: null | string,
     v: 'v1.1' | 'v1.2' = 'v1.1',
   ) {
-    Validate.validateObjectId(postId);
+    joiValidateObjectId(postId);
     return v === 'v1.1'
       ? await CommentsRepository.getCommentsByPostIdAndPage(
           postId,
@@ -89,8 +89,8 @@ class CommentsServiceClass {
     page: number,
     v: 'v1.1' | 'v1.2' = 'v1.1',
   ) {
-    Validate.validateObjectId(commentId);
-    Validate.validateObjectId(postId);
+    joiValidateObjectId(commentId);
+    joiValidateObjectId(postId);
     return v === 'v1.1'
       ? await CommentsRepository.getReplaysByCommentIdAndPostIdAndPage(
           postId,

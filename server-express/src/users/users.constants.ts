@@ -1,4 +1,4 @@
-export const AuthConstants = {
+export const USERS_CONSTANTS = {
   MIN_USERNAME_LENGTH: 4,
   MAX_USERNAME_LENGTH: 20,
   MIN_PASSWORD_LENGTH: 6,

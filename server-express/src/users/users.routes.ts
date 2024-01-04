@@ -5,9 +5,11 @@ import { asyncWrap } from '../model/async-wrap/async-wrap.route';
 
 const router = Router();
 
-router.delete('/v1.1/delete', SharedMiddleWare.validateAuth, (next) => {
-  asyncWrap(UsersController.deleteAccount);
-});
+router.delete(
+  '/v1.1/delete',
+  SharedMiddleWare.validateAuth,
+  asyncWrap(UsersController.deleteAccount),
+);
 
 const UsersRouter = (router: Router) => {
   router.use('/users', router);

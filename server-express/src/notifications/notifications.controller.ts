@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
-import { Validate } from '../shared/validate';
 import { NotificationsService } from './notifications.service';
+import { joiValidateAuth } from '../shared/validators/joi.validate.auth';
+import { joiValidatePage } from '../shared/validators/joi.validate.page';
 
 class NotificationsControllerClass {
   async getNotificationsByReceiverIdAndPage(req: Request, res: Response) {
     try {
-      Validate.validateAuth(req);
-      Validate.validatePage(+req.params.page);
+      joiValidateAuth(req);
+      joiValidatePage(+req.params.page);
       res.send(
         await NotificationsService.getNotificationsByReceiverIdAndPage(
           req.session.user!._id,

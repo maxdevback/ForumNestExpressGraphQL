@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { joiValidateRegisterBody } from './validators/joi.registerBody';
-import { joiValidateLoginBody } from './validators/joi.loginBody';
+import { joiValidateRegisterBody } from './validators/joi.register.body';
+import { joiValidateLoginBody } from './validators/joi.login.body';
 
 class AuthMiddlewaresClass {
   validateRegisterBody(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log('here');
       joiValidateRegisterBody(req.body);
       next();
     } catch (err) {
