@@ -1,5 +1,5 @@
 import { connect } from 'mongoose';
-import { app } from '.';
+import { app } from './index';
 
 import './types';
 import './app/server/dotenv';
