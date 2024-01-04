@@ -8,7 +8,7 @@
     "build": "tsc",
     "start": "node build/src/index.js",
     "test": "jest --config test/jest.json --forceExit",
-    "eslint": "eslint --fix src"
+    "eslint": "eslint src/**"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
