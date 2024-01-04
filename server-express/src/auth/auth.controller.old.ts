@@ -17,7 +17,7 @@ class AuthControllerOldClass {
   }
   async logout(req: Request, res: Response) {
     req.session.user = null;
-    res.send('success');
+    res.send({ message: 'success' });
   }
 }
 

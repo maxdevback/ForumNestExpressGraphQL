@@ -7,7 +7,8 @@
     "dev": "nodemon src/index.ts --trace-warnings",
     "build": "tsc",
     "start": "node build/src/index.js",
-    "test": "jest --config test/jest.json --forceExit"
+    "test": "jest --config test/jest.json --forceExit",
+    "eslint": "eslint --fix src"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

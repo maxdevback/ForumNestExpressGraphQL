@@ -4,14 +4,15 @@ import { app } from './index';
 import './types';
 import './app/server/dotenv';
 
-import { APP_INFO_CONFIG } from './config/app.info';
-import { SECRET_CONFIG } from './config/secrets';
-
 import { configureApp } from './app/server/configure.app';
+
 import {
   configureMiddlewaresBeforeRouter,
   configureMiddlewaresAfterRouter,
 } from './app/server/configure.middlewares';
+
+import { APP_INFO_CONFIG } from './config/app.info';
+import { SECRET_CONFIG } from './config/secrets';
 
 const configure = () => {
   configureMiddlewaresBeforeRouter(app);
