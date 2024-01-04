@@ -1,4 +1,3 @@
-import { Validate } from '../shared/validate';
 import { PostsRepository } from '../posts/posts.repository';
 import { CommentsRepository } from '../comments/comments.repository';
 import { LikesRepository } from './likes.repository';
@@ -6,6 +5,7 @@ import { NotificationsService } from '../notifications/notifications.service';
 import { CommentsRepository_v1_2 } from '../comments/comments.repository.v1.2';
 import { LikesRepository_v1_2 } from './likes.repository.v1.2';
 import { LikesExceptions } from './likes.exceptions';
+import { joiValidateObjectId } from '../shared/validators/joi.validate.objectid';
 class LikesServiceClass {
   async likeEntity(
     entityId: string,
@@ -13,7 +13,7 @@ class LikesServiceClass {
     authorId: string,
     v: 'v1.1' | 'v1.2' = 'v1.1',
   ) {
-    Validate.validateObjectId(entityId);
+    joiValidateObjectId(entityId);
     if (v === 'v1.1') {
       let entity;
       if (type === 'post') {
@@ -73,7 +73,7 @@ class LikesServiceClass {
     authorId: string,
     v: 'v1.1' | 'v1.2' = 'v1.1',
   ) {
-    Validate.validateObjectId(entityId);
+    joiValidateObjectId(entityId);
     return v === 'v1.1'
       ? await LikesRepository.checkIsAlreadyLiked(authorId, entityId)
       : await LikesRepository_v1_2.checkIsAlreadyLiked(authorId, entityId);

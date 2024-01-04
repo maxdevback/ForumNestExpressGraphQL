@@ -1,7 +1,7 @@
 import { PostsRepository } from './posts.repository';
 import { UsersRepository } from '../users/users.repository';
-import { Validate } from '../shared/validate';
 import { NotFoundException } from '../model/exceptions/not-found.exception';
+import { joiValidateObjectId } from '../shared/validators/joi.validate.objectid';
 
 class PostsServiceClass {
   async create(title: string, body: string, authorId: string) {
@@ -17,7 +17,7 @@ class PostsServiceClass {
   }
 
   async getByAuthorAndPageOld(authorId: string, page: number) {
-    Validate.validateObjectId(authorId);
+    joiValidateObjectId(authorId);
     return await PostsRepository.getByAuthorAndPageOld(authorId, page);
   }
 
@@ -26,21 +26,21 @@ class PostsServiceClass {
   }
 
   async getByPostIdOld(postId: string) {
-    Validate.validateObjectId(postId);
+    joiValidateObjectId(postId);
     const post = await PostsRepository.getByPostIdOld(postId);
     if (!post) throw new NotFoundException("This post doesn't exist");
     return post;
   }
 
   async getByPostId(postId: string) {
-    Validate.validateObjectId(postId);
+    joiValidateObjectId(postId);
     const post = await PostsRepository.getByPostId(postId);
     if (!post) throw new NotFoundException("This post doesn't exist");
     return post;
   }
 
   async getAuthorByPostIdOld(postId: string) {
-    Validate.validateObjectId(postId);
+    joiValidateObjectId(postId);
     const post = await PostsRepository.getByPostIdOld(postId);
     if (!post) throw new NotFoundException("This post doesn't exist");
     const user = await UsersRepository.findUserByIdOld(postId);
@@ -61,8 +61,8 @@ class PostsServiceClass {
     authorId: string,
     newData: object,
   ) {
-    Validate.validateObjectId(postId);
-    Validate.validateObjectId(authorId);
+    joiValidateObjectId(postId);
+    joiValidateObjectId(authorId);
     await PostsRepository.updateByPostIdAndAuthorId(postId, authorId, newData);
   }
 }

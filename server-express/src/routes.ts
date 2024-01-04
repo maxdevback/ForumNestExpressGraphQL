@@ -1,23 +1,24 @@
 import { Router } from 'express';
 
-import AuthRouter from './auth/auth.routes';
-import PostsRouter from './posts/posts.routes';
-import CommentsRouter from './comments/comments.routes';
-import LikesRouter from './likes/likes.routes';
-import NotificationsRouter from './notifications/notifications.routes';
-import UsersRouter from './users/users.routes';
+import appendAuthRouter from './auth/auth.routes';
+import appendPostsRouter from './posts/posts.routes';
+import appendCommentsRouter from './comments/comments.routes';
+import appendLikesRouter from './likes/likes.routes';
+import appendNotificationsRouter from './notifications/notifications.routes';
+import appendUsersRouter from './users/users.routes';
+import { NotFoundException } from './model/exceptions/not-found.exception';
 
 const routes = Router();
 
-UsersRouter(routes);
-AuthRouter(routes);
-PostsRouter(routes);
-CommentsRouter(routes);
-LikesRouter(routes);
-NotificationsRouter(routes);
+appendUsersRouter(routes);
+appendAuthRouter(routes);
+appendPostsRouter(routes);
+appendCommentsRouter(routes);
+appendLikesRouter(routes);
+appendNotificationsRouter(routes);
 
 routes.all('*', (req, res) => {
-  res.status(404).send("This resource doesn't exist");
+  throw new NotFoundException("This resource doesn't exist");
 });
 
 export default routes;

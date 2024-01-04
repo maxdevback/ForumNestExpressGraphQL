@@ -55,8 +55,9 @@ class CommentsRepositoryClass {
   }
 
   async getByCommentId(commentId: string) {
+    const { ObjectId } = Types;
     const res = await CommentModel.aggregate([
-      { $match: { _id: new Types.ObjectId(commentId) } },
+      { $match: { _id: new ObjectId(commentId) } },
     ]);
     return res[0];
   }

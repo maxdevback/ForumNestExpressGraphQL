@@ -1,4 +1,4 @@
-# INFO
+# Forum-express-server
 
 This server is written in express.js and has two versions of endpoints. One version has the prefix "v1.1", it is written with mongoose functionality. The second has the prefix "v1.2" and it is written in aggregate
 
