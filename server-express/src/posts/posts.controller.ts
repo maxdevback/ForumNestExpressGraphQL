@@ -7,13 +7,12 @@ class PostsControllerOldClass {
       await PostsService.create(
         req.body.title,
         req.body.body,
-        req.session.user!._id,
+        req.session.user?._id,
       ),
     );
   }
 
   async getPostsByPage(req: Request, res: Response) {
-    throw {};
     res.send(await PostsService.getByPageOld(+req.params.page));
   }
 
@@ -33,7 +32,7 @@ class PostsControllerOldClass {
   async getMyPostsByPage(req: Request, res: Response) {
     res.send(
       await PostsService.getByAuthorAndPageOld(
-        req.session.user!._id,
+        req.session.user?._id,
         +req.params.page,
       ),
     );
@@ -43,7 +42,7 @@ class PostsControllerOldClass {
     res.send(
       await PostsService.updateByPostIdAndAuthorId(
         req.params.postId,
-        req.session.user!._id,
+        req.session.user?._id,
         res.locals.providedFields,
       ),
     );

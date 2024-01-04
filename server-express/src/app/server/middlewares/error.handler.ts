@@ -1,6 +1,12 @@
-import { Request, Response } from 'express';
-import { sendErrorOrExceptionToClient } from '../../../shared/shared.error-or-exeception-to-client';
+import { NextFunction, Request, Response } from 'express';
+import { sendErrorOrExceptionToClient } from '../../../shared/error-or-exception-to-client';
 
-export const serverErrorHandler = (err: any, req: Request, res: Response) => {
+export const serverErrorHandler = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   sendErrorOrExceptionToClient(res, err);
+  next();
 };

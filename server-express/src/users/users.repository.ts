@@ -6,14 +6,7 @@ class UsersRepositoryClass {
     const newUser = new UserModel({ username, email, password });
     return await newUser.save();
   }
-  
-  /**
-   * @deprecated since version 2.0.0
-   */
-  async findUserByUsernameOld(username: string) {
-    return await UserModel.findOne({ username });
-  }
-  
+
   /**
    * @deprecated since version 2.0.0
    */

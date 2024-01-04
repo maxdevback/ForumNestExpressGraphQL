@@ -9,7 +9,7 @@ class PostsControllerV1_2Class {
   async getMyPostsByPage(req: Request, res: Response) {
     res.send(
       await PostsService.getByAuthorAndPage(
-        req.session.user!._id,
+        req.session.user?._id,
         +req.params.page,
       ),
     );
