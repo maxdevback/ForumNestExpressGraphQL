@@ -17,7 +17,7 @@ appendCommentsRouter(routes);
 appendLikesRouter(routes);
 appendNotificationsRouter(routes);
 
-routes.all('*', (req, res) => {
+routes.all('*', () => {
   throw new NotFoundException("This resource doesn't exist");
 });
 

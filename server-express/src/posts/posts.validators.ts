@@ -8,7 +8,7 @@ class PostsValidatorClass {
       body: Joi.string().min(200).max(10000).required(),
     }).validate(body);
     if (validateRes.error)
-      throw new BadRequestException(validateRes.error.details[0].message);
+      {throw new BadRequestException(validateRes.error.details[0].message);}
   }
   validateUpdateBody(body: object) {
     return Joi.object({

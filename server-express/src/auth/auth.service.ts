@@ -14,9 +14,9 @@ class AuthServiceClass {
         data.email,
       )
     )
-      throw new ConflictException(
+      {throw new ConflictException(
         'A user with that username or email already exists.',
-      );
+      );}
     const user = await UsersRepository.create(
       data.username,
       data.email,
@@ -27,7 +27,7 @@ class AuthServiceClass {
   async loginOld(data: ILogin) {
     const user = await UsersRepository.findUserByUsernameOld(data.username);
     if (!user)
-      throw new NotFoundException('The user with this username is not found');
+      {throw new NotFoundException('The user with this username is not found');}
     if (await AuthHelpers.comparePassword(data.password, user.password)) {
       return { _id: user._id, username: user.username };
     } else {
@@ -37,7 +37,7 @@ class AuthServiceClass {
   async login(data: ILogin) {
     const user = await UsersRepository.findUserByUsername(data.username);
     if (!user)
-      throw new NotFoundException('The user with this username is not found');
+      {throw new NotFoundException('The user with this username is not found');}
     if (await AuthHelpers.comparePassword(data.password, user.password)) {
       return { _id: user._id, username: user.username };
     } else {
