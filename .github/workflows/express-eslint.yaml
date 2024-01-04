@@ -9,8 +9,6 @@ jobs:
   eslint:
     runs-on: ubuntu-latest
     steps:
-      - name: Change folder
-        run: cd server-express
       - name: Get repo
         uses: actions/checkout@v4
       - name: Install node modules
