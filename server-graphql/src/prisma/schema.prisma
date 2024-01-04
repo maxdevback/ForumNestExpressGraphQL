@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  username String    @unique
+  password String
+  posts    Post[]
+  Comment  Comment[]
+  Like     Like[]
+}
+
+model Post {
+  id                 Int       @id @default(autoincrement())
+  title              String
+  body               String
+  hasComments        Boolean   @default(false)
+  roughNumberOfLikes Int       @default(0)
+  authorId           Int       @default(1)
+  author             User      @relation(fields: [authorId], references: [id])
+  Comment            Comment[]
+  Like               Like[]
+}
+
+model Comment {
+  id                 Int      @id @default(autoincrement())
+  username           String
+  body               String
+  postId             Int
+  post               Post     @relation(fields: [postId], references: [id])
+  parentComment      Comment? @relation("parentComment", fields: [id], references: [id])
+  replay             Comment? @relation("parentComment")
+  hasReplays         Boolean  @default(false)
+  roughNumberOfLikes Int      @default(0)
+  authorId           Int
+  author             User     @relation(fields: [authorId], references: [id])
+  Like               Like[]
+}
+
+model Like {
+  id             Int     @id() @default(autoincrement())
+  likedPostId    Int
+  likedPost      Post    @relation(fields: [likedPostId], references: [id])
+  likedCommentId Int
+  likedComment   Comment @relation(fields: [likedCommentId], references: [id])
+  authorId       Int
+  author         User    @relation(fields: [authorId], references: [id])
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
