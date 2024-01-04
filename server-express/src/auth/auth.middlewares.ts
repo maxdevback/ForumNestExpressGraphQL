@@ -5,7 +5,6 @@ import { joiValidateLoginBody } from './validators/joi.login.body';
 class AuthMiddlewaresClass {
   validateRegisterBody(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log('here');
       joiValidateRegisterBody(req.body);
       next();
     } catch (err) {

@@ -13,7 +13,7 @@ class CommentsRepositoryClass {
     if (data.parentCommentId) {
       const parentComment = await CommentModel.findById(data.parentCommentId);
       if (!parentComment)
-        throw CommentsExceptions.notFound('Not Found comment');
+        {throw CommentsExceptions.notFound('Not Found comment');}
       comment.parentCommentId = data.parentCommentId;
       comment.body = `${parentComment.username} ${comment.body}`;
     }
@@ -43,7 +43,7 @@ class CommentsRepositoryClass {
   }
   async getByCommentId(commentId: string) {
     const comment = await CommentModel.findById(commentId);
-    if (!comment) throw CommentsExceptions.notFound('Not Found comment');
+    if (!comment) {throw CommentsExceptions.notFound('Not Found comment');}
     return comment;
   }
   async increaseRoughNumberOfLikes(commentId: string) {
@@ -53,7 +53,7 @@ class CommentsRepositoryClass {
   }
   async changeHasReplaysStatus(commentId: string) {
     const comment = await this.getByCommentId(commentId);
-    if (comment.hasReplays) return await comment.save();
+    if (comment.hasReplays) {return await comment.save();}
     comment.hasReplays = true;
     return await comment.save();
   }

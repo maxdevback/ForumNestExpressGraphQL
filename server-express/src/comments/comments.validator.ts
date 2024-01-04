@@ -7,7 +7,7 @@ class CommentsValidatorClass {
       commentParentId: Joi.string(),
     }).validate(body);
     if (validateRes.error)
-      throw { httpCode: 400, message: validateRes.error.details[0].message };
+      {throw { httpCode: 400, message: validateRes.error.details[0].message };}
   }
 }
 

@@ -21,9 +21,9 @@ class LikesServiceClass {
       } else {
         entity = await CommentsRepository.getByCommentId(entityId);
       }
-      if (entity.authorId === authorId) throw LikesExceptions.selfLike();
+      if (entity.authorId === authorId) {throw LikesExceptions.selfLike();}
       if (await LikesRepository.checkIsAlreadyLiked(authorId, entityId))
-        throw LikesExceptions.alreadyLiked();
+        {throw LikesExceptions.alreadyLiked();}
       const newLike = await LikesRepository.create(entityId, authorId);
       if (type === 'post') {
         await PostsRepository.increaseRoughNumberOfLikes(entityId);
@@ -46,9 +46,9 @@ class LikesServiceClass {
       } else {
         entity = await CommentsRepository_v1_2.getByCommentId(entityId);
       }
-      if (entity.authorId === authorId) throw LikesExceptions.selfLike();
+      if (entity.authorId === authorId) {throw LikesExceptions.selfLike();}
       if (await LikesRepository_v1_2.checkIsAlreadyLiked(authorId, entityId))
-        throw LikesExceptions.alreadyLiked();
+        {throw LikesExceptions.alreadyLiked();}
       const newLike = await LikesRepository_v1_2.create(entityId, authorId);
       if (type === 'post') {
         await PostsRepository.increaseRoughNumberOfLikes(entityId);

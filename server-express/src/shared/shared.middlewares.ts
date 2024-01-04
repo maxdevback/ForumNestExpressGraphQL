@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, json } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { joiValidateAuth } from './validators/joi.validate.auth';
 import { joiValidatePage } from './validators/joi.validate.page';
 

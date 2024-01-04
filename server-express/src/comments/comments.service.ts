@@ -11,10 +11,10 @@ class CommentsServiceClass {
   async create(data: ICommentCreate, v: 'v1.1' | 'v1.2' = 'v1.1') {
     joiValidateObjectId(data.authorId);
     joiValidateObjectId(data.postId);
-    if (data.parentCommentId) joiValidateObjectId(data.parentCommentId);
+    if (data.parentCommentId) {joiValidateObjectId(data.parentCommentId);}
     if (v === 'v1.2') {
       const author = await UsersRepository.findUserById(data.authorId);
-      if (!author) throw new NotFoundException('Author of the post not found');
+      if (!author) {throw new NotFoundException('Author of the post not found');}
       const post = await PostsRepository.getByPostId(data.postId);
       const comment = await CommentsRepository.create({
         authorId: author.id,
@@ -24,7 +24,7 @@ class CommentsServiceClass {
         parentCommentId: data.parentCommentId,
       });
       if (!post.hasComments)
-        await PostsRepository.changeCommentsStatus(true, post);
+        {await PostsRepository.changeCommentsStatus(true, post);}
       if (data.parentCommentId) {
         joiValidateObjectId(data.parentCommentId);
         const parentComment = await CommentsRepository.getByCommentId(
@@ -39,7 +39,7 @@ class CommentsServiceClass {
       return comment;
     } else {
       const author = await UsersRepository.findUserById(data.authorId);
-      if (!author) throw new NotFoundException('Author of the post not found');
+      if (!author) {throw new NotFoundException('Author of the post not found');}
       const post = await PostsRepository.getByPostId(data.postId);
       const comment = await CommentsRepository_v1_2.create({
         authorId: author.id,
@@ -49,7 +49,7 @@ class CommentsServiceClass {
         parentCommentId: data.parentCommentId,
       });
       if (!post.hasComments)
-        await PostsRepository.changeCommentsStatus(true, post);
+        {await PostsRepository.changeCommentsStatus(true, post);}
       if (data.parentCommentId) {
         joiValidateObjectId(data.parentCommentId);
         const parentComment = await CommentsRepository_v1_2.getByCommentId(

@@ -13,17 +13,17 @@ import {
   configureMiddlewaresAfterRouter,
 } from './app/server/configure.middlewares';
 
+const configure = () => {
+  configureMiddlewaresBeforeRouter(app);
+
+  configureApp(app);
+
+  configureMiddlewaresAfterRouter(app);
+};
+
 const server = {
-  _configure: function () {
-    configureMiddlewaresBeforeRouter(app);
-
-    configureApp(app);
-
-    configureMiddlewaresAfterRouter(app);
-  },
-
   start: function () {
-    this._configure();
+    configure();
 
     app.listen(APP_INFO_CONFIG.PORT, async () => {
       await connect(SECRET_CONFIG.MONGODB_LINK);

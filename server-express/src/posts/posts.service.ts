@@ -28,31 +28,31 @@ class PostsServiceClass {
   async getByPostIdOld(postId: string) {
     joiValidateObjectId(postId);
     const post = await PostsRepository.getByPostIdOld(postId);
-    if (!post) throw new NotFoundException("This post doesn't exist");
+    if (!post) {throw new NotFoundException("This post doesn't exist");}
     return post;
   }
 
   async getByPostId(postId: string) {
     joiValidateObjectId(postId);
     const post = await PostsRepository.getByPostId(postId);
-    if (!post) throw new NotFoundException("This post doesn't exist");
+    if (!post) {throw new NotFoundException("This post doesn't exist");}
     return post;
   }
 
   async getAuthorByPostIdOld(postId: string) {
     joiValidateObjectId(postId);
     const post = await PostsRepository.getByPostIdOld(postId);
-    if (!post) throw new NotFoundException("This post doesn't exist");
+    if (!post) {throw new NotFoundException("This post doesn't exist");}
     const user = await UsersRepository.findUserByIdOld(postId);
-    if (!user) throw new NotFoundException('Author of the post not found');
+    if (!user) {throw new NotFoundException('Author of the post not found');}
     return { _id: user._id, username: user.username };
   }
 
   async getAuthorByPostId(postId: string) {
     const post = await PostsRepository.getByPostId(postId);
-    if (!post) throw new NotFoundException("This post doesn't exist");
+    if (!post) {throw new NotFoundException("This post doesn't exist");}
     const user = await UsersRepository.findUserById(post.authorId);
-    if (!user) throw new NotFoundException('Author of the post not found');
+    if (!user) {throw new NotFoundException('Author of the post not found');}
     return { _id: user._id, username: user.username };
   }
 
