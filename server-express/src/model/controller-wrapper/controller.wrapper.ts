@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-export function asyncWrap(
+export function controllerWrapper(
   controller: (req: Request, res: Response, next: NextFunction) => any,
 ) {
   return async (req: Request, res: Response, next: NextFunction) => {
