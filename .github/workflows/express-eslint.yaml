@@ -14,4 +14,4 @@ jobs:
       - name: Install node modules
         uses: ./.github/actions/cached-deps
       - name: Eslint
-        run: npm run
+        run: cd server-express && npm run
