@@ -5,6 +5,7 @@ inputs:
     description: "Whether to cache dependencies or not."
     required: false
     default: "true"
+  folder_name
 outputs:
   used-cache:
     description: "Whether the cache was used."
@@ -23,6 +24,6 @@ runs:
       id: install
       if: steps.cache.outputs.cache-hit != 'true' || inputs.caching != 'true'
       run: |
-        cd server-express && npm ci
+        cd inputs.folder_name && npm ci
         echo "::set-output name=cache::'${{ inputs.caching }}'"
       shell: bash

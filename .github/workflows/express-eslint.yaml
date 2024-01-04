@@ -9,9 +9,13 @@ jobs:
   eslint:
     runs-on: ubuntu-latest
     steps:
+      - name: Set folder name in env
+        run:
       - name: Get repo
         uses: actions/checkout@v4
       - name: Install node modules
         uses: ./.github/actions/cached-deps
+        with:
+          folder_name: server-express
       - name: Eslint
         run: cd server-express && npm run
