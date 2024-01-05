@@ -11,21 +11,24 @@ import { Post } from './posts/entities/post.entity';
 import { Notification } from './notifications/entities/notification.entity';
 import { Like } from './likes/entities/like.entity';
 import { Comment } from './comments/entities/comment.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    AuthModule,
     PostsModule,
     UsersModule,
     CommentsModule,
     LikesModule,
     NotificationsModule,
+    //TODO: also change process.env
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as any,
       host: process.env.DB_HOST,
-      port: +process.env.PORT,
+      port: +process.env.DB_PORT,
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,

@@ -5,6 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  //TODO: process change to config
   app.enableCors({
     origin: process.env.CLIENT_URL,
     credentials: true,
@@ -13,7 +14,6 @@ async function bootstrap() {
     session({
       secret: process.env.SESSION_SECRET,
       resave: false,
-      saveUninitialized: false,
     }),
   );
   app.useGlobalPipes(new ValidationPipe());

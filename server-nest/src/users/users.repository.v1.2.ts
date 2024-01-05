@@ -10,24 +10,13 @@ export class UsersRepositoryV1_2 {
     @InjectRepository(User) private readonly UserRepo: Repository<User>,
   ) {}
 
-  async findByUsernameOrEmail(
-    username: string,
-    email: string,
-    throwError: boolean = true,
-  ) {
+  async findByUsernameOrEmail(username: string, email: string) {
     const query = `
-      SELECT * FROM user
+      SELECT * FROM "user"
       WHERE username = $1 OR email = $2
     `;
     const parameters = [username, email];
     const user = await this.UserRepo.query(query, parameters);
-
-    if (!user.length && throwError) {
-      throw new HttpException(
-        'No user with this username was found',
-        HttpStatus.NOT_FOUND,
-      );
-    }
 
     return user[0];
   }
@@ -50,7 +39,7 @@ export class UsersRepositoryV1_2 {
 
   async deleteById(id: number) {
     const query = `
-      DELETE FROM user
+      DELETE FROM "user"
       WHERE id = $1
     `;
     const parameters = [id];
@@ -61,7 +50,7 @@ export class UsersRepositoryV1_2 {
 
   async findById(id: number) {
     const query = `
-      SELECT * FROM user
+      SELECT * FROM "user"
       WHERE id = $1
     `;
     const parameters = [id];

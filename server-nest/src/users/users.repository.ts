@@ -9,20 +9,10 @@ export class UsersRepository {
   constructor(
     @InjectRepository(User) private readonly UserRepo: Repository<User>,
   ) {}
-  async findByUsernameOrEmail(
-    username: string,
-    email: string,
-    throwError: boolean = true,
-  ) {
-    const user = await this.UserRepo.findOne({
+  async findByUsernameOrEmail(username: string, email: string) {
+    return await this.UserRepo.findOne({
       where: [{ username: username }, { email: email }],
     });
-    if (!user && throwError)
-      throw new HttpException(
-        'No user with this username was found',
-        HttpStatus.NOT_FOUND,
-      );
-    return user;
   }
   async create(userInfo: {
     username: string;
@@ -37,12 +27,6 @@ export class UsersRepository {
     return new HttpException('Deleted', HttpStatus.OK);
   }
   async findById(id: number) {
-    const user = await this.UserRepo.findOne({ where: { id } });
-    if (!user)
-      throw new HttpException(
-        'No user with this username was found',
-        HttpStatus.NOT_FOUND,
-      );
-    return user;
+    return await this.UserRepo.findOne({ where: { id } });
   }
 }
