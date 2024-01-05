@@ -5,7 +5,10 @@ inputs:
     description: "Whether to cache dependencies or not."
     required: false
     default: "true"
-  folder_name
+  folder_name:
+    description: "project folder"
+    required: true
+    default: "express"
 outputs:
   used-cache:
     description: "Whether the cache was used."
