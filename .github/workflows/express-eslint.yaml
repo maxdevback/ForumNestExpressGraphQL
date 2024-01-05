@@ -12,6 +12,6 @@ jobs:
       - name: Get repo
         uses: actions/checkout@v4
       - name: Install node modules
-        uses: ./.github/actions/cached-deps
+        uses: ./.github/actions/express-cached-deps
       - name: Eslint
         run: cd server-express && npm run
